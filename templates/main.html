@@ -1,0 +1,29 @@
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+
+    {# Load Boot CSS and JQuery #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery=1 %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    {# CSS Block #}
+    {% block css %}
+    {% endblock css %}
+</head>
+<body>
+{% block container %}
+{% endblock container %}
+
+{% block javascript %}
+{% endblock javascript %}
+</body>
+</html>
