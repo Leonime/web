@@ -1,8 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from main.views import Welcome
 
-urlpatterns = patterns(
-    'main.views',
+urlpatterns = [
     url(r'^', Welcome.as_view(), name='welcome'),
-)
+]
