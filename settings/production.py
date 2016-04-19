@@ -12,6 +12,8 @@ from settings.base import *
 DEBUG = False
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
+ALLOWED_HOSTS = ['.codeshepherds.com']
+
 with open(os.path.join(BASE_DIR, "config.json"), 'r') as cfg:
     config = json.load(cfg)
 
