@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'bootstrap3',
 
     # Apps
-    'main',
+    'home',
 ]
 
 MIDDLEWARE_CLASSES = [
