@@ -13,10 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import include
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
+from django.urls import path
 from rest_framework import routers
 from party import views
 from settings import production
@@ -29,14 +30,14 @@ router.register(r'photos', views.PhotoViewSet)
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
     # Home urls
-    url(r'^$', Index.as_view(), name='index'),
+    path('', Index.as_view(), name='index'),
 
     # party App Urls
-    url(r'^party/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('party/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
 urlpatterns += static(production.MEDIA_URL, document_root=production.MEDIA_ROOT)
