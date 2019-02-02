@@ -34,6 +34,7 @@ urlpatterns = [
 
     # Home urls
     path('', Index.as_view(), name='index'),
+    path('s/', include('shortener.urls')),
 
     # party App Urls
     path('party/', include(router.urls)),
