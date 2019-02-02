@@ -153,3 +153,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+# Apps custom settings
+# Shortener
+SHORT_CODE_MAX = 16
+SHORT_CODE_MIN = 8
