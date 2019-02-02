@@ -37,6 +37,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap_admin',  # third party but it has to be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
