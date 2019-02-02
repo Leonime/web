@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block container %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-offset-1 col-lg-10">
+                <div class="jumbotron">
+                    <div class="container">
+                        <h1>Created!</h1>
+                        <p>{{ object.url }}</p>
+
+                        <p>{{ object.get_absolute_url }}</p>
+                        <a href='/'>+ New</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock container %}
