@@ -35,10 +35,10 @@ f = Fernet(key)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': decrypt(f, str.encode(config["DB"]["NAME"])),
-        'USER': decrypt(f, str.encode(config["DB"]["USER"])),
-        'PASSWORD': decrypt(f, str.encode(config["DB"]["PASSWORD"])),
-        'HOST': decrypt(f, str.encode(config["DB"]["HOST"])),
+        'NAME': f.decrypt(str.encode(config["DB"]["NAME"]).decode("utf-8")),
+        'USER': f.decrypt(str.encode(config["DB"]["USER"]).decode("utf-8")),
+        'PASSWORD': f.decrypt(str.encode(config["DB"]["PASSWORD"]).decode("utf-8")),
+        'HOST': f.decrypt(str.encode(config["DB"]["HOST"]).decode("utf-8")),
         'PORT': '',
     }
 }
