@@ -42,7 +42,9 @@ class ShortURL(models.Model):
         return f"http://{domain}{reverse('short_code', kwargs={'short_code': self.short_code})}"
 
     def __str__(self):
-        return f'{self.url + self.short_code}'
+        domain = Site.objects.get_current().domain
+        return f"http://{domain + reverse('short_code', kwargs={'short_code': self.short_code})}"
 
     def __unicode__(self):
-        return f'{self.url + self.short_code}'
+        domain = Site.objects.get_current().domain
+        return f"http://{domain + reverse('short_code', kwargs={'short_code': self.short_code})}"
