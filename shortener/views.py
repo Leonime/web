@@ -1,8 +1,11 @@
+from django.contrib.gis.geoip2 import GeoIP2
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 from django.views import View
+from ipware import get_client_ip
 
+from analytics.models import SURLAnalytics
 from shortener.forms import SubmitUrlForm
 from shortener.models import ShortURL
 
@@ -43,7 +46,42 @@ class ShortURLView(View):  # class based view
     def get(self, request, *args, **kwargs):
         short_code = kwargs['short_code']
         obj = get_object_or_404(ShortURL, short_code=short_code)
-        return HttpResponseRedirect(obj.url)
+        g = GeoIP2()
+        client_ip, is_routable = get_client_ip(request)
+        geolocation = {}
+        print(client_ip)
+
+        if client_ip is None:
+            # Unable to get the client's IP address
+            geolocation['ipv4'] = ''
+            geolocation['city'] = ''
+            geolocation['country_code'] = ''
+            geolocation['country'] = ''
+            geolocation['found'] = False
+            pass
+        else:
+            # We got the client's IP address
+            if is_routable:
+                # The client's IP address is publicly routable on the Internet
+                geolocation['ipv4'] = client_ip
+                city = g.city('72.14.207.99')
+                geolocation['city'] = city['city']
+                geolocation['country_code'] = city['country_code']
+                geolocation['country'] = city['country_name']
+                geolocation['found'] = True
+                pass
+            else:
+                # The client's IP address is private
+                geolocation['ipv4'] = client_ip
+                geolocation['city'] = ''
+                geolocation['country_code'] = ''
+                geolocation['country'] = ''
+                geolocation['found'] = None
+                pass
+
+        SURLAnalytics.objects.create_event(obj, geolocation)
+        # return HttpResponseRedirect(obj.url)
+        return HttpResponse(obj)
 
     def post(self, request, *args, **kwargs):
         return HttpResponse()
