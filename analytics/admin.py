@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from analytics.models import SURLAnalytics, GeoLocation
+
+admin.site.register(SURLAnalytics)
+admin.site.register(GeoLocation)
