@@ -34,10 +34,10 @@ class SURLAnalytics(models.Model):
 
 
 class GeoLocation(models.Model):
-    ipv4 = models.CharField(max_length=16)
-    city = models.CharField(max_length=256)
-    country_code = models.CharField(max_length=4)
-    country = models.CharField(max_length=64)
+    ipv4 = models.CharField(max_length=16, null=True)
+    city = models.CharField(max_length=256, null=True)
+    country_code = models.CharField(max_length=4, null=True)
+    country = models.CharField(max_length=64, null=True)
     found = models.BooleanField(null=True)
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
