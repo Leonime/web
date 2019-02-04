@@ -1,3 +1,5 @@
+import django_heroku
+
 from core.utils import load_db_config
 from settings.base import *
 
@@ -17,3 +19,6 @@ DATABASES = {
         'PORT': config["DB"]["PORT"],
     }
 }
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

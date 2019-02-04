@@ -15,6 +15,7 @@ coverage = "*"
 geoip2 = "*"
 django-ipware = "*"
 gunicorn = "*"
+django-heroku = "*"
 
 [dev-packages]
 
