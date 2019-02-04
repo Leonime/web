@@ -4,7 +4,7 @@ from settings.base import *
 DEBUG = False
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
-ALLOWED_HOSTS = ['.codeshepherds.com']
+ALLOWED_HOSTS = ['.codeshepherds.com', '.testdevsheep.herokuapp.com']
 
 config = load_db_config('production.json')
 

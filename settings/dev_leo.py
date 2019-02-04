@@ -1,6 +1,8 @@
 from core.utils import load_db_config
 from settings.base import *
 
+ALLOWED_HOSTS = ['.codeshepherds.com', '.testdevsheep.herokuapp.com']
+
 config = load_db_config()
 
 # Database
