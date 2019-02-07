@@ -4,22 +4,16 @@
 {% block title %}Welcome{% endblock title %}
 
 {% block container %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-offset-1 col-lg-10">
-                <div class="jumbotron">
-                    <div class="container">
-                        <p>Short URL</p>
-                        <form method='POST' action='.'  class="form">
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            {% buttons %}
-                            <input type='submit' value='Shorten' class="btn btn-primary">
-                            {% endbuttons %}
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <h1 class="h3 mb-3 font-weight-normal">Short URL</h1>
+            <form method='POST' action='.' class="form">
+                {% csrf_token %}
+                {% bootstrap_form form layout='inline' %}
+                {% buttons %}
+                    <input type='submit' value='Submit' class="btn btn-primary">
+                {% endbuttons %}
+            </form>
         </div>
-    </div>
+    </main>
 {% endblock container %}
