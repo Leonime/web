@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # Third Party
-    'bootstrap3',
+    'bootstrap4',
     'rest_framework',
 
     # Apps

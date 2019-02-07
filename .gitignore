@@ -3,7 +3,6 @@ static/
 htmlcov/
 *.pyc
 *.ipynb
-config.json
 .coverage
 .env
 decript.py
