@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django = "*"
 cryptography = "*"
-"django-bootstrap3" = "*"
 djangorestframework = "*"
 pillow = "*"
 "psycopg2-binary" = "*"
