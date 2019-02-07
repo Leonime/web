@@ -1,7 +1,6 @@
 from django.contrib.gis.geoip2 import GeoIP2
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-
 from django.views import View
 from ipware import get_client_ip
 
@@ -80,8 +79,4 @@ class ShortURLView(View):  # class based view
                 pass
 
         SURLAnalytics.objects.create_event(obj, geolocation)
-        # return HttpResponseRedirect(obj.url)
-        return HttpResponse(obj)
-
-    def post(self, request, *args, **kwargs):
-        return HttpResponse()
+        return HttpResponseRedirect(obj.url)
