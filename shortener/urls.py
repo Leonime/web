@@ -5,6 +5,7 @@ from shortener.views import ShortURLView, ShortenerHome
 
 register_converter(ShortCodeConverter, 'code_converter')
 
+app_name = 'shortener'
 urlpatterns = [
     path('', ShortenerHome.as_view(), name='home'),
     path('<code_converter:short_code>/', ShortURLView.as_view(), name='short_code'),

@@ -39,7 +39,7 @@ class ShortURL(models.Model):
 
     def get_absolute_url(self):
         domain = Site.objects.get_current().domain
-        return f"http://{domain}{reverse('short_code', kwargs={'short_code': self.short_code})}"
+        return f"http://{domain}{reverse('shortener:short_code', kwargs={'short_code': self.short_code})}"
 
     def __str__(self):
         domain = Site.objects.get_current().domain
