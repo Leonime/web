@@ -7,17 +7,24 @@
 {% block container %}
     <main role="main" class="container">
         <div class="jumbotron">
-            <h1 class="h3 mb-3 font-weight-normal">Created</h1>
-            <p>{{ object.url }}</p>
-            <div class="input-group mb-3">
-                <a class="form-control short-url" aria-label="Short URL" aria-describedby="button-addon2" readonly>
-                    {{ object.get_absolute_url }}
-                </a>
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary btn-copy" type="button" id="button-addon2">{% icon 'copy' %}</button>
+            <h1 class="h3 font-weight-normal">Success</h1>
+            <div class="row">
+                <ol class="breadcrumb col-sm-11">
+                    <li class="breadcrumb-item col-sm-12">
+                        <span class="short-url">{{ object.get_absolute_url }}</span>
+                    </li>
+                </ol>
+                <div class="col-sm-1">
+                    <button class="btn btn-outline-primary btn-copy btn-block"
+                            style="height:72%">{% icon 'copy' %}</button>
                 </div>
             </div>
-            <a href='/'>+ New</a>
+            <div class="row">
+                <ol class="breadcrumb col-sm-12">
+                    <li class="breadcrumb-item active col-sm-12">{{ object.url }}</li>
+                </ol>
+            </div>
+            <a class="btn btn-primary" href="{% url 'shortener:home' %}">New</a>
         </div>
     </main>
 {% endblock container %}
