@@ -6,11 +6,17 @@ name = "pypi"
 [packages]
 django = "*"
 cryptography = "*"
-"django-bootstrap3" = "*"
 djangorestframework = "*"
 pillow = "*"
 "psycopg2-binary" = "*"
-pipenv = "*"
+bootstrap-admin = "*"
+coverage = "*"
+geoip2 = "*"
+django-ipware = "*"
+gunicorn = "*"
+django-heroku = "*"
+django-bootstrap4 = "*"
+django-icons = "*"
 
 [dev-packages]
 

@@ -32,23 +32,30 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap_admin',  # third party but it has to be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # Third Party
-    'bootstrap3',
+    'bootstrap4',
+    'django_icons',
     'rest_framework',
 
     # Apps
     'home',
     'party',
+    'shortener',
+    'analytics',
 ]
 
 REST_FRAMEWORK = {
@@ -153,3 +160,27 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+# Geolocation
+GEOIP_PATH = os.path.join(BASE_DIR, 'geolocation', 'GeoIP')
+GEOIP_COUNTRY = 'GeoLite2-Country.mmdb'
+GEOIP_CITY = 'GeoLite2-City.mmdb'
+
+# Settings for django-icons
+DJANGO_ICONS = {
+
+    'DEFAULTS': {
+        'renderer': 'fontawesome',
+    },
+
+    'RENDERERS': {
+        'fontawesome': 'FontAwesomeRenderer',
+        'bootstrap3': 'Bootstrap3Renderer',
+    },
+
+}
+
+# Apps custom settings
+# Shortener
+SHORT_CODE_MAX = 16
+SHORT_CODE_MIN = 8

@@ -1,15 +1,21 @@
-import base64
-import struct
-import time
-
 import binascii
+import time
+from _operator import concat
 
+import base64
+import json
+import os
 import six
+import struct
 from cryptography.exceptions import InvalidSignature
-from cryptography.fernet import InvalidToken
+from cryptography.fernet import InvalidToken, Fernet
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.hmac import HMAC
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+
+from codeshepherds.settings import BASE_DIR
 
 _MAX_CLOCK_SKEW = 60
 
@@ -17,7 +23,7 @@ _MAX_CLOCK_SKEW = 60
 def decrypt(self, token, ttl=None):
     current_time = int(time.time())
     if not isinstance(token, bytes):
-        raise TypeError("token must be bytes.")
+        raise TypeError('token must be bytes.')
 
     try:
         data = base64.urlsafe_b64decode(token)
@@ -28,7 +34,7 @@ def decrypt(self, token, ttl=None):
         raise InvalidToken
 
     try:
-        timestamp, = struct.unpack(">Q", data[1:9])
+        timestamp, = struct.unpack('>Q', data[1:9])
     except struct.error:
         raise InvalidToken
 
@@ -64,4 +70,31 @@ def decrypt(self, token, ttl=None):
         unpadded += unpadder.finalize()
     except ValueError:
         raise InvalidToken
-    return unpadded.decode("utf-8")
+    return unpadded.decode('utf-8')
+
+
+def load_db_config(config_file='test.json'):
+    password = str.encode(os.environ.get('CRYPT_KEY'))
+    salt = b'd\x04\xe7@T\xd6\x8e\xac\xa5\xd9\xfb\x17o\xc0\xc2g'
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = base64.urlsafe_b64encode(kdf.derive(password))
+    f = Fernet(key)
+
+    with open(os.path.join(BASE_DIR, config_file), 'r') as cfg:
+        config = json.load(cfg)
+
+    config = {
+        k: {
+            k: f.decrypt(str(v).encode('utf-8')).decode('utf-8')
+            for k, v in v.items()
+        }
+        for k, v in config.items()
+    }
+
+    return config

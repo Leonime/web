@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include
 from django.conf.urls.static import static
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from rest_framework import routers
+
+from home.views import Index
 from party import views
 from settings import production
-from home.views import Index
 
 router = routers.DefaultRouter()
 router.register(r'parties', views.PartyViewSet)
@@ -34,6 +35,7 @@ urlpatterns = [
 
     # Home urls
     path('', Index.as_view(), name='index'),
+    path('s/', include('shortener.urls', namespace='shortener')),
 
     # party App Urls
     path('party/', include(router.urls)),
