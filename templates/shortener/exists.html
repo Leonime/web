@@ -1,21 +1,27 @@
 {% extends 'main.html' %}
+{% load static %}
+{% load icons %}
 
 {% block title %}{{ title }}{% endblock title %}
 
 {% block container %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-offset-1 col-lg-10">
-                <div class="jumbotron">
-                    <div class="container">
-                        <h1>Exists</h1>
-                        <p>{{ object.url }}</p>
-
-                        <p>{{ object.get_absolute_url }}</p>
-                         <a href='/'>+ New</a>
-                    </div>
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <h1 class="h3 mb-3 font-weight-normal">Exists</h1>
+            <p>{{ object.url }}</p>
+            <div class="input-group mb-3">
+                <a class="form-control short-url" aria-label="Short URL" aria-describedby="button-addon2" readonly>
+                    {{ object.get_absolute_url }}
+                </a>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-copy" type="button" id="button-addon2">{% icon 'copy' %}</button>
                 </div>
             </div>
+            <a href='/'>+ New</a>
         </div>
-    </div>
+    </main>
 {% endblock container %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'js/shortener/success.js' %}"></script>
+{% endblock javascript %}
