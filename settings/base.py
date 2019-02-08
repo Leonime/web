@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # Third Party
     'bootstrap4',
+    'django_icons',
     'rest_framework',
 
     # Apps
@@ -164,6 +165,20 @@ STATICFILES_FINDERS = (
 GEOIP_PATH = os.path.join(BASE_DIR, 'geolocation', 'GeoIP')
 GEOIP_COUNTRY = 'GeoLite2-Country.mmdb'
 GEOIP_CITY = 'GeoLite2-City.mmdb'
+
+# Settings for django-icons
+DJANGO_ICONS = {
+
+    'DEFAULTS': {
+        'renderer': 'fontawesome',
+    },
+
+    'RENDERERS': {
+        'fontawesome': 'FontAwesomeRenderer',
+        'bootstrap3': 'Bootstrap3Renderer',
+    },
+
+}
 
 # Apps custom settings
 # Shortener

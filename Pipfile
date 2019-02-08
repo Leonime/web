@@ -16,6 +16,7 @@ django-ipware = "*"
 gunicorn = "*"
 django-heroku = "*"
 django-bootstrap4 = "*"
+django-icons = "*"
 
 [dev-packages]
 
