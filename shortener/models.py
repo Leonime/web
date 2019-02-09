@@ -23,7 +23,7 @@ class ShortURLManager(models.Manager):
 
 # Create your models here.
 class ShortURL(models.Model):
-    url = models.CharField(max_length=226, validators=[validate_url])
+    url = models.CharField(max_length=2083, validators=[validate_url])
     short_code = models.CharField(max_length=SHORT_CODE_MAX, unique=True)
     updated = models.DateTimeField(auto_now=True)  # every time the model is saved
     timestamp = models.DateTimeField(auto_now_add=True)  # when model was created
