@@ -6,7 +6,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 ALLOWED_HOSTS = ['.codeshepherds.com', '.testdevsheep.herokuapp.com']
 
-config = load_db_config('production.json')
+config = load_db_config()
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

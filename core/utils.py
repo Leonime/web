@@ -1,10 +1,8 @@
 import binascii
 import time
-from _operator import concat
 
 import base64
 import json
-import os
 import six
 import struct
 from cryptography.exceptions import InvalidSignature
@@ -14,6 +12,8 @@ from cryptography.hazmat.primitives import hashes, padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from django.conf import settings
+from pathlib import Path
 
 from codeshepherds.settings import BASE_DIR
 
@@ -73,8 +73,9 @@ def decrypt(self, token, ttl=None):
     return unpadded.decode('utf-8')
 
 
-def load_db_config(config_file='test.json'):
-    password = str.encode(os.environ.get('CRYPT_KEY'))
+def create_encryptor():
+    crypt_key = getattr(settings, "CRYPT_KEY", None)
+    password = str.encode(crypt_key)
     salt = b'd\x04\xe7@T\xd6\x8e\xac\xa5\xd9\xfb\x17o\xc0\xc2g'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -84,17 +85,54 @@ def load_db_config(config_file='test.json'):
         backend=default_backend()
     )
     key = base64.urlsafe_b64encode(kdf.derive(password))
-    f = Fernet(key)
+    return Fernet(key)
 
-    with open(os.path.join(BASE_DIR, config_file), 'r') as cfg:
-        config = json.load(cfg)
+
+def save_config_file(config_file='development.json', name='codeshepherds', user='leonime', password='nomas123',
+                     host='localhost', port=''):
+    path = Path(BASE_DIR).joinpath(config_file)
+    f = create_encryptor()
+
+    json_data = {'DB': {}}
+
+    json_data['DB']['NAME'] = f.encrypt(str.encode(name)).decode("utf-8")
+    json_data["DB"]["USER"] = f.encrypt(str.encode(user)).decode("utf-8")
+    json_data["DB"]["PASSWORD"] = f.encrypt(str.encode(password)).decode("utf-8")
+    json_data["DB"]["HOST"] = f.encrypt(str.encode(host)).decode("utf-8")
+    json_data["DB"]["PORT"] = f.encrypt(str.encode(port)).decode("utf-8")
+
+    with path.open('w') as file:
+        json.dump(json_data, file, sort_keys=True, indent=4)
+        pass
+    pass
+
+
+def load_config_file():
+    config_file = getattr(settings, "CONFIG_FILE", 'development.json')
+    path = Path(BASE_DIR).joinpath(config_file)
+
+    if path.exists():
+        with path.open() as cfg:
+            config = json.load(cfg)
+            pass
+        pass
+    else:
+        save_config_file(config_file, 'codeshepherds', 'leonime', 'nomas123', 'localhost', '')
+        config = load_config_file()
+        pass
+    return config
+
+
+def load_db_config():
+    config = load_config_file()
+    f = create_encryptor()
 
     config = {
-        k: {
-            k: f.decrypt(str(v).encode('utf-8')).decode('utf-8')
-            for k, v in v.items()
+        key: {
+            key: f.decrypt(str(value).encode('utf-8')).decode('utf-8')
+            for key, value in value.items()
         }
-        for k, v in config.items()
+        for key, value in config.items()
     }
 
     return config
