@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'party',
     'shortener',
     'analytics',
+    'settings',
 ]
 
 REST_FRAMEWORK = {
