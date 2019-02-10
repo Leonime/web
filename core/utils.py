@@ -1,6 +1,5 @@
 import binascii
 import time
-from _operator import concat
 
 import base64
 import json
@@ -14,6 +13,7 @@ from cryptography.hazmat.primitives import hashes, padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from django.conf import settings
 
 from codeshepherds.settings import BASE_DIR
 
@@ -73,7 +73,8 @@ def decrypt(self, token, ttl=None):
     return unpadded.decode('utf-8')
 
 
-def load_db_config(config_file='test.json'):
+def load_db_config():
+    config_file = getattr(settings, "CONFIG_FILE", 'development.json')
     password = str.encode(os.environ.get('CRYPT_KEY'))
     salt = b'd\x04\xe7@T\xd6\x8e\xac\xa5\xd9\xfb\x17o\xc0\xc2g'
     kdf = PBKDF2HMAC(

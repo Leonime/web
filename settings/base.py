@@ -27,6 +27,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # Encryption key
 CRYPT_KEY = os.environ.get('CRYPT_KEY')
 
+# Config file to use
+CONFIG_FILE = os.environ.get('CONFIG_FILE')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -79,8 +82,7 @@ ROOT_URLCONF = 'codeshepherds.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
