@@ -1,9 +1,10 @@
-.idea/
 static/
 htmlcov/
+media/
+staticfiles/
+/*.json
 *.pyc
 *.ipynb
 .coverage
 .env
-decript.py
 geolocation/GeoIP/.geoipupdate.lock
