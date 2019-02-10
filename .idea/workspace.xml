@@ -53,17 +53,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="3" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///usr/lib64/python3.7/getpass.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="172" column="18" lean-forward="true" selection-start-line="172" selection-start-column="18" selection-end-line="172" selection-end-column="18" />
+            <state relative-caret-position="85">
+              <caret line="5" column="5" lean-forward="true" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -73,20 +64,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.virtualenvs/codeshepherds-ZNryPnPh/lib/python3.7/site-packages/django/contrib/auth/management/commands/createsuperuser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
-              <folding>
-                <element signature="e#682#849#0" />
-                <element signature="e#896#2055#0" />
-                <element signature="e#2106#2219#0" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -220,6 +197,28 @@
             <path>
               <item name="codeshepherds" type="b2602c69:ProjectViewProjectNode" />
               <item name="codeshepherds" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="codeshepherds" type="b2602c69:ProjectViewProjectNode" />
+              <item name="codeshepherds" type="462c0819:PsiDirectoryNode" />
+              <item name="analytics" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="codeshepherds" type="b2602c69:ProjectViewProjectNode" />
+              <item name="codeshepherds" type="462c0819:PsiDirectoryNode" />
+              <item name="analytics" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="codeshepherds" type="b2602c69:ProjectViewProjectNode" />
+              <item name="codeshepherds" type="462c0819:PsiDirectoryNode" />
+              <item name="shortener" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="codeshepherds" type="b2602c69:ProjectViewProjectNode" />
+              <item name="codeshepherds" type="462c0819:PsiDirectoryNode" />
+              <item name="shortener" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="codeshepherds" type="b2602c69:ProjectViewProjectNode" />
@@ -521,7 +520,7 @@
       <workItem from="1549608583316" duration="16000" />
       <workItem from="1549609045215" duration="68000" />
       <workItem from="1549669597610" duration="651000" />
-      <workItem from="1549743447973" duration="31979000" />
+      <workItem from="1549743447973" duration="32347000" />
     </task>
     <task id="LOCAL-00001" summary="Added models to admin">
       <created>1549286987633</created>
@@ -733,7 +732,14 @@
       <option name="project" value="LOCAL" />
       <updated>1549792296306</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="decided to add idea folder">
+      <created>1549792434047</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1549792434047</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -769,7 +775,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184553000" />
+    <option name="totallyTimeSpent" value="184921000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -784,7 +790,7 @@
     <frame x="0" y="0" width="1366" height="738" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19864048" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19864048" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -794,7 +800,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32792208" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49697885" weight="0.3409091" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49697885" visible="true" weight="0.3409091" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5030211" side_tool="true" weight="0.34244373" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32954547" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32792208" />
@@ -893,20 +899,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/home/welcome.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="31" lean-forward="true" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Pipfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="22" column="10" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.virtualenvs/codeshepherds-ZNryPnPh/lib/python3.7/site-packages/django_icons/templatetags/icons.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-475" />
@@ -1262,13 +1254,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/lib64/python3.7/getpass.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="172" column="18" lean-forward="true" selection-start-line="172" selection-start-column="18" selection-end-line="172" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/development.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1289,10 +1274,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/lib64/python3.7/getpass.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="172" column="18" selection-start-line="172" selection-start-column="18" selection-end-line="172" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shortener/migrations/0001_initial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-153" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analytics/migrations/0002_auto_20190204_1238.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="3" selection-end-column="12" />
+        <state relative-caret-position="85">
+          <caret line="5" column="5" lean-forward="true" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
         </state>
       </provider>
     </entry>
