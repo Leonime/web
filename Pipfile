@@ -18,6 +18,7 @@ django-heroku = "*"
 django-bootstrap4 = "*"
 django-icons = "*"
 dropbox = "*"
+colorama = "*"
 
 [dev-packages]
 
