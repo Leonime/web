@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fd687065f3300433c58b4073b090ff317d24d7c8ae115e45ab9cacc29eb3fb7b"
+            "sha256": "62cad7e3418982b1d5143491b4cc2c74c4405e1c1f1997dc0eea9986dcf500e9"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -195,6 +195,15 @@
             ],
             "index": "pypi",
             "version": "==3.9.1"
+        },
+        "dropbox": {
+            "hashes": [
+                "sha256:40f7ea6eb20a00a9c26eb402714819b58fc0ccc7f186aa9d8882d94ffc725eec",
+                "sha256:a5d1cd71f624a332f1c0c38a0005aa67238f200169a152c169e0f8d5f45c77b2",
+                "sha256:c099baa6d191c46090fcb34f427112d5b659b6b3b57dd96cba1d77dc74619cd3"
+            ],
+            "index": "pypi",
+            "version": "==9.3.0"
         },
         "geoip2": {
             "hashes": [
