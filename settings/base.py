@@ -30,6 +30,9 @@ CRYPT_KEY = os.environ.get('CRYPT_KEY')
 # Config file to use
 CONFIG_FILE = os.environ.get('CONFIG_FILE')
 
+# Dropbox access key
+DROPBOX_ACCESS_TOKEN = os.environ.get('DROPBOX_ACCESS_TOKEN')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -165,7 +168,7 @@ STATICFILES_FINDERS = (
 )
 
 # Geolocation
-GEOIP_PATH = os.path.join(BASE_DIR, 'geolocation', 'GeoIP')
+GEOIP_PATH = os.path.join(BASE_DIR, 'analytics', 'GeoIP')
 GEOIP_COUNTRY = 'GeoLite2-Country.mmdb'
 GEOIP_CITY = 'GeoLite2-City.mmdb'
 
