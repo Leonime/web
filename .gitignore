@@ -7,4 +7,4 @@ staticfiles/
 *.ipynb
 .coverage
 .env
-geolocation/GeoIP/.geoipupdate.lock
+*.geoipupdate.lock
