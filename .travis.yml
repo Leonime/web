@@ -8,9 +8,8 @@ install:
 services:
   - postgresql
 addons:
-    postgresql: "9.6"
+    postgresql: "11"
 before_script:
-  - bash install-postgres-11.sh
   - psql -c 'create database travis_ci_test;' -U postgres
 script:
   - "./manage.py test"
