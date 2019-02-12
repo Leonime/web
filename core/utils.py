@@ -5,6 +5,7 @@ import base64
 import json
 import six
 import struct
+import traceback
 from cryptography.exceptions import InvalidSignature
 from cryptography.fernet import InvalidToken, Fernet
 from cryptography.hazmat.backends import default_backend
@@ -127,12 +128,18 @@ def load_db_config():
     config = load_config_file()
     f = create_encryptor()
 
-    config = {
-        key: {
-            key: f.decrypt(str(value).encode('utf-8')).decode('utf-8')
-            for key, value in value.items()
+    try:
+        config = {
+            key: {
+                key: f.decrypt(str(value).encode('utf-8')).decode('utf-8')
+                for key, value in value.items()
+            }
+            for key, value in config.items()
         }
-        for key, value in config.items()
-    }
+    except InvalidToken:
+        print(f'Invalid token')
+    except Exception as e:
+        trace_back = traceback.format_exc()
+        print(f'{e} {trace_back}')
 
     return config
