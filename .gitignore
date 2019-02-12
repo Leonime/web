@@ -9,3 +9,4 @@ staticfiles/
 .coverage
 .env
 *.geoipupdate.lock
+*.mmdb
