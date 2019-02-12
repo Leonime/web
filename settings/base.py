@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+from core.utils import load_db_config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -185,6 +187,33 @@ DJANGO_ICONS = {
     },
 
 }
+
+config = load_db_config()
+
+# Database
+# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+DATABASES = {
+    'default': {}
+}
+
+if 'TRAVIS' not in os.environ:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config["DB"]["NAME"],
+        'USER': config["DB"]["USER"],
+        'PASSWORD': config["DB"]["PASSWORD"],
+        'HOST': config["DB"]["HOST"],
+        'PORT': config["DB"]["PORT"],
+    }
+else:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'travis_ci_test',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 
 # Apps custom settings
 # Shortener
