@@ -17,7 +17,7 @@ addons:
         - postgresql-11
         - postgresql-client-11
 before_script:
-  - sudo service postgresql start
+  - sudo -u postgres psql -c "grant ALL on DATABASE postgres to travis WITH GRANT OPTION;"
   - psql -c 'create database travis_ci_test;' -U postgres
 script:
   - "./manage.py test"
