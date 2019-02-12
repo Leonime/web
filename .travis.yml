@@ -1,0 +1,15 @@
+dist: xenial
+language: python
+python:
+  - '3.7'
+install:
+  - pip install pipenv
+  - pipenv install --ignore-pipfile
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+script:
+  - "./manage.py test"
+env:
+  - secure: TTm6Wv9MP1I1EX/2t9buOX4vGvoj0JoPCX7OMDs65tMYCH7tPQQu9qKsCkahCyeuLsLiu25IxSPfBYxR1uFlZoRtbpri6z3EdWkNirH//7/bbZJ4K9/xN/RzKIfQfg4Bkb/sY3oFHO39/lQ/ue8Ww15y15TJHP32fxzhhnXB3/wmBiILQOuzNjgMMep51OjqlZ4Rj6SFzejAlhDRNl2yn6ZDgjfgisvYpbd+QP9wDG6N/rsr6aZTp3XRVM69WiAE2rYc6e5bb3kfIw8JLv4FEGK/AnoiRkpIOsv0aOHghsvW4aVeYk9GMUQhqxe30uCBxmAQZ9SxymmMxp+NJ9DjJyVy7uyRbsqCoAlPvXxZG9OAzrBNJX6Y4YIS34OVdS2LZJ4CVkTSEreNlA4IrZbBEuHG+DJ0CZfbP1dAVJHk2NqihXeo3ZOyIKmOudx6o1JC8rtbpElmOcCPV6YrBJiUWsCTEkibJc2hol3AoJsYWvcLH/hhLT5MGwJ/1i9Xuw3wBQzYpkqeoJDu5//nAjuB9Wy7LzGhl0Q+qD+hkC4WHEd4jQbhk9wQN2ChUQGSEaazKE0nAj7aRp5tQK233po07C2Qc3Hoygehu6bGPF/lh/3A3+qQ9aE75IkcsDNL+8PJKDFumrgz6ufKm0WErsDx5nsbYapWu6bVLAN0/3mNc/M=
