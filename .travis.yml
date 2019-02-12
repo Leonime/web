@@ -8,16 +8,9 @@ install:
 services:
   - postgresql
 addons:
-    postgresql: "11"
-    apt:
-      sources:
-        - sourceline: 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg 11'
-          key_url: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
-      packages:
-        - postgresql-11
-        - postgresql-client-11
+    postgresql: "9.6"
 before_script:
-  - sudo -u postgres psql -c "grant ALL on DATABASE postgres to travis WITH GRANT OPTION;"
+  - bash install-postgres-10.sh
   - psql -c 'create database travis_ci_test;' -U postgres
 script:
   - "./manage.py test"
