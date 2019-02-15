@@ -17,8 +17,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
 
 
-def decrypt(self, token, ttl=None):
-    _MAX_CLOCK_SKEW = 60
+def decrypt(self, token, ttl=None, max_clock_skew=60):
     current_time = int(time.time())
     if not isinstance(token, bytes):
         raise TypeError('token must be bytes.')
@@ -31,15 +30,15 @@ def decrypt(self, token, ttl=None):
     if not data or six.indexbytes(data, 0) != 0x80:
         raise InvalidToken
 
-    try:
-        timestamp, = struct.unpack('>Q', data[1:9])
-    except struct.error:
-        raise InvalidToken
+    timestamp, = struct.unpack('>Q', data[1:9])
+
+    if ttl and not isinstance(ttl, int):
+        raise TypeError('ttl must be int')
 
     if ttl is not None:
         if timestamp + ttl < current_time:
             raise InvalidToken
-    if current_time + _MAX_CLOCK_SKEW < timestamp:
+    if current_time + max_clock_skew < timestamp:
         raise InvalidToken
 
     h = HMAC(self._signing_key, hashes.SHA256(), backend=self._backend)
@@ -57,17 +56,12 @@ def decrypt(self, token, ttl=None):
         algorithms.AES(self._encryption_key), modes.CBC(iv), self._backend
     ).decryptor()
     plaintext_padded = decrypter.update(cipher_text)
-    try:
-        plaintext_padded += decrypter.finalize()
-    except ValueError:
-        raise InvalidToken
-    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+    plaintext_padded += decrypter.finalize()
 
+    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
     unpadded = unpadder.update(plaintext_padded)
-    try:
-        unpadded += unpadder.finalize()
-    except ValueError:
-        raise InvalidToken
+    unpadded += unpadder.finalize()
+
     return unpadded.decode('utf-8')
 
 
