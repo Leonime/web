@@ -1,9 +1,9 @@
 import binascii
-import os
 import time
 
 import base64
 import json
+import os
 import six
 import struct
 import traceback
@@ -16,12 +16,11 @@ from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
 
-from codeshepherds.settings import BASE_DIR
-
-_MAX_CLOCK_SKEW = 60
+from settings.base import BASE_DIR
 
 
 def decrypt(self, token, ttl=None):
+    _MAX_CLOCK_SKEW = 60
     current_time = int(time.time())
     if not isinstance(token, bytes):
         raise TypeError('token must be bytes.')

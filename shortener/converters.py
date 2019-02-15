@@ -1,4 +1,4 @@
-from codeshepherds import settings
+from django.conf import settings
 
 SHORT_CODE_MAX = getattr(settings, "SHORT_CODE_MAX", 16)
 SHORT_CODE_MIN = getattr(settings, "SHORT_CODE_MIN", 8)
