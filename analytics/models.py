@@ -29,9 +29,6 @@ class SURLAnalytics(models.Model):
     def __str__(self):
         return f'{self.count}'
 
-    def __unicode__(self):
-        return f'{self.count}'
-
 
 class GeoLocation(models.Model):
     ipv4 = models.CharField(max_length=16, null=True)
@@ -43,10 +40,5 @@ class GeoLocation(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     surl_analytics = models.ForeignKey(SURLAnalytics, on_delete=models.CASCADE)
 
-    objects = SURLAnalyticsManager()
-
     def __str__(self):
-        return f'{self.country}'
-
-    def __unicode__(self):
         return f'{self.country}'
