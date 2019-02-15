@@ -16,8 +16,6 @@ from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
 
-from settings.base import BASE_DIR
-
 
 def decrypt(self, token, ttl=None):
     _MAX_CLOCK_SKEW = 60
@@ -90,7 +88,8 @@ def create_encryptor():
 
 def save_config_file(config_file='development.json', name='codeshepherds', user='leonime', password='nomas123',
                      host='localhost', port=''):
-    path = Path(BASE_DIR).joinpath(config_file)
+    base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
+    path = Path(base_dir).joinpath(config_file)
     f = create_encryptor()
 
     json_data = {'DB': {}}
@@ -109,7 +108,8 @@ def save_config_file(config_file='development.json', name='codeshepherds', user=
 
 def load_config_file():
     config_file = os.environ.get('CONFIG_FILE')
-    path = Path(BASE_DIR).joinpath(config_file)
+    base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
+    path = Path(base_dir).joinpath(config_file)
 
     if path.exists():
         with path.open() as cfg:
