@@ -80,8 +80,12 @@ def create_encryptor():
     return Fernet(key)
 
 
-def save_config_file(config_file='development.json', name='codeshepherds', user='leonime', password='nomas123',
-                     host='localhost', port=''):
+def save_config_file(config_file='development.json',
+                     name='codeshepherds',
+                     user='leonime',
+                     password='nomas123',
+                     host='localhost',
+                     port=''):
     base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
     path = Path(base_dir).joinpath(config_file)
     f = create_encryptor()
