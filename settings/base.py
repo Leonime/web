@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'shortener',
     'analytics',
     'settings',
+    'core',
 ]
 
 REST_FRAMEWORK = {
