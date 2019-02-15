@@ -23,21 +23,19 @@ class Command(BaseCommand):
             save_location = Path(self.geoip_path).joinpath(entry.name)
             with open(save_location, 'wb') as f:
                 metadata, response = dbx.files_download(path=entry.path_display)
-                total = response.headers.get('content-length')
-                if total:
-                    downloaded = 0
-                    total = int(total)
-                    for data in response.iter_content(chunk_size=max(int(total / 1000), 1024 * 1024)):
-                        downloaded += len(data)
-                        f.write(data)
-                        done = int(30 * downloaded / total)
-                        sys.stdout.write(
-                            f'\r[{Fore.GREEN + ("█" * done)}'
-                            f'{Fore.BLACK + ("█" * (30 - done)) + Style.RESET_ALL}]'
-                            f' {filesizeformat(downloaded)}/{filesizeformat(total)}')
-                        sys.stdout.flush()
-                        pass
-                    sys.stdout.write('\n')
+                total = int(response.headers.get('content-length'))
+                downloaded = 0
+                for data in response.iter_content(chunk_size=max(int(total / 1000), 1024 * 1024)):
+                    downloaded += len(data)
+                    f.write(data)
+                    done = int(30 * downloaded / total)
+                    sys.stdout.write(
+                        f'\r[{Fore.GREEN + ("█" * done)}'
+                        f'{Fore.BLACK + ("█" * (30 - done)) + Style.RESET_ALL}]'
+                        f' {filesizeformat(downloaded)}/{filesizeformat(total)}')
+                    sys.stdout.flush()
+                    pass
+                sys.stdout.write('\n')
                 pass
             pass
         return True
