@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from django.test import TestCase
 from pathlib import Path
 
-from core.utils import decrypt, save_config_file
+from core.utils import decrypt, save_config_file, load_config_file
 
 
 class TestDecrypt(TestCase):
@@ -55,3 +55,22 @@ class TestSaveConfigFile(TestCase):
 
     def tearDown(self):
         self.path.unlink()
+
+
+class TestLoadConfigFile(TestCase):
+    def setUp(self):
+        self.config_file = os.environ.get('CONFIG_FILE')
+
+        config_file = 'test_development.json'
+        base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
+        os.environ['CONFIG_FILE'] = config_file
+        self.path = Path(base_dir).joinpath(config_file)
+
+    def test_load_config_file(self):
+        config = load_config_file()
+        self.assertTrue(self.path.is_file())
+        self.assertEqual(load_config_file(), config)
+
+    def tearDown(self):
+        self.path.unlink()
+        os.environ['CONFIG_FILE'] = self.config_file

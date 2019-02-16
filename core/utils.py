@@ -6,7 +6,6 @@ import json
 import os
 import six
 import struct
-import traceback
 from cryptography.exceptions import InvalidSignature
 from cryptography.fernet import InvalidToken, Fernet
 from cryptography.hazmat.backends import default_backend
@@ -135,8 +134,5 @@ def load_db_config():
         }
     except InvalidToken:
         print(f'Invalid token')
-    except Exception as e:
-        trace_back = traceback.format_exc()
-        print(f'{e} {trace_back}')
 
     return config
