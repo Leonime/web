@@ -8,5 +8,6 @@ omit =
     settings/production.py
     */migrations/*
     codeshepherds/wsgi.py
+    manage.py
 
 show_missing = True
