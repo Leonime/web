@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from django.test import TestCase
 from pathlib import Path
 
-from core.utils import decrypt, save_config_file, load_config_file
+from core.utils import decrypt, save_config_file, load_config_file, load_db_config
 
 
 class TestDecrypt(TestCase):
@@ -73,4 +73,31 @@ class TestLoadConfigFile(TestCase):
 
     def tearDown(self):
         self.path.unlink()
+        os.environ['CONFIG_FILE'] = self.config_file
+
+
+class TestLoadDBConfig(TestCase):
+    def setUp(self):
+        self.config_file = os.environ.get('CONFIG_FILE')
+
+        config_file = 'test_development.json'
+        base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
+        os.environ['CONFIG_FILE'] = config_file
+        self.crypt_key = os.environ.get('CRYPT_KEY')
+        self.path = Path(base_dir).joinpath(config_file)
+
+        self.config = {'DB': {'NAME': 'codeshepherds',
+                              'USER': 'leonime',
+                              'PASSWORD': 'nomas123',
+                              'HOST': 'localhost',
+                              'PORT': ''}}
+
+    def test_load_db_config(self):
+        self.assertDictEqual(load_db_config(), self.config)
+        os.environ['CRYPT_KEY'] = 'bad token'
+        self.assertRaises(InvalidToken, lambda: load_db_config())
+
+    def tearDown(self):
+        self.path.unlink()
+        os.environ['CRYPT_KEY'] = self.crypt_key
         os.environ['CONFIG_FILE'] = self.config_file

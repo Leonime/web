@@ -91,11 +91,11 @@ def save_config_file(config_file='development.json',
 
     json_data = {'DB': {}}
 
-    json_data['DB']['NAME'] = f.encrypt(str.encode(name)).decode("utf-8")
-    json_data["DB"]["USER"] = f.encrypt(str.encode(user)).decode("utf-8")
-    json_data["DB"]["PASSWORD"] = f.encrypt(str.encode(password)).decode("utf-8")
-    json_data["DB"]["HOST"] = f.encrypt(str.encode(host)).decode("utf-8")
-    json_data["DB"]["PORT"] = f.encrypt(str.encode(port)).decode("utf-8")
+    json_data['DB']['NAME'] = f.encrypt(str.encode(name)).decode('utf-8')
+    json_data['DB']['USER'] = f.encrypt(str.encode(user)).decode('utf-8')
+    json_data['DB']['PASSWORD'] = f.encrypt(str.encode(password)).decode('utf-8')
+    json_data['DB']['HOST'] = f.encrypt(str.encode(host)).decode('utf-8')
+    json_data['DB']['PORT'] = f.encrypt(str.encode(port)).decode('utf-8')
 
     with path.open('w') as file:
         json.dump(json_data, file, sort_keys=True, indent=4)
@@ -133,6 +133,6 @@ def load_db_config():
             for key, value in config.items()
         }
     except InvalidToken:
-        print(f'Invalid token')
+        raise InvalidToken
 
     return config
