@@ -1,0 +1,13 @@
+[run]
+branch = True
+
+[report]
+omit =
+    settings/base.py
+    settings/dev_*.py
+    settings/production.py
+    */migrations/*
+    codeshepherds/wsgi.py
+    manage.py
+
+show_missing = True

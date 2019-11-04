@@ -1,12 +1,11 @@
 import binascii
-import os
 import time
 
 import base64
 import json
+import os
 import six
 import struct
-import traceback
 from cryptography.exceptions import InvalidSignature
 from cryptography.fernet import InvalidToken, Fernet
 from cryptography.hazmat.backends import default_backend
@@ -16,12 +15,8 @@ from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
 
-from codeshepherds.settings import BASE_DIR
 
-_MAX_CLOCK_SKEW = 60
-
-
-def decrypt(self, token, ttl=None):
+def decrypt(self, token, ttl=None, max_clock_skew=60):
     current_time = int(time.time())
     if not isinstance(token, bytes):
         raise TypeError('token must be bytes.')
@@ -34,15 +29,15 @@ def decrypt(self, token, ttl=None):
     if not data or six.indexbytes(data, 0) != 0x80:
         raise InvalidToken
 
-    try:
-        timestamp, = struct.unpack('>Q', data[1:9])
-    except struct.error:
-        raise InvalidToken
+    timestamp, = struct.unpack('>Q', data[1:9])
+
+    if ttl and not isinstance(ttl, int):
+        raise TypeError('ttl must be int')
 
     if ttl is not None:
         if timestamp + ttl < current_time:
             raise InvalidToken
-    if current_time + _MAX_CLOCK_SKEW < timestamp:
+    if current_time + max_clock_skew < timestamp:
         raise InvalidToken
 
     h = HMAC(self._signing_key, hashes.SHA256(), backend=self._backend)
@@ -60,17 +55,12 @@ def decrypt(self, token, ttl=None):
         algorithms.AES(self._encryption_key), modes.CBC(iv), self._backend
     ).decryptor()
     plaintext_padded = decrypter.update(cipher_text)
-    try:
-        plaintext_padded += decrypter.finalize()
-    except ValueError:
-        raise InvalidToken
-    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+    plaintext_padded += decrypter.finalize()
 
+    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
     unpadded = unpadder.update(plaintext_padded)
-    try:
-        unpadded += unpadder.finalize()
-    except ValueError:
-        raise InvalidToken
+    unpadded += unpadder.finalize()
+
     return unpadded.decode('utf-8')
 
 
@@ -89,18 +79,23 @@ def create_encryptor():
     return Fernet(key)
 
 
-def save_config_file(config_file='development.json', name='codeshepherds', user='leonime', password='nomas123',
-                     host='localhost', port=''):
-    path = Path(BASE_DIR).joinpath(config_file)
+def save_config_file(config_file='development.json',
+                     name='codeshepherds',
+                     user='leonime',
+                     password='nomas123',
+                     host='localhost',
+                     port=''):
+    base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
+    path = Path(base_dir).joinpath(config_file)
     f = create_encryptor()
 
     json_data = {'DB': {}}
 
-    json_data['DB']['NAME'] = f.encrypt(str.encode(name)).decode("utf-8")
-    json_data["DB"]["USER"] = f.encrypt(str.encode(user)).decode("utf-8")
-    json_data["DB"]["PASSWORD"] = f.encrypt(str.encode(password)).decode("utf-8")
-    json_data["DB"]["HOST"] = f.encrypt(str.encode(host)).decode("utf-8")
-    json_data["DB"]["PORT"] = f.encrypt(str.encode(port)).decode("utf-8")
+    json_data['DB']['NAME'] = f.encrypt(str.encode(name)).decode('utf-8')
+    json_data['DB']['USER'] = f.encrypt(str.encode(user)).decode('utf-8')
+    json_data['DB']['PASSWORD'] = f.encrypt(str.encode(password)).decode('utf-8')
+    json_data['DB']['HOST'] = f.encrypt(str.encode(host)).decode('utf-8')
+    json_data['DB']['PORT'] = f.encrypt(str.encode(port)).decode('utf-8')
 
     with path.open('w') as file:
         json.dump(json_data, file, sort_keys=True, indent=4)
@@ -110,7 +105,8 @@ def save_config_file(config_file='development.json', name='codeshepherds', user=
 
 def load_config_file():
     config_file = os.environ.get('CONFIG_FILE')
-    path = Path(BASE_DIR).joinpath(config_file)
+    base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
+    path = Path(base_dir).joinpath(config_file)
 
     if path.exists():
         with path.open() as cfg:
@@ -137,9 +133,6 @@ def load_db_config():
             for key, value in config.items()
         }
     except InvalidToken:
-        print(f'Invalid token')
-    except Exception as e:
-        trace_back = traceback.format_exc()
-        print(f'{e} {trace_back}')
+        raise InvalidToken
 
     return config

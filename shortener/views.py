@@ -63,7 +63,7 @@ class ShortURLView(View):  # class based view
             if is_routable:
                 # The client's IP address is publicly routable on the Internet
                 geolocation['ipv4'] = client_ip
-                city = g.city('72.14.207.99')
+                city = g.city(client_ip)
                 geolocation['city'] = city['city']
                 geolocation['country_code'] = city['country_code']
                 geolocation['country'] = city['country_name']
