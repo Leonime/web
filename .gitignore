@@ -1,9 +1,9 @@
 .idea/
-static/
 htmlcov/
-media/
-staticfiles/
-/*.json
+/app/static/
+/app/media/
+/app/staticfiles/
+/app/*.json
 *.pyc
 *.ipynb
 .coverage
