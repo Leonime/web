@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'analytics',
     'settings',
     'core',
+    'base',
 ]
 
 REST_FRAMEWORK = {
