@@ -39,7 +39,10 @@ urlpatterns = [
 
     # party App Urls
     path('party/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # Testing urls
+    path('test/', include('testing.urls', namespace='testing')),
 ]
 
 urlpatterns += static(production.MEDIA_URL, document_root=production.MEDIA_ROOT)
