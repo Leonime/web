@@ -4,9 +4,10 @@ htmlcov/
 /app/media/
 /app/staticfiles/
 /app/*.json
+/pgadmin/data/
 *.pyc
 *.ipynb
 .coverage
-.env
+.env*
 *.geoipupdate.lock
 *.mmdb
