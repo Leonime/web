@@ -22,7 +22,7 @@ from rest_framework import routers
 
 from home.views import Index
 from party import views
-from settings import production
+from settings import base
 
 router = routers.DefaultRouter()
 router.register(r'parties', views.PartyViewSet)
@@ -45,5 +45,5 @@ urlpatterns = [
     path('test/', include('testing.urls', namespace='testing')),
 ]
 
-urlpatterns += static(production.MEDIA_URL, document_root=production.MEDIA_ROOT)
+urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

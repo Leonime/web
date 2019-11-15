@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+import django_heroku
+
 from core.utils import load_db_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -37,9 +39,9 @@ CONFIG_FILE = os.environ.get('CONFIG_FILE')
 DROPBOX_ACCESS_TOKEN = os.environ.get('DROPBOX_ACCESS_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 SITE_ID = 1
 
@@ -223,3 +225,6 @@ else:
 # Shortener
 SHORT_CODE_MAX = 16
 SHORT_CODE_MIN = 8
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

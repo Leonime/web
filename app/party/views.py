@@ -29,7 +29,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
             photo.wish_id = request.data['id'].strip('/').split('/').pop()
             photo.image = request.data['upload']
             photo.save()
-            
+
             return Response(status=HTTP_201_CREATED, headers={'Location': photo.image.url})
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
