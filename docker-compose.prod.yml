@@ -9,6 +9,17 @@ services:
       - 5432
     env_file:
       - ./.env.prod.db
+  pgadmin:
+    image: dpage/pgadmin4
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - pgadmin_data:/servers.json
+    ports:
+      - 6543:6543
+    env_file:
+      - ./.env.pgadmin
+    depends_on:
+      - postgres
   django:
     build:
       context: ./web
@@ -35,5 +46,6 @@ services:
 
 volumes:
   postgres_data: {}
+  pgadmin_data: {}
   static_volume: {}
   media_volume: {}
