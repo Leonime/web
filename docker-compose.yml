@@ -1,8 +1,8 @@
 version: '3.7'
 
 services:
-  db:
-    image: postgres:12.0-alpine
+  postgres:
+    image: postgres:12-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -10,10 +10,10 @@ services:
       - POSTGRES_PASSWORD=nomas123
       - POSTGRES_DB=codeshepherds
   pgadmin:
-    build: ./pgadmin
+    image: dpage/pgadmin4
     volumes:
-      - ./pgadmin/data/:/var/lib/pgadmin
-      - ./pgadmin/data/:/servers.json
+      - pgadmin_data:/var/lib/pgadmin
+      - pgadmin_data:/servers.json
     environment:
       - PGADMIN_LISTEN_PORT=5050
       - PGADMIN_DEFAULT_EMAIL=leonime
@@ -21,8 +21,8 @@ services:
     ports:
       - 5050:5050
     depends_on:
-      - db
-  web:
+      - postgres
+  django:
     build: ./web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -32,8 +32,9 @@ services:
     env_file:
       - ./web/.env
     depends_on:
-      - db
+      - postgres
       - pgadmin
 
 volumes:
   postgres_data: {}
+  pgadmin_data: {}
