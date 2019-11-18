@@ -9,7 +9,7 @@ services:
       - 5432
     env_file:
       - ./.env.prod.db
-  web:
+  django:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
@@ -31,7 +31,7 @@ services:
     ports:
       - 81:80
     depends_on:
-      - web
+      - django
 
 volumes:
   postgres_data: {}
