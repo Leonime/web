@@ -1,18 +1,6 @@
 version: '3.7'
 
 services:
-  web:
-    build: ./app
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./app/:/usr/src/app/
-    ports:
-      - 8000:8000
-    env_file:
-      - ./app/.env
-    depends_on:
-      - db
-      - pgadmin
   db:
     image: postgres:12.0-alpine
     volumes:
@@ -34,6 +22,18 @@ services:
       - 5050:5050
     depends_on:
       - db
+  web:
+    build: ./web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./web/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./web/.env
+    depends_on:
+      - db
+      - pgadmin
 
 volumes:
   postgres_data: {}
