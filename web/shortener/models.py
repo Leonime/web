@@ -4,7 +4,7 @@ from django.db import models
 from django.urls import reverse
 
 from shortener.validators import validate_url
-from .utils import create_short_code
+from shortener.utils import create_short_code
 
 SHORT_CODE_MAX = getattr(settings, "SHORT_CODE_MAX", 16)
 
