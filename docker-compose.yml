@@ -22,7 +22,7 @@ services:
       - 5050:5050
     depends_on:
       - postgres
-  web:
+  django:
     build: ./web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
