@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=nomas123
       - POSTGRES_DB=codeshepherds
   pgadmin:
-    build: ./pgadmin
+    image: dpage/pgadmin4
     volumes:
       - ./pgadmin/data/:/var/lib/pgadmin
       - ./pgadmin/data/:/servers.json
