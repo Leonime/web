@@ -1,9 +1,9 @@
 .idea/
 htmlcov/
-/app/static/
-/app/media/
-/app/staticfiles/
-/app/*.json
+/web/static/
+/web/media/
+/web/staticfiles/
+/web/*.json
 /pgadmin/data/
 *.pyc
 *.ipynb
