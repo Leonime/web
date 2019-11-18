@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import include
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -22,7 +23,6 @@ from rest_framework import routers
 
 from home.views import Index
 from party import views
-from settings import settings
 
 router = routers.DefaultRouter()
 router.register(r'parties', views.PartyViewSet)
@@ -46,4 +46,5 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'), document_root=getattr(settings, "MEDIA_ROOT", 'media'))
 urlpatterns += staticfiles_urlpatterns()
