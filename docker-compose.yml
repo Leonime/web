@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  db:
+  postgres:
     image: postgres:12-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -21,7 +21,7 @@ services:
     ports:
       - 5050:5050
     depends_on:
-      - db
+      - postgres
   web:
     build: ./web
     command: python manage.py runserver 0.0.0.0:8000
@@ -32,7 +32,7 @@ services:
     env_file:
       - ./web/.env
     depends_on:
-      - db
+      - postgres
       - pgadmin
 
 volumes:
