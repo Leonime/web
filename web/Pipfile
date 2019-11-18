@@ -10,7 +10,6 @@ djangorestframework = "*"
 pillow = "*"
 "psycopg2-binary" = "*"
 bootstrap-admin = "*"
-coverage = "*"
 geoip2 = "*"
 django-ipware = "*"
 gunicorn = "*"
@@ -21,6 +20,7 @@ dropbox = "*"
 colorama = "*"
 
 [dev-packages]
+coverage = "*"
 
 [requires]
 python_version = "3.7"
