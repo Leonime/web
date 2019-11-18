@@ -21,7 +21,11 @@ RUN apk add --no-cache jpeg-dev zlib-dev
 # install dependencies
 RUN pip install pipenv
 COPY ./Pipfile* /usr/src/app/
-RUN pipenv install --ignore-pipfile --system --dev -v
+RUN pipenv lock -r > requirements.txt
+# Pipenv insist on creating a virtualenv lets delete it.
+RUN pipenv --rm
+# It's recommended to use pip to install dependancies.
+RUN pip install -v --no-cache-dir -r requirements.txt
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
