@@ -1,5 +1,9 @@
+import logging
 import sys
 from pathlib import Path
+
+import docker
+from docker.errors import APIError, NotFound
 
 from configurator import ENV_SECRETS_DIR, BASE_DIR
 from configurator.corelibs.utils import get_input
@@ -55,3 +59,38 @@ class SecretsFolder:
         if custom_dir is None:
             custom_dir = Path.joinpath(BASE_DIR, ENV_SECRETS_DIR)
         return custom_dir
+
+
+class Secrets:
+    def __init__(self, interactive=None, verbosity=None):
+        self.interactive = interactive
+        self.verbosity = verbosity
+
+        self.client = docker.from_env()
+        if not self.client.swarm.id:
+            try:
+                swarm_id = self.client.swarm.init()
+                print(f'Swarm created, id: "{swarm_id}"')
+            except APIError as e:
+                raise Exception(f'{e.explanation}')
+            except Exception as e:
+                logging.exception(e)
+                raise Exception(f'{e}')
+
+    def create_secret(self, name=None, data=None):
+        try:
+            secret = self.client.secrets.get(name)
+            if secret.id:
+                secret.remove()
+                self.client.secrets.create(name=name, data=data)
+        except NotFound:
+            self.client.secrets.create(name=name, data=data)
+
+    def create_default(self):
+        # django secrets
+        self.create_secret('django_db_name', 'codeshepherds')
+        self.create_secret('django_db_password', 'nomas123')
+        self.create_secret('django_db_port', '5432')
+        self.create_secret('django_db_user', 'leonime')
+        self.create_secret('django_db_host', 'postgres')
+        self.create_secret('django_db_engine', 'django.db.backends.postgresql')

@@ -1,7 +1,7 @@
 import argparse
 
 from configurator.corelibs.argumentator import ArgumentHandler
-from configurator.corelibs.secrets import SecretsFolder
+from configurator.corelibs.secrets import SecretsFolder, Secrets
 
 
 def main():
@@ -15,8 +15,8 @@ def main():
 
     # password = get_input(confirmation=True, msg='Are you sure? ')
 
-    secret = SecretsFolder(interactive, verbosity)
-    secrets_dir = secret.set_secrets_folder(args)
+    secret_folder = SecretsFolder(interactive, verbosity)
+    secrets_dir = secret_folder.set_secrets_folder(args)
 
     if args.default and args.interactive:
         print('You can\'t use -i and -d at the same time.')
@@ -25,6 +25,8 @@ def main():
         if not secrets_dir.exists():
             secrets_dir.mkdir()
             pass
+        secrets = Secrets(interactive, verbosity)
+        secrets.create_default()
 
 
 if __name__ == '__main__':
