@@ -1,7 +1,7 @@
 import argparse
 
 from configurator.corelibs.argumentator import ArgumentHandler
-from configurator.corelibs.secrets import Secrets
+from configurator.corelibs.secrets import SecretsFolder
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
 
     # password = get_input(confirmation=True, msg='Are you sure? ')
 
-    secret = Secrets(interactive, verbosity)
+    secret = SecretsFolder(interactive, verbosity)
     secrets_dir = secret.set_secrets_folder(args)
 
     if args.default and args.interactive:

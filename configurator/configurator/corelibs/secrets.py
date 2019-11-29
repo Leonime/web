@@ -5,7 +5,7 @@ from configurator import ENV_SECRETS_DIR, BASE_DIR
 from configurator.corelibs.utils import get_input
 
 
-class Secrets:
+class SecretsFolder:
     def __init__(self, interactive=None, verbosity=None):
         self.interactive = interactive
         self.verbosity = verbosity
