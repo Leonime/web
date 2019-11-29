@@ -24,6 +24,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
+    image: localhost:5000/codeshepherds/django
     command: gunicorn codeshepherds.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/staticfiles
