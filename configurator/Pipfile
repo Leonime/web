@@ -9,6 +9,7 @@ verify_ssl = true
 cryptography = "*"
 pyside2 = "*"
 colorama = "*"
+docker = "*"
 
 [requires]
 python_version = "3.7"
