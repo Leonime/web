@@ -5,35 +5,74 @@ services:
     image: postgres:12-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=leonime
-      - POSTGRES_PASSWORD=nomas123
-      - POSTGRES_DB=codeshepherds
+    env_file:
+      - ./configs/postgres/.env
+    secrets:
+      - postgres_user
+      - postgres_password
+      - postgres_database
+    networks:
+      - registry-backend
   pgadmin_dev:
     image: dpage/pgadmin4
     volumes:
       - pgadmin_data:/var/lib/pgadmin
       - pgadmin_data:/servers.json
-    environment:
-      - PGADMIN_LISTEN_PORT=5050
-      - PGADMIN_DEFAULT_EMAIL=leonime
-      - PGADMIN_DEFAULT_PASSWORD=nomas123
+    env_file:
+      - ./configs/pgadmin/.env
     ports:
       - 5050:5050
     depends_on:
       - postgres_dev
+    networks:
+      - registry-backend
+      - registry-frontend
   django_dev:
     build: ./web
     command: python manage.py runserver 0.0.0.0:8000
+    secrets:
+      - django_db_name
+      - django_db_password
+      - django_db_port
+      - django_db_user
+      - django_db_host
+      - django_db_engine
     volumes:
       - ./web/:/usr/src/app/
     ports:
       - 8000:8000
     env_file:
-      - ./web/.env
+      - ./configs/django/.env
     depends_on:
       - postgres_dev
+    networks:
+      - registry-backend
+      - registry-frontend
+
+secrets:
+  postgres_user:
+    file: ./secrets/postgres_user
+  postgres_password:
+    file: ./secrets/postgres_password
+  postgres_database:
+    file: ./secrets/postgres_database
+  django_db_name:
+    file: ./secrets/django_db_name
+  django_db_password:
+    file: ./secrets/django_db_password
+  django_db_port:
+    file: ./secrets/django_db_port
+  django_db_user:
+    file: ./secrets/django_db_user
+  django_db_host:
+    file: ./secrets/django_db_host_dev
+  django_db_engine:
+    file: ./secrets/django_db_engine
 
 volumes:
   postgres_data: {}
   pgadmin_data: {}
+
+networks:
+  registry-backend:
+  registry-frontend:
