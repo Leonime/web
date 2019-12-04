@@ -228,3 +228,9 @@ SHORT_CODE_MIN = 8
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+# django-extensions settings
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
