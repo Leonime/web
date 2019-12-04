@@ -18,6 +18,9 @@ RUN apk add --no-cache openssl-dev libffi-dev
 # install pillow dependencies
 RUN apk add --no-cache jpeg-dev zlib-dev
 
+# install pygraphviz dependencies
+RUN apk add --no-cache graphviz graphviz-dev
+
 # install project dependencies
 RUN pip install pipenv
 COPY ./Pipfile* /usr/src/app/
