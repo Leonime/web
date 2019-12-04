@@ -234,6 +234,6 @@ RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 5
 RUNSERVERPLUS_SERVER_ADDRESS_PORT = '0.0.0.0:8000'
 
 GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': True,
+    'all_applications': True,
+    'group_models': True,
 }
