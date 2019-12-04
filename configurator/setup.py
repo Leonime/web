@@ -17,5 +17,5 @@ setup(
             'configurator = configurator.app:main',
         ],
     },
-    install_requires=['colorama', 'docker']
+    install_requires=['colorama', 'docker', 'cryptography']
 )
