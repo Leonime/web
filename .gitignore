@@ -1,10 +1,11 @@
 .idea/
 htmlcov/
+secrets/
 /web/static/
 /web/media/
 /web/staticfiles/
-/web/*.json
 /pgadmin/data/
+/web/*.json
 *.pyc
 *.ipynb
 .coverage
