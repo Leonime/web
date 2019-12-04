@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  postgres:
+  postgres_dev:
     image: postgres:12-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -9,7 +9,7 @@ services:
       - POSTGRES_USER=leonime
       - POSTGRES_PASSWORD=nomas123
       - POSTGRES_DB=codeshepherds
-  pgadmin:
+  pgadmin_dev:
     image: dpage/pgadmin4
     volumes:
       - pgadmin_data:/var/lib/pgadmin
@@ -21,8 +21,8 @@ services:
     ports:
       - 5050:5050
     depends_on:
-      - postgres
-  django:
+      - postgres_dev
+  django_dev:
     build: ./web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -32,8 +32,7 @@ services:
     env_file:
       - ./web/.env
     depends_on:
-      - postgres
-      - pgadmin
+      - postgres_dev
 
 volumes:
   postgres_data: {}
