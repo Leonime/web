@@ -29,7 +29,7 @@ services:
       - codeshepherds-frontend
   django_dev:
     build: ./web
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver_plus
     secrets:
       - django_db_name
       - django_db_password
