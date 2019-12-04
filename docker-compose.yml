@@ -12,7 +12,7 @@ services:
       - postgres_password
       - postgres_database
     networks:
-      - registry-backend
+      - codeshepherds-backend
   pgadmin_dev:
     image: dpage/pgadmin4
     volumes:
@@ -25,8 +25,8 @@ services:
     depends_on:
       - postgres_dev
     networks:
-      - registry-backend
-      - registry-frontend
+      - codeshepherds-backend
+      - codeshepherds-frontend
   django_dev:
     build: ./web
     command: python manage.py runserver 0.0.0.0:8000
@@ -46,8 +46,8 @@ services:
     depends_on:
       - postgres_dev
     networks:
-      - registry-backend
-      - registry-frontend
+      - codeshepherds-backend
+      - codeshepherds-frontend
 
 secrets:
   postgres_user:
@@ -74,5 +74,5 @@ volumes:
   pgadmin_data: {}
 
 networks:
-  registry-backend:
-  registry-frontend:
+  codeshepherds-backend:
+  codeshepherds-frontend:
