@@ -120,4 +120,5 @@ class Secrets:
             self.save_env_var('django_db_port', '5432', 'SQL_PORT')
             self.save_env_var('django_db_user', 'leonime', 'SQL_USER')
             self.save_env_var('django_db_host', 'postgres', 'SQL_HOST')
+            self.save_env_var('django_db_host_dev', 'postgres_dev', 'SQL_HOST')
             self.save_env_var('django_db_engine', 'django.db.backends.postgresql', 'SQL_ENGINE')
