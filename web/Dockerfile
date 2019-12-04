@@ -18,14 +18,17 @@ RUN apk add --no-cache openssl-dev libffi-dev
 # install pillow dependencies
 RUN apk add --no-cache jpeg-dev zlib-dev
 
-# install dependencies
+# install project dependencies
 RUN pip install pipenv
 COPY ./Pipfile* /usr/src/app/
 RUN pipenv lock -r > requirements.txt
 # Pipenv insist on creating a virtualenv lets delete it.
 RUN pipenv --rm
-# It's recommended to use pip to install dependancies.
+# It's recommended to use pip to install dependancies on docker containers.
 RUN pip install -v --no-cache-dir -r requirements.txt
+
+# copy env_secrets_expand.sh
+COPY ./env_secrets_expand.sh /usr/src/app/env_secrets_expand.sh
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
