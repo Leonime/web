@@ -121,8 +121,25 @@ def load_config_file():
     return config
 
 
+def load_config():
+    config = {
+        'DB': {
+            'NAME': os.environ.get('SQL_DATABASE'),
+            'USER': os.environ.get('SQL_USER'),
+            'PASSWORD': os.environ.get('SQL_PASSWORD'),
+            'HOST': os.environ.get('SQL_HOST'),
+            'PORT': os.environ.get('SQL_PORT'),
+        }
+    }
+    return config
+
+
 def load_db_config():
-    config = load_config_file()
+    load_from_environment = bool(os.environ.get('LOAD_FROM_ENVIRONMENT', True))
+    if load_from_environment:
+        config = load_config()
+    else:
+        config = load_config_file()
     f = create_encryptor()
 
     try:
