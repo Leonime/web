@@ -230,6 +230,7 @@ SHORT_CODE_MIN = 8
 django_heroku.settings(locals())
 
 # django-extensions settings
+RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 5
 RUNSERVERPLUS_SERVER_ADDRESS_PORT = '0.0.0.0:8000'
 
 GRAPH_MODELS = {
