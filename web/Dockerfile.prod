@@ -27,13 +27,13 @@ RUN pip install flake8
 COPY . /usr/src/app/
 RUN flake8 --ignore=E501,F401 .
 
-# install dependencies
+# install project dependencies
 RUN pip install pipenv
 COPY ./Pipfile* ./
 RUN pipenv lock -r > requirements.txt
 # Pipenv insist on creating a virtualenv lets delete it.
 RUN pipenv --rm
-# It's recommended to use pip to install dependancies.
+# It's recommended to use pip to install dependancies on docker containers.
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 #########
@@ -57,7 +57,7 @@ RUN mkdir $APP_HOME/staticfiles
 RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
-# install dependencies
+# install project dependencies
 RUN apk update && apk add --no-cache libpq
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
