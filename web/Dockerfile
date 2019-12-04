@@ -27,6 +27,9 @@ RUN pipenv --rm
 # It's recommended to use pip to install dependancies on docker containers.
 RUN pip install -v --no-cache-dir -r requirements.txt
 
+# copy env_secrets_expand.sh
+COPY ./env_secrets_expand.sh /usr/src/app/env_secrets_expand.sh
+
 # copy entrypoint.sh
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 

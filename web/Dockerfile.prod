@@ -63,7 +63,8 @@ COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
-# copy entrypoint-prod.sh
+# copy shell scripts
+COPY ./env_secrets_expand.sh $APP_HOME
 COPY ./entrypoint.prod.sh $APP_HOME
 
 # copy project
