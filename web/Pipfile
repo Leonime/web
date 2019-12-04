@@ -18,6 +18,7 @@ django-bootstrap4 = "*"
 django-icons = "*"
 dropbox = "*"
 colorama = "*"
+django-extensions = "*"
 
 [dev-packages]
 coverage = "*"
