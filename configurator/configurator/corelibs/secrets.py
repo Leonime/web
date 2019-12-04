@@ -6,6 +6,8 @@ import docker
 from docker.errors import APIError, NotFound
 
 from configurator import ENV_SECRETS_DIR, BASE_DIR
+from configurator.corelibs.encryption import Encryptor
+from configurator.corelibs.environment_file import DotEnv
 from configurator.corelibs.utils import get_input
 
 
@@ -62,11 +64,14 @@ class SecretsFolder:
 
 
 class Secrets:
-    def __init__(self, interactive=None, verbosity=None):
+    def __init__(self, secret_path=Path(), interactive=None, verbosity=None):
         self.interactive = interactive
         self.verbosity = verbosity
+        self.secret_path = secret_path
 
         self.client = docker.from_env()
+
+    def init_docker_swarm(self):
         if not self.client.swarm.id:
             try:
                 swarm_id = self.client.swarm.init()
@@ -77,7 +82,7 @@ class Secrets:
                 logging.exception(e)
                 raise Exception(f'{e}')
 
-    def create_secret(self, name=None, data=None):
+    def create_docker_secret(self, name=None, data=None):
         try:
             secret = self.client.secrets.get(name)
             if secret.id:
@@ -86,11 +91,33 @@ class Secrets:
         except NotFound:
             self.client.secrets.create(name=name, data=data)
 
-    def create_default(self):
-        # django secrets
-        self.create_secret('django_db_name', 'codeshepherds')
-        self.create_secret('django_db_password', 'nomas123')
-        self.create_secret('django_db_port', '5432')
-        self.create_secret('django_db_user', 'leonime')
-        self.create_secret('django_db_host', 'postgres')
-        self.create_secret('django_db_engine', 'django.db.backends.postgresql')
+    def create_text_secret(self, filename=str(), data=str()):
+        if filename is None or data is None:
+            raise Exception('Filename or data can\'t be None')
+        with open(self.secret_path / filename, 'w') as file:
+            file.write(data)
+
+    def save_env_var(self, file_name=str(), data=str(), env_name=str()):
+        dot_env = DotEnv()
+        encryptor = Encryptor()
+        f = encryptor.create_encryptor()
+        data = f.encrypt(data.encode()).decode('utf-8')
+        self.create_text_secret(file_name, data)
+        dot_env.set_environment_variable(env_name, file_name)
+
+    def create_default(self, docker_secret=False):
+        if docker_secret:
+            # django secrets
+            self.create_docker_secret('django_db_name', 'codeshepherds')
+            self.create_docker_secret('django_db_password', 'nomas123')
+            self.create_docker_secret('django_db_port', '5432')
+            self.create_docker_secret('django_db_user', 'leonime')
+            self.create_docker_secret('django_db_host', 'postgres')
+            self.create_docker_secret('django_db_engine', 'django.db.backends.postgresql')
+        else:
+            self.save_env_var('django_db_name', 'codeshepherds', 'SQL_DATABASE')
+            self.save_env_var('django_db_password', 'nomas123', 'SQL_PASSWORD')
+            self.save_env_var('django_db_port', '5432', 'SQL_PORT')
+            self.save_env_var('django_db_user', 'leonime', 'SQL_USER')
+            self.save_env_var('django_db_host', 'postgres', 'SQL_HOST')
+            self.save_env_var('django_db_engine', 'django.db.backends.postgresql', 'SQL_ENGINE')

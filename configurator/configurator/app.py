@@ -25,7 +25,7 @@ def main():
         if not secrets_dir.exists():
             secrets_dir.mkdir()
             pass
-        secrets = Secrets(interactive, verbosity)
+        secrets = Secrets(secrets_dir, interactive, verbosity)
         secrets.create_default()
 
 
