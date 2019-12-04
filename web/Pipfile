@@ -19,6 +19,7 @@ dropbox = "*"
 colorama = "*"
 django-extensions = "*"
 pygraphviz = "*"
+werkzeug = "*"
 
 [dev-packages]
 coverage = "*"
