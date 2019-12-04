@@ -31,14 +31,6 @@
             ],
             "version": "==4.8.1"
         },
-        "bootstrap-admin": {
-            "hashes": [
-                "sha256:612a152c9f57b78391955cebd8caa1d3d506805390a31d4b0ee79c451f1c2d6f",
-                "sha256:c3862ae8e70213a51bc732983759093c05986d4fcd92248ba6423f13768328e9"
-            ],
-            "index": "pypi",
-            "version": "==0.4.3"
-        },
         "certifi": {
             "hashes": [
                 "sha256:017c25db2a153ce562900032d5bc68e9f191e44e9a0f762f373977de9df1fbb3",
