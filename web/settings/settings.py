@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_icons',
     'rest_framework',
+    'django_extensions',
 
     # Apps
     'home',
