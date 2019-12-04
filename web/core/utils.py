@@ -67,9 +67,10 @@ def decrypt(self, token, ttl=None, max_clock_skew=60):
 def create_encryptor():
     crypt_key = os.environ.get('CRYPT_KEY')
     password = str.encode(crypt_key)
-    salt = b'd\x04\xe7@T\xd6\x8e\xac\xa5\xd9\xfb\x17o\xc0\xc2g'
+    crypt_salt = str(os.environ.get('CRYPT_SALT'))
+    salt = str.encode(crypt_salt)
     kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
+        algorithm=hashes.SHA512(),
         length=32,
         salt=salt,
         iterations=100000,
