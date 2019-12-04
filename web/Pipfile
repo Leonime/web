@@ -19,7 +19,7 @@ dropbox = "*"
 colorama = "*"
 django-extensions = "*"
 pygraphviz = "*"
-werkzeug = "*"
+werkzeug = {extras = ["watchdog"],version = "*"}
 
 [dev-packages]
 coverage = "*"
