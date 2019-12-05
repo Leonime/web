@@ -283,5 +283,10 @@ logging.config.dictConfig({
             'propagate': False,
         },
         'django.server': DEFAULT_LOGGING['loggers']['django.server'],
+        'werkzeug': {
+            'handlers': ['console', 'sentry'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 })
