@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 import logging.config
 import os
+from pathlib import Path
 
 import django_heroku
+import raven
 import sentry_sdk
 from django.utils.log import DEFAULT_LOGGING
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -60,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # Third Party
+    'raven.contrib.django.raven_compat',
     'bootstrap4',
     'django_icons',
     'rest_framework',
@@ -243,10 +246,19 @@ GRAPH_MODELS = {
 
 # Sentry
 sentry_sdk.init(
-    dsn="https://a8e5b46aee414dc1aa6bd987bcacbefc@sentry.io/1843985",
+    dsn=os.environ.get('SENTRY_DSN'),
     integrations=[DjangoIntegration()]
 )
 
+# Raven
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN'),
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(Path().cwd().parent),
+}
+
+# Logging
 LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
 logging.config.dictConfig({
     'version': 1,
