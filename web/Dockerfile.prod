@@ -22,6 +22,9 @@ RUN apk add --no-cache openssl-dev libffi-dev
 # install pillow dependencies
 RUN apk add --no-cache jpeg-dev zlib-dev
 
+# install pygraphviz dependencies
+RUN apk add --no-cache graphviz graphviz-dev
+
 # lint
 RUN pip install flake8
 COPY . /usr/src/app/
@@ -53,8 +56,8 @@ RUN addgroup -S app && adduser -S app -G app
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/mediafiles
+RUN mkdir $APP_HOME/static
+RUN mkdir $APP_HOME/media
 WORKDIR $APP_HOME
 
 # install project dependencies

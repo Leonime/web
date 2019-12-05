@@ -121,23 +121,26 @@ def load_config_file():
     return config
 
 
-def load_config():
+def load_config(base_dir=None):
+    f = create_encryptor()
     config = {
         'DB': {
-            'NAME': os.environ.get('SQL_DATABASE'),
+            'NAME': os.environ.get("SQL_DATABASE",
+                                   f.encrypt(str.encode(os.path.join(base_dir, "db.sqlite3"))).decode('utf-8')),
             'USER': os.environ.get('SQL_USER'),
             'PASSWORD': os.environ.get('SQL_PASSWORD'),
             'HOST': os.environ.get('SQL_HOST'),
             'PORT': os.environ.get('SQL_PORT'),
+            'ENGINE': os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
         }
     }
     return config
 
 
-def load_db_config():
+def load_db_config(base_dir=None):
     load_from_environment = bool(os.environ.get('LOAD_FROM_ENVIRONMENT', True))
     if load_from_environment:
-        config = load_config()
+        config = load_config(base_dir)
     else:
         config = load_config_file()
     f = create_encryptor()

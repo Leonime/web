@@ -48,7 +48,6 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
-    'bootstrap_admin',  # third party but it has to be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,6 +60,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_icons',
     'rest_framework',
+    'django_extensions',
 
     # Apps
     'home',
@@ -172,7 +172,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Geolocation
@@ -194,7 +194,7 @@ DJANGO_ICONS = {
 
 }
 
-config = load_db_config()
+config = load_db_config(BASE_DIR)
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -204,7 +204,7 @@ DATABASES = {
 
 if 'TRAVIS' not in os.environ:
     DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': config["DB"]["ENGINE"],
         'NAME': config["DB"]["NAME"],
         'USER': config["DB"]["USER"],
         'PASSWORD': config["DB"]["PASSWORD"],
@@ -228,3 +228,12 @@ SHORT_CODE_MIN = 8
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+# django-extensions settings
+RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 5
+RUNSERVERPLUS_SERVER_ADDRESS_PORT = '0.0.0.0:8000'
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}

@@ -4,6 +4,9 @@ FROM python:3.7-alpine
 # set work directory
 WORKDIR /usr/src/app
 
+# create media folder
+RUN mkdir -p /usr/src/app/media
+
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -17,6 +20,9 @@ RUN apk add --no-cache openssl-dev libffi-dev
 
 # install pillow dependencies
 RUN apk add --no-cache jpeg-dev zlib-dev
+
+# install pygraphviz dependencies
+RUN apk add --no-cache graphviz graphviz-dev
 
 # install project dependencies
 RUN pip install pipenv
