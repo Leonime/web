@@ -14,6 +14,7 @@ import os
 
 import django_heroku
 import sentry_sdk
+from django.utils.log import DEFAULT_LOGGING
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from core.utils import load_db_config
@@ -255,6 +256,7 @@ logging.config.dictConfig({
             # exact format is not important, this is the minimum information
             'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
         },
+        'django.server': DEFAULT_LOGGING['formatters']['django.server'],
     },
     'handlers': {
         'console': {
@@ -266,6 +268,7 @@ logging.config.dictConfig({
             'level': 'WARNING',
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
+        'django.server': DEFAULT_LOGGING['handlers']['django.server'],
     },
     'loggers': {
         # root logger
@@ -279,5 +282,6 @@ logging.config.dictConfig({
             # required to avoid double logging with root logger
             'propagate': False,
         },
+        'django.server': DEFAULT_LOGGING['loggers']['django.server'],
     },
 })
