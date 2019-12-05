@@ -22,6 +22,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from core.utils import load_db_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from settings import version
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault('CODESHEPHERDS_BASE_DIR', BASE_DIR)
 
@@ -255,7 +257,7 @@ RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN'),
     # If you are using git, you can also automatically configure the
     # release based on the git info.
-    'release': raven.fetch_git_sha(Path().cwd().parent),
+    'release': version,
 }
 
 # Logging
