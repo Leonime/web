@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1b882893b21c205df31ee5a378972f33dd61d71fb404cae2c6a43424308118d4"
+            "sha256": "0bf6757e062109abaee158a2961240442860ed7340ef668047d11f5faca3fa93"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -165,11 +165,11 @@
         },
         "django-icons": {
             "hashes": [
-                "sha256:3bae5c756583963868b0b69a394f42a6eb2d488270cbd50a47cc4c1529ea6a9d",
-                "sha256:78580b4091ec59be0a03565d68b081251d1dcf269a273f3bfbc2512b55663044"
+                "sha256:1e02334a8c9e9cedd56cbf65bc0ebbcedee4a6a8f8e1b515dfb098db2b4ad690",
+                "sha256:7d31941528c17b617ab92d688d936292fcc02afd328d8a3946372d6362e2e160"
             ],
             "index": "pypi",
-            "version": "==1.0.0"
+            "version": "==1.1.0"
         },
         "django-ipware": {
             "hashes": [
@@ -361,6 +361,14 @@
                 "sha256:ebc4ed52dcc93eeebeae5cf5deb2ae4347b3a81c3fa12b0b8c976544829396a4"
             ],
             "version": "==5.2"
+        },
+        "raven": {
+            "hashes": [
+                "sha256:3fa6de6efa2493a7c827472e984ce9b020797d0da16f1db67197bcc23c8fae54",
+                "sha256:44a13f87670836e153951af9a3c80405d36b43097db869a36e92809673692ce4"
+            ],
+            "index": "pypi",
+            "version": "==6.10.0"
         },
         "requests": {
             "hashes": [

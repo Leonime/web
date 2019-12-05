@@ -21,6 +21,7 @@ django-extensions = "*"
 pygraphviz = "*"
 werkzeug = {extras = ["watchdog"],version = "*"}
 sentry-sdk = "*"
+raven = "*"
 
 [dev-packages]
 coverage = "*"
