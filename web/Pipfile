@@ -20,9 +20,12 @@ colorama = "*"
 django-extensions = "*"
 pygraphviz = "*"
 werkzeug = {extras = ["watchdog"],version = "*"}
+sentry-sdk = "*"
+raven = "*"
 
 [dev-packages]
 coverage = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.7"

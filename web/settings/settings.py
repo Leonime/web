@@ -9,14 +9,21 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-
+import logging.config
 import os
+from pathlib import Path
 
 import django_heroku
+import raven
+import sentry_sdk
+from django.utils.log import DEFAULT_LOGGING
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from core.utils import load_db_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from settings import version
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault('CODESHEPHERDS_BASE_DIR', BASE_DIR)
 
@@ -57,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # Third Party
+    'raven.contrib.django.raven_compat',
     'bootstrap4',
     'django_icons',
     'rest_framework',
@@ -237,3 +245,62 @@ GRAPH_MODELS = {
     'all_applications': True,
     'group_models': True,
 }
+
+# Sentry
+sentry_sdk.init(
+    dsn=os.environ.get('SENTRY_DSN'),
+    integrations=[DjangoIntegration()]
+)
+
+# Raven
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN'),
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': version,
+}
+
+# Logging
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        },
+        'django.server': DEFAULT_LOGGING['formatters']['django.server'],
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        # Add Handler for Sentry for `warning` and above
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'django.server': DEFAULT_LOGGING['handlers']['django.server'],
+    },
+    'loggers': {
+        # root logger
+        '': {
+            'level': 'WARNING',
+            'handlers': ['console', 'sentry'],
+        },
+        'codeshepherds': {
+            'level': LOGLEVEL,
+            'handlers': ['console', 'sentry'],
+            # required to avoid double logging with root logger
+            'propagate': False,
+        },
+        'django.server': DEFAULT_LOGGING['loggers']['django.server'],
+        'werkzeug': {
+            'handlers': ['console', 'sentry'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+})

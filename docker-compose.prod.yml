@@ -39,7 +39,7 @@ services:
       - django_db_host
       - django_db_engine
     env_file:
-      - ./configs/django/.env
+      - ./configs/django/.env.prod
     depends_on:
       - postgres
     networks:

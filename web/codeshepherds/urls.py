@@ -24,6 +24,11 @@ from rest_framework import routers
 from home.views import Index
 from party import views
 
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
+
 router = routers.DefaultRouter()
 router.register(r'parties', views.PartyViewSet)
 router.register(r'wishes', views.WishViewSet)
@@ -31,6 +36,7 @@ router.register(r'photos', views.PhotoViewSet)
 
 
 urlpatterns = [
+    # Admin urls
     path('admin/', admin.site.urls),
 
     # Home urls
