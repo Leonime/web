@@ -20,6 +20,7 @@ colorama = "*"
 django-extensions = "*"
 pygraphviz = "*"
 werkzeug = {extras = ["watchdog"],version = "*"}
+sentry-sdk = "*"
 
 [dev-packages]
 coverage = "*"
