@@ -39,9 +39,6 @@ urlpatterns = [
     # Admin urls
     path('admin/', admin.site.urls),
 
-    # Sentry url
-    path('sentry-debug/', trigger_error),
-
     # Home urls
     path('', Index.as_view(), name='index'),
     path('s/', include('shortener.urls', namespace='shortener')),
