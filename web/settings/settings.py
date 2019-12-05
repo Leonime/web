@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 import django_heroku
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from core.utils import load_db_config
 
@@ -237,3 +239,9 @@ GRAPH_MODELS = {
     'all_applications': True,
     'group_models': True,
 }
+
+# Sentry
+sentry_sdk.init(
+    dsn="https://a8e5b46aee414dc1aa6bd987bcacbefc@sentry.io/1843985",
+    integrations=[DjangoIntegration()]
+)
