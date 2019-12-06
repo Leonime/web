@@ -46,6 +46,7 @@ urlpatterns = [
     path('test/', include('testing.urls', namespace='testing')),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(getattr(settings, "STATIC_URL", '/static/'),
+                      document_root=getattr(settings, "STATIC_ROOT", 'static'))
 urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'), document_root=getattr(settings, "MEDIA_ROOT", 'media'))
 urlpatterns += staticfiles_urlpatterns()
