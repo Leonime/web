@@ -23,6 +23,7 @@ werkzeug = {extras = ["watchdog"],version = "*"}
 sentry-sdk = "*"
 raven = "*"
 redis = "*"
+celery = "*"
 
 [dev-packages]
 coverage = "*"
