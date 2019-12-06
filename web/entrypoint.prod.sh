@@ -12,4 +12,6 @@ then
   printf "PostgreSQL started\n\n"
 fi
 
+python manage.py collectstatic --no-input --clear
+
 exec "$@"

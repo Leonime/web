@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  postgres_dev:
+  postgres:
     image: postgres:12-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -13,7 +13,7 @@ services:
       - postgres_database
     networks:
       - codeshepherds-backend
-  pgadmin_dev:
+  pgadmin:
     image: dpage/pgadmin4
     volumes:
       - pgadmin_data:/var/lib/pgadmin
@@ -23,11 +23,11 @@ services:
     ports:
       - 5050:5050
     depends_on:
-      - postgres_dev
+      - postgres
     networks:
       - codeshepherds-backend
       - codeshepherds-frontend
-  django_dev:
+  django:
     build: ./web
     command: python manage.py runserver_plus
     secrets:
@@ -39,12 +39,14 @@ services:
       - django_db_engine
     volumes:
       - ./web/:/usr/src/app/
+      - django_staticfiles:/usr/src/app/staticfiles/
+      - django_mediafiles:/usr/src/app/mediafiles/
     ports:
       - 8000:8000
     env_file:
       - ./configs/django/.env
     depends_on:
-      - postgres_dev
+      - postgres
     networks:
       - codeshepherds-backend
       - codeshepherds-frontend
@@ -65,13 +67,15 @@ secrets:
   django_db_user:
     file: ./secrets/django_db_user
   django_db_host:
-    file: ./secrets/django_db_host_dev
+    file: ./secrets/django_db_host
   django_db_engine:
     file: ./secrets/django_db_engine
 
 volumes:
   postgres_data: {}
   pgadmin_data: {}
+  django_staticfiles: {}
+  django_mediafiles: {}
 
 networks:
   codeshepherds-backend:
