@@ -22,6 +22,7 @@ pygraphviz = "*"
 werkzeug = {extras = ["watchdog"],version = "*"}
 sentry-sdk = "*"
 raven = "*"
+redis = "*"
 
 [dev-packages]
 coverage = "*"
