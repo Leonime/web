@@ -24,6 +24,7 @@ sentry-sdk = "*"
 raven = "*"
 redis = "*"
 celery = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 coverage = "*"
