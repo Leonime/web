@@ -73,14 +73,14 @@ INSTALLED_APPS = [
     'django_extensions',
 
     # Apps
-    'home',
-    'party',
-    'shortener',
-    'analytics',
+    'home.apps.HomeConfig',
+    'party.apps.PartyConfig',
+    'shortener.apps.ShortenerConfig',
+    'analytics.apps.AnalyticsConfig',
+    'testing.apps.TestingConfig',
+    'base.apps.BaseConfig',
     'settings',
     'core',
-    'testing',
-    'base',
 ]
 
 REST_FRAMEWORK = {
