@@ -39,6 +39,8 @@ services:
       - django_db_engine
     volumes:
       - ./web/:/usr/src/app/
+      - django_staticfiles:/usr/src/app/staticfiles/
+      - django_mediafiles:/usr/src/app/mediafiles/
     ports:
       - 8000:8000
     env_file:
@@ -72,6 +74,8 @@ secrets:
 volumes:
   postgres_data: {}
   pgadmin_data: {}
+  django_staticfiles: {}
+  django_mediafiles: {}
 
 networks:
   codeshepherds-backend:
