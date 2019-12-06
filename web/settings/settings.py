@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'analytics.apps.AnalyticsConfig',
     'testing.apps.TestingConfig',
     'base.apps.BaseConfig',
+    'thumbnailer.apps.ThumbnailerConfig',
     'settings',
     'core',
 ]
