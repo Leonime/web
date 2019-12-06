@@ -22,7 +22,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from core.utils import load_db_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from settings import version
+from codeshepherds import version
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault('CODESHEPHERDS_BASE_DIR', BASE_DIR)
@@ -52,8 +52,10 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
 
 SITE_ID = 1
 
-# Application definition
+# Redis url
+REDIS_URL = os.environ.get('REDIS_URL')
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -304,3 +306,10 @@ logging.config.dictConfig({
         },
     },
 })
+
+# celery
+CELERY_BROKER_URL = f'redis://{REDIS_URL}'
+CELERY_RESULT_BACKEND = f'redis://{REDIS_URL}'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
