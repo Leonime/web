@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'django_icons',
     'rest_framework',
     'django_extensions',
+    'widget_tweaks',
 
     # Apps
     'home.apps.HomeConfig',
