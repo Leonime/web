@@ -29,8 +29,8 @@ services:
     image: localhost:5000/codeshepherds/django
     command: gunicorn codeshepherds.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/home/app/web/staticfiles
-      - media_volume:/home/app/web/mediafiles
+      - django_staticfiles:/home/app/web/staticfiles
+      - django_mediafiles:/home/app/web/mediafiles
     secrets:
       - django_db_name
       - django_db_password
@@ -45,10 +45,10 @@ services:
     networks:
       - codeshepherds-backend
   nginx:
-    image: nginx:1.17.5-alpine
+    image: nginx:1-alpine
     volumes:
-      - static_volume:/home/app/web/staticfiles
-      - media_volume:/home/app/web/mediafiles
+      - django_staticfiles:/home/app/web/static
+      - django_mediafiles:/home/app/web/media
       - ./configs/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
@@ -81,8 +81,8 @@ secrets:
 volumes:
   postgres_data: {}
   pgadmin_data: {}
-  static_volume: {}
-  media_volume: {}
+  django_staticfiles: {}
+  django_mediafiles: {}
 
 networks:
   codeshepherds-backend:
