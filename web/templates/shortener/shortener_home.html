@@ -2,15 +2,16 @@
 {% load static %}
 {% load bootstrap4 %}
 
-{% block title %}Welcome{% endblock title %}
+{% block title %}Welcome{% endblock %}
 
 {% block container %}
+    {% include 'navbar.html' %}
+
     <main role="main" class="container">
         <div class="jumbotron">
             <h1 class="h3 mb-3 font-weight-normal">Short URL</h1>
             <form method='POST' action='.' class="form">
             {% csrf_token %}
-{#                {% bootstrap_form form layout='inline' %}#}
             {% bootstrap_form_errors form %}
                 {% bootstrap_field form.url layout='inline' addon_after_class='btn btn-outline-secondary btn-clear' addon_after='<i class="fas fa-times"></i>' %}
             {% buttons %}
@@ -19,8 +20,8 @@
             </form>
         </div>
     </main>
-{% endblock container %}
+{% endblock %}
 
 {% block javascript %}
     <script type="text/javascript" src="{% static 'js/shortener/shortener_home.js' %}"></script>
-{% endblock javascript %}
+{% endblock %}
