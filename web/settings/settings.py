@@ -155,10 +155,16 @@ USE_TZ = True
 # Media root path
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
+# Images root path
+IMAGES_DIR = os.path.join(MEDIA_ROOT, 'images')
+
+if not os.path.exists(MEDIA_ROOT) or not os.path.exists(IMAGES_DIR):
+    os.makedirs(IMAGES_DIR)
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/media/'
+MEDIA_URL = '/mediafiles/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -169,7 +175,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # URL prefix for static files.
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
