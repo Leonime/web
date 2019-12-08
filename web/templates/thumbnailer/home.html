@@ -1,0 +1,65 @@
+{% extends 'main.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block meta %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% endblock %}
+
+{% block title %}Thumbnailer{% endblock %}
+
+{% block extra_libraries %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" integrity="sha256-D9M5yrVDqFlla7nlELDaYZIpXfFWDytQtiV+TaH6F1I=" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js" integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+{% endblock %}
+
+{% block container %}
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                Thumbnailer
+            </a>
+        </div>
+    </nav>
+    <section class="hero is-primary is-fullheight-with-navbar">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title is-size-1 has-text-centered">Thumbnail Generator</h1>
+                <p class="subtitle has-text-centered" id="progress-title"></p>
+                <div class="columns is-centered">
+                    <div class="column is-8">
+                        <form action="{% url 'thumbnailer:home' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="file is-large has-name">
+                                <label class="file-label">
+                                    {{ form.image_file|add_class:"file-input" }}
+                                    <span class="file-cta">
+                                        <span class="file-icon"><i class="fas fa-upload"></i></span>
+                                        <span class="file-label">Browse image</span>
+                                    </span>
+                                    <span id="file-name" class="file-name"
+                                          style="background-color: white; color: black; min-width: 450px;">
+                                    </span>
+                                </label>
+                                <input class="button is-link is-large" type="submit" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        const file = document.getElementById('{{ form.image_file.id_for_label }}');
+        const taskUrl = "{% url 'thumbnailer:task' task_id=task_id %}";
+    </script>
+    <script type="text/javascript" src="{% static 'js/thumbnailer/get_filename.js' %}"></script>
+    {% if task_id %}
+        <script type="text/javascript" src="{% static 'js/thumbnailer/home.js' %}"></script>
+    {% endif %}
+{% endblock %}
