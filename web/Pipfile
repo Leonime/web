@@ -25,6 +25,7 @@ raven = "*"
 redis = "*"
 celery = "*"
 django-widget-tweaks = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 coverage = "*"
