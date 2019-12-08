@@ -31,6 +31,28 @@ services:
     image: "redis:5-alpine"
     networks:
       - codeshepherds-backend
+  celery:
+    build: ./web
+    command: celery -A codeshepherds worker -l info
+    entrypoint: "/usr/src/app/entrypoint.celery.sh"
+    secrets:
+      - django_db_name
+      - django_db_password
+      - django_db_port
+      - django_db_user
+      - django_db_host
+      - django_db_engine
+    env_file:
+      - ./configs/django/.env
+    volumes:
+      - ./web/:/usr/src/app/
+      - django_staticfiles:/usr/src/app/staticfiles/
+      - django_mediafiles:/usr/src/app/mediafiles/
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - codeshepherds-backend
   django:
     build: ./web
     command: python manage.py runserver_plus

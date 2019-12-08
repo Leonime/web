@@ -38,6 +38,7 @@ COPY ./env_secrets_expand.sh /usr/src/app/env_secrets_expand.sh
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
+COPY ./entrypoint.celery.sh /usr/src/app/entrypoint.celery.sh
 
 # copy project
 COPY . /usr/src/app/
