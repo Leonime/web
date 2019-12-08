@@ -55,7 +55,7 @@ services:
       - codeshepherds-backend
   django:
     build: ./web
-    command: python manage.py runserver_plus
+    command: python manage.py runserver 0.0.0.0:8000
     entrypoint: "/usr/src/app/entrypoint.sh"
     secrets:
       - django_db_name

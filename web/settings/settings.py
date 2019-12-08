@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'widget_tweaks',
+    'debug_toolbar',
 
     # Apps
     'home.apps.HomeConfig',
@@ -92,6 +93,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -200,7 +202,6 @@ GEOIP_CITY = 'GeoLite2-City.mmdb'
 
 # Settings for django-icons
 DJANGO_ICONS = {
-
     'DEFAULTS': {
         'renderer': 'fontawesome',
     },
@@ -321,3 +322,12 @@ CELERY_RESULT_BACKEND = f'redis://{REDIS_URL}'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
+
+# django toolbar
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG
+}
