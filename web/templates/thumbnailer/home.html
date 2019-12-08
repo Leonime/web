@@ -56,7 +56,9 @@
 {% block javascript %}
     <script>
         const file = document.getElementById('{{ form.image_file.id_for_label }}');
-        const taskUrl = "{% url 'thumbnailer:task' task_id=task_id %}";
+        {% if task_id %}
+            const taskUrl = "{% url 'thumbnailer:task' task_id=task_id %}";
+        {% endif %}
     </script>
     <script type="text/javascript" src="{% static 'js/thumbnailer/get_filename.js' %}"></script>
     {% if task_id %}
