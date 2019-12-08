@@ -30,6 +30,7 @@ services:
   django:
     build: ./web
     command: python manage.py runserver_plus
+    entrypoint: "/usr/src/app/entrypoint.sh"
     secrets:
       - django_db_name
       - django_db_password
