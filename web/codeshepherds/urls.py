@@ -44,6 +44,9 @@ urlpatterns = [
 
     # Testing urls
     path('test/', include('testing.urls', namespace='testing')),
+
+    # Thumbnailer
+    path('thumbnailer/', include('thumbnailer.urls', namespace='thumbnailer')),
 ]
 
 urlpatterns += static(getattr(settings, "STATIC_URL", '/staticfiles/'),
