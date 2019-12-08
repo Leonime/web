@@ -27,6 +27,10 @@ services:
     networks:
       - codeshepherds-backend
       - codeshepherds-frontend
+  redis:
+    image: "redis:5-alpine"
+    networks:
+      - codeshepherds-backend
   django:
     build: ./web
     command: python manage.py runserver_plus
