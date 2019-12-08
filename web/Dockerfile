@@ -4,9 +4,6 @@ FROM python:3.7-alpine
 # set work directory
 WORKDIR /usr/src/app
 
-# create media folder
-RUN mkdir -p /usr/src/app/media
-
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

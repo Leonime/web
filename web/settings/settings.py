@@ -155,7 +155,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Media root path
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Images root path
 IMAGES_DIR = os.path.join(MEDIA_ROOT, 'images')
@@ -166,18 +166,18 @@ if not os.path.exists(MEDIA_ROOT) or not os.path.exists(IMAGES_DIR):
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/mediafiles/'
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # URL prefix for static files.
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -244,9 +244,6 @@ else:
 # Shortener
 SHORT_CODE_MAX = 16
 SHORT_CODE_MIN = 8
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())
 
 # django-extensions settings
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 5

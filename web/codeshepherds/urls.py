@@ -49,10 +49,10 @@ urlpatterns = [
     path('thumbnailer/', include('thumbnailer.urls', namespace='thumbnailer')),
 ]
 
-urlpatterns += static(getattr(settings, "STATIC_URL", '/staticfiles/'),
+urlpatterns += static(getattr(settings, "STATIC_URL", '/static/'),
                       document_root=getattr(settings, "STATIC_ROOT", 'static'))
-urlpatterns += static(getattr(settings, "MEDIA_URL", '/mediafiles/'),
-                      document_root=getattr(settings, "MEDIA_ROOT", 'mediafiles'))
+urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'),
+                      document_root=getattr(settings, "MEDIA_ROOT", 'media'))
 urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
