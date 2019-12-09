@@ -47,6 +47,9 @@ urlpatterns = [
 
     # Thumbnailer
     path('thumbnailer/', include('thumbnailer.urls', namespace='thumbnailer')),
+
+    # Cookbook
+    path('cookbook/', include('cookbook.urls', namespace='cookbook'))
 ]
 
 urlpatterns += static(getattr(settings, "STATIC_URL", '/static/'),

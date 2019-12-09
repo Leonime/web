@@ -82,8 +82,7 @@ INSTALLED_APPS = [
     'testing.apps.TestingConfig',
     'base.apps.BaseConfig',
     'thumbnailer.apps.ThumbnailerConfig',
-    'settings',
-    'core',
+    'cookbook.apps.CookbookConfig',
 ]
 
 REST_FRAMEWORK = {
