@@ -34,7 +34,6 @@ services:
   celery:
     build: ./web
     command: celery -A codeshepherds worker -l info
-    entrypoint: "/usr/src/app/entrypoint.celery.sh"
     secrets:
       - django_db_name
       - django_db_password
@@ -42,6 +41,8 @@ services:
       - django_db_user
       - django_db_host
       - django_db_engine
+    environment:
+      - CONTAINER=celery
     env_file:
       - ./configs/django/.env
     volumes:
@@ -56,7 +57,6 @@ services:
   django:
     build: ./web
     command: python manage.py runserver 0.0.0.0:8000
-    entrypoint: "/usr/src/app/entrypoint.sh"
     secrets:
       - django_db_name
       - django_db_password
@@ -70,6 +70,8 @@ services:
       - django_mediafiles:/usr/src/app/media/
     ports:
       - 8000:8000
+    environment:
+      - CONTAINER=development
     env_file:
       - ./configs/django/.env
     depends_on:

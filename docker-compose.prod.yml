@@ -38,6 +38,8 @@ services:
       - django_db_user
       - django_db_host
       - django_db_engine
+    environment:
+      - CONTAINER=production
     env_file:
       - ./configs/django/.env.prod
     depends_on:
