@@ -1,6 +1,7 @@
 .idea/
 htmlcov/
 secrets/
+dhparam/
 /web/static/
 /web/mediafiles/
 /web/staticfiles/
