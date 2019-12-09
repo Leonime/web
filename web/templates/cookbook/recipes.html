@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block container %}
+    {% include 'navbar.html' %}
+
+    <main role="main" class="container">
+        {% for recipe in recipes %}
+            <h1>{{ recipe.name }}</h1>
+            {% autoescape off %}
+                <p>{{ recipe.desc }}</p>
+            {% endautoescape %}
+            <h2>Ingredients</h2>
+            <ul>
+                {% for ingredient in recipe.ingredient_set.all %}
+                    <li>{{ ingredient.desc }}</li>
+                {% endfor %}
+            </ul>
+            <h2>Instructions</h2>
+            {% autoescape off %}
+                <p>{{ recipe.instructions }}</p>
+            {% endautoescape %}
+        {% endfor %}
+    </main>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'js/shortener/shortener_home.js' %}"></script>
+{% endblock %}

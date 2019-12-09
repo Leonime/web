@@ -22,6 +22,12 @@ pygraphviz = "*"
 werkzeug = {extras = ["watchdog"],version = "*"}
 sentry-sdk = "*"
 raven = "*"
+redis = "*"
+celery = "*"
+django-widget-tweaks = "*"
+django-debug-toolbar = "*"
+django-redis-cache = "*"
+hiredis = "*"
 
 [dev-packages]
 coverage = "*"

@@ -44,9 +44,22 @@ urlpatterns = [
 
     # Testing urls
     path('test/', include('testing.urls', namespace='testing')),
+
+    # Thumbnailer
+    path('thumbnailer/', include('thumbnailer.urls', namespace='thumbnailer')),
+
+    # Cookbook
+    path('cookbook/', include('cookbook.urls', namespace='cookbook'))
 ]
 
 urlpatterns += static(getattr(settings, "STATIC_URL", '/static/'),
                       document_root=getattr(settings, "STATIC_ROOT", 'static'))
-urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'), document_root=getattr(settings, "MEDIA_ROOT", 'media'))
+urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'),
+                      document_root=getattr(settings, "MEDIA_ROOT", 'media'))
 urlpatterns += staticfiles_urlpatterns()
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

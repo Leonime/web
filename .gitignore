@@ -1,8 +1,9 @@
 .idea/
 htmlcov/
 secrets/
+dhparam/
 /web/static/
-/web/media/
+/web/mediafiles/
 /web/staticfiles/
 /pgadmin/data/
 /web/*.json

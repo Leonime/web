@@ -5,13 +5,13 @@ from django.core.files import File
 from django.test import TestCase
 from io import BytesIO
 
-from party.apps import RestConfig
+from party.apps import PartyConfig
 from party.models import Party, Wish, upload_to, Photo
 
 
 class TestRestConfig(TestCase):
     def test_apps(self):
-        self.assertEqual(RestConfig.name, 'party')
+        self.assertEqual(PartyConfig.name, 'party')
         self.assertEqual(apps.get_app_config('party').name, 'party')
 
 

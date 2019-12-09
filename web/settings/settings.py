@@ -22,7 +22,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from core.utils import load_db_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from settings import version
+from codeshepherds import version
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault('CODESHEPHERDS_BASE_DIR', BASE_DIR)
@@ -52,8 +52,10 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
 
 SITE_ID = 1
 
-# Application definition
+# Redis url
+REDIS_URL = os.environ.get('REDIS_URL')
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,16 +71,18 @@ INSTALLED_APPS = [
     'django_icons',
     'rest_framework',
     'django_extensions',
+    'widget_tweaks',
+    'debug_toolbar',
 
     # Apps
-    'home',
-    'party',
-    'shortener',
-    'analytics',
-    'settings',
-    'core',
-    'testing',
-    'base',
+    'home.apps.HomeConfig',
+    'party.apps.PartyConfig',
+    'shortener.apps.ShortenerConfig',
+    'analytics.apps.AnalyticsConfig',
+    'testing.apps.TestingConfig',
+    'base.apps.BaseConfig',
+    'thumbnailer.apps.ThumbnailerConfig',
+    'cookbook.apps.CookbookConfig',
 ]
 
 REST_FRAMEWORK = {
@@ -88,6 +92,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -149,7 +154,13 @@ USE_L10N = True
 USE_TZ = True
 
 # Media root path
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Images root path
+IMAGES_DIR = os.path.join(MEDIA_ROOT, 'images')
+
+if not os.path.exists(MEDIA_ROOT) or not os.path.exists(IMAGES_DIR):
+    os.makedirs(IMAGES_DIR)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -161,7 +172,7 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # URL prefix for static files.
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
@@ -190,7 +201,6 @@ GEOIP_CITY = 'GeoLite2-City.mmdb'
 
 # Settings for django-icons
 DJANGO_ICONS = {
-
     'DEFAULTS': {
         'renderer': 'fontawesome',
     },
@@ -233,9 +243,6 @@ else:
 # Shortener
 SHORT_CODE_MAX = 16
 SHORT_CODE_MIN = 8
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())
 
 # django-extensions settings
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 5
@@ -304,3 +311,42 @@ logging.config.dictConfig({
         },
     },
 })
+
+# celery
+CELERY_BROKER_URL = f'redis://{REDIS_URL}'
+CELERY_RESULT_BACKEND = f'redis://{REDIS_URL}'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+
+# django toolbar
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG
+}
+
+# redis_cache
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': f'redis://{REDIS_URL}/',
+        'OPTIONS': {
+            'DB': 1,
+            'PARSER_CLASS': 'redis.connection.HiredisParser',
+            'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
+            'CONNECTION_POOL_CLASS_KWARGS': {
+                'max_connections': 50,
+                'timeout': 20,
+            },
+            'MAX_CONNECTIONS': 1000,
+            'PICKLE_VERSION': -1,
+        },
+        'KEY_PREFIX': 'example'
+    }
+}
+
+# Cache time to live is 15 minutes.
+CACHE_TTL = 60 * 15
