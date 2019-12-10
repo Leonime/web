@@ -43,6 +43,7 @@ services:
       - django_db_engine
     environment:
       - CONTAINER=celery
+      - STAGE=development
     env_file:
       - ./configs/django/.env
     volumes:
@@ -72,6 +73,7 @@ services:
       - 8000:8000
     environment:
       - CONTAINER=development
+      - STAGE=development
     env_file:
       - ./configs/django/.env
     depends_on:
