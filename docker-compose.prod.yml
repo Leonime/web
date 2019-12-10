@@ -22,15 +22,45 @@ services:
       - ./configs/pgadmin/.env
     networks:
       - codeshepherds-backend
+  redis:
+    image: "redis:5-alpine"
+    networks:
+      - codeshepherds-backend
+  celery:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.prod
+    command: celery -A codeshepherds worker -l info
+    secrets:
+      - django_db_name
+      - django_db_password
+      - django_db_port
+      - django_db_user
+      - django_db_host
+      - django_db_engine
+    environment:
+      - CONTAINER=celery
+    env_file:
+      - ./configs/django/.env.prod
+    volumes:
+      - django_app:/usr/src/app/
+      - django_static:/home/app/web/static
+      - django_media:/home/app/web/media
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - codeshepherds-backend
   django:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
     image: localhost:5000/codeshepherds/django
-    command: gunicorn codeshepherds.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn codeshepherds.wsgi:application --bind 0.0.0.0:8000 --workers 3
     volumes:
-      - django_staticfiles:/home/app/web/staticfiles
-      - django_mediafiles:/home/app/web/mediafiles
+      - django_app:/usr/src/app/
+      - django_static:/home/app/web/static
+      - django_media:/home/app/web/media
     secrets:
       - django_db_name
       - django_db_password
@@ -49,8 +79,8 @@ services:
   nginx:
     image: nginx:1-alpine
     volumes:
-      - django_staticfiles:/home/app/web/static
-      - django_mediafiles:/home/app/web/media
+      - django_static:/home/app/web/static
+      - django_media:/home/app/web/media
       - ./configs/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
@@ -83,8 +113,9 @@ secrets:
 volumes:
   postgres_data: {}
   pgadmin_data: {}
-  django_staticfiles: {}
-  django_mediafiles: {}
+  django_static: {}
+  django_media: {}
+  django_app: {}
 
 networks:
   codeshepherds-backend:
