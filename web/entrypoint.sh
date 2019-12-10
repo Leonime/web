@@ -1,6 +1,10 @@
 #!/bin/sh
+if [ "$STAGE" = "development" ]; then
+  . /usr/src/app/env_secrets_expand.sh
+else
+  . /home/app/web/env_secrets_expand.sh
+fi
 
-. /usr/src/app/env_secrets_expand.sh
 env_secrets_expand
 
 if [ "$DATABASE" = "postgres" ]; then
