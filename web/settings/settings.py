@@ -344,7 +344,7 @@ CACHES = {
             'MAX_CONNECTIONS': 1000,
             'PICKLE_VERSION': -1,
         },
-        'KEY_PREFIX': 'example'
+        'KEY_PREFIX': 'codeshepherds'
     }
 }
 
