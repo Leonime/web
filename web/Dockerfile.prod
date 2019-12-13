@@ -46,6 +46,10 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # pull official base image
 FROM python:3.7-alpine
 
+# install pillow dependencies
+RUN apk update
+RUN apk add --no-cache libjpeg-turbo
+
 # create directory for the app user
 RUN mkdir -p /home/app
 
@@ -57,9 +61,9 @@ RUN chown app:app -R /home/app
 # create the appropriate directories
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
-RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/mediafiles
+RUN mkdir -p $APP_HOME
+RUN mkdir -p $APP_HOME/static
+RUN mkdir -p $APP_HOME/media
 WORKDIR $APP_HOME
 
 # install project dependencies
@@ -70,7 +74,7 @@ RUN pip install --no-cache /wheels/*
 
 # copy shell scripts
 COPY ./env_secrets_expand.sh $APP_HOME
-COPY ./entrypoint.prod.sh $APP_HOME
+COPY ./entrypoint.sh $APP_HOME
 
 # copy project
 COPY . $APP_HOME
@@ -82,4 +86,4 @@ RUN chown -R app:app $APP_HOME
 USER app
 
 # run entrypoint.prod.sh
-ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
+ENTRYPOINT ["/home/app/web/entrypoint.sh"]

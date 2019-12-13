@@ -1,4 +1,5 @@
-import os
+import logging
+from pathlib import Path
 from zipfile import ZipFile
 
 from PIL import Image
@@ -8,30 +9,32 @@ from django.conf import settings
 
 @shared_task
 def make_thumbnails(file_path, thumbnails=None):
+    logger = logging.getLogger(__name__)
+
     if thumbnails is None:
         thumbnails = []
-    os.chdir(settings.IMAGES_DIR)
-    path, file = os.path.split(file_path)
-    file_name, ext = os.path.splitext(file)
 
-    zip_file = f"{file_name}.zip"
-    results = {'archive_path': f"{settings.MEDIA_URL}images/{zip_file}"}
+    image_dir = Path(settings.IMAGES_DIR)
+    file = Path(file_path)
+
+    zip_file = f"{file.stem}.zip"
+    results = {
+        'archive_path': f'{settings.MEDIA_URL}images/{zip_file}',
+        'archive_name': f'{zip_file}',
+    }
     try:
-        img = Image.open(file_path)
-        zipper = ZipFile(zip_file, 'w')
-        zipper.write(file)
-        os.remove(file_path)
-        for w, h in thumbnails:
-            img_copy = img.copy()
-            img_copy.thumbnail((w, h))
-            thumbnail_file = f'{file_name}_{w}x{h}.{ext}'
-            img_copy.save(thumbnail_file)
-            zipper.write(thumbnail_file)
-            os.remove(thumbnail_file)
-
-        img.close()
-        zipper.close()
+        with Image.open(file) as img:
+            with ZipFile(image_dir / zip_file, 'w') as zipper:
+                zipper.write(file)
+                file.unlink()
+                for w, h in thumbnails:
+                    img_copy = img.copy()
+                    img_copy.thumbnail((w, h))
+                    thumbnail_file = image_dir / f'{file.stem}_{w}x{h}.{file.suffix}'
+                    img_copy.save(thumbnail_file)
+                    zipper.write(thumbnail_file)
+                    thumbnail_file.unlink()
     except IOError as e:
-        print(e)
+        logger.error(e)
 
     return results

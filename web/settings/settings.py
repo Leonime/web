@@ -46,7 +46,7 @@ CONFIG_FILE = os.environ.get('CONFIG_FILE')
 DROPBOX_ACCESS_TOKEN = os.environ.get('DROPBOX_ACCESS_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DEBUG", default=False))
+DEBUG = int(os.environ.get("DEBUG", default=False))
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
 
@@ -344,7 +344,7 @@ CACHES = {
             'MAX_CONNECTIONS': 1000,
             'PICKLE_VERSION': -1,
         },
-        'KEY_PREFIX': 'example'
+        'KEY_PREFIX': 'codeshepherds'
     }
 }
 

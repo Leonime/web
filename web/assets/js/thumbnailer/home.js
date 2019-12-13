@@ -10,12 +10,13 @@ const timer = setInterval(function () {
             if (taskStatus === 'SUCCESS') {
                 clearTimer('Check downloads for results');
                 const url = window.location.protocol + '//' + window.location.host + response.data.results.archive_path;
+                const archive_name = response.data.results.archive_name;
                 const a = document.createElement("a");
                 a.target = '_BLANK';
                 document.body.appendChild(a);
                 a.style = "display:none";
                 a.href = url;
-                a.download = 'results.zip';
+                a.download = archive_name;
                 a.click();
                 document.body.removeChild(a);
             } else if (taskStatus === 'FAILURE') {
