@@ -28,7 +28,7 @@ django-widget-tweaks = "*"
 django-debug-toolbar = "*"
 django-redis-cache = "*"
 hiredis = "*"
-whitenoise = "*"
+whitenoise = {extras = ["brotli"],version = "*"}
 
 [dev-packages]
 coverage = "*"
