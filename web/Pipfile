@@ -29,6 +29,7 @@ django-redis-cache = "*"
 hiredis = "*"
 whitenoise = {extras = ["brotli"],version = "*"}
 channels = "*"
+channels-redis = "*"
 
 [dev-packages]
 coverage = "*"
