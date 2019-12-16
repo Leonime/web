@@ -263,14 +263,6 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
-# Raven
-RAVEN_CONFIG = {
-    'dsn': os.environ.get('SENTRY_DSN'),
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': version,
-}
-
 # Logging
 LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
 logging.config.dictConfig({
@@ -294,17 +286,17 @@ logging.config.dictConfig({
         # root logger
         '': {
             'level': 'WARNING',
-            'handlers': ['console',],
+            'handlers': ['console', ],
         },
         'codeshepherds': {
             'level': LOGLEVEL,
-            'handlers': ['console',],
+            'handlers': ['console', ],
             # required to avoid double logging with root logger
             'propagate': False,
         },
         'django.server': DEFAULT_LOGGING['loggers']['django.server'],
         'werkzeug': {
-            'handlers': ['console',],
+            'handlers': ['console', ],
             'level': 'DEBUG',
             'propagate': True,
         },
