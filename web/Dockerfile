@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.7-alpine
+FROM python:3.8-alpine
 
 # set work directory
 WORKDIR /usr/src/app
@@ -21,7 +21,12 @@ RUN apk add --no-cache jpeg-dev zlib-dev
 # install pygraphviz dependencies
 RUN apk add --no-cache graphviz graphviz-dev
 
+# install brotli dependencies
+RUN apk add --no-cache g++
+
 # install project dependencies
+RUN pip install --upgrade setuptools
+RUN pip install --upgrade virtualenv
 RUN pip install pipenv
 COPY ./Pipfile* /usr/src/app/
 RUN pipenv lock -r > requirements.txt

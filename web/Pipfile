@@ -28,10 +28,11 @@ django-widget-tweaks = "*"
 django-debug-toolbar = "*"
 django-redis-cache = "*"
 hiredis = "*"
+whitenoise = {extras = ["brotli"],version = "*"}
 
 [dev-packages]
 coverage = "*"
 flake8 = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3"

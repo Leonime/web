@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:3.7-alpine as builder
+FROM python:3.8-alpine as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -25,6 +25,9 @@ RUN apk add --no-cache jpeg-dev zlib-dev
 # install pygraphviz dependencies
 RUN apk add --no-cache graphviz graphviz-dev
 
+# install brotli dependencies
+RUN apk add --no-cache g++
+
 # lint
 RUN pip install flake8
 COPY . /usr/src/app/
@@ -44,7 +47,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 #########
 
 # pull official base image
-FROM python:3.7-alpine
+FROM python:3.8-alpine
 
 # install pillow dependencies
 RUN apk update
