@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 import logging.config
 import os
+import re
 
 import sentry_sdk
 from django.utils.log import DEFAULT_LOGGING
@@ -349,3 +350,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # channels
 ASGI_APPLICATION = "codeshepherds.routing.application"
+# channels_redis
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [f'redis://{REDIS_URL}/'],
+            "symmetric_encryption_keys": [SECRET_KEY],
+            'channel_capacity': {
+                'http.request': 200,
+                'http.response!*': 10,
+                re.compile(r'^websocket.send!.+'): 20,
+            },
+        },
+    },
+}
