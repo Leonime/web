@@ -29,6 +29,7 @@ django-debug-toolbar = "*"
 django-redis-cache = "*"
 hiredis = "*"
 whitenoise = {extras = ["brotli"],version = "*"}
+channels = "*"
 
 [dev-packages]
 coverage = "*"
