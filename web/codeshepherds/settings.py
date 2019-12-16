@@ -44,9 +44,9 @@ CONFIG_FILE = os.environ.get('CONFIG_FILE')
 DROPBOX_ACCESS_TOKEN = os.environ.get('DROPBOX_ACCESS_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=False))
+DEBUG = int(os.environ.get('DEBUG', default=False))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(',')
 
 SITE_ID = 1
 
@@ -171,13 +171,13 @@ if not os.path.exists(MEDIA_ROOT) or not os.path.exists(IMAGES_DIR):
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+# Examples: 'http://media.lawrence.com/media/', 'http://example.com/media/'
 MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
+# in apps' 'static/' subdirectories and in STATICFILES_DIRS.
+# Example: '/home/media/media.lawrence.com/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -187,7 +187,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Put strings here, like '/home/html/static' or 'C:/www/django/static'.
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'assets'),
@@ -229,12 +229,12 @@ DATABASES = {
 
 if 'TRAVIS' not in os.environ:
     DATABASES['default'] = {
-        'ENGINE': config["DB"]["ENGINE"],
-        'NAME': config["DB"]["NAME"],
-        'USER': config["DB"]["USER"],
-        'PASSWORD': config["DB"]["PASSWORD"],
-        'HOST': config["DB"]["HOST"],
-        'PORT': config["DB"]["PORT"],
+        'ENGINE': config['DB']['ENGINE'],
+        'NAME': config['DB']['NAME'],
+        'USER': config['DB']['USER'],
+        'PASSWORD': config['DB']['PASSWORD'],
+        'HOST': config['DB']['HOST'],
+        'PORT': config['DB']['PORT'],
     }
 else:
     DATABASES['default'] = {
@@ -349,7 +349,8 @@ CACHE_TTL = 60 * 15
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # channels
-ASGI_APPLICATION = "codeshepherds.routing.application"
+ASGI_APPLICATION = 'codeshepherds.routing.application'
+
 # channels_redis
 CHANNEL_LAYERS = {
     'default': {
