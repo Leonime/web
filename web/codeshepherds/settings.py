@@ -55,9 +55,12 @@ SITE_ID = 1
 # Redis url
 REDIS_URL = os.environ.get('REDIS_URL')
 
-# Application definition
-INSTALLED_APPS = [
+# Installed apps
+PRIORITY_APPS = [
     'whitenoise.runserver_nostatic',
+]
+# Default apps
+DEFAULT_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,8 +68,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-    # Third Party
+]
+# Third party apps.
+THIRD_PARTY_APPS = [
     'raven.contrib.django.raven_compat',
     'bootstrap4',
     'django_icons',
@@ -74,8 +78,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'widget_tweaks',
     'debug_toolbar',
-
-    # Apps
+]
+# Local Apps
+LOCAL_APPS = [
     'home.apps.HomeConfig',
     'party.apps.PartyConfig',
     'shortener.apps.ShortenerConfig',
@@ -85,6 +90,8 @@ INSTALLED_APPS = [
     'thumbnailer.apps.ThumbnailerConfig',
     'cookbook.apps.CookbookConfig',
 ]
+# Application definition
+INSTALLED_APPS = PRIORITY_APPS + DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
