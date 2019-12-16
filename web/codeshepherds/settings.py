@@ -52,6 +52,7 @@ REDIS_URL = os.environ.get('REDIS_URL')
 
 # Installed apps
 PRIORITY_APPS = [
+    'channels',
     'whitenoise.runserver_nostatic',
 ]
 # Default apps
@@ -351,3 +352,6 @@ CACHE_TTL = 60 * 15
 
 # Whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# channels
+ASGI_APPLICATION = "codeshepherds.routing.application"
