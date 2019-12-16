@@ -67,22 +67,22 @@ DEFAULT_APPS = [
 # Third party apps.
 THIRD_PARTY_APPS = [
     'bootstrap4',
+    'debug_toolbar',
+    'django_extensions',
     'django_icons',
     'rest_framework',
-    'django_extensions',
     'widget_tweaks',
-    'debug_toolbar',
 ]
 # Local Apps
 LOCAL_APPS = [
+    'analytics.apps.AnalyticsConfig',
+    'base.apps.BaseConfig',
+    'cookbook.apps.CookbookConfig',
     'home.apps.HomeConfig',
     'party.apps.PartyConfig',
     'shortener.apps.ShortenerConfig',
-    'analytics.apps.AnalyticsConfig',
     'testing.apps.TestingConfig',
-    'base.apps.BaseConfig',
     'thumbnailer.apps.ThumbnailerConfig',
-    'cookbook.apps.CookbookConfig',
 ]
 # Application definition
 INSTALLED_APPS = PRIORITY_APPS + DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
