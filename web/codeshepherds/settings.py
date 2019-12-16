@@ -14,7 +14,6 @@ import os
 from pathlib import Path
 
 import django_heroku
-import raven
 import sentry_sdk
 from django.utils.log import DEFAULT_LOGGING
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -71,7 +70,6 @@ DEFAULT_APPS = [
 ]
 # Third party apps.
 THIRD_PARTY_APPS = [
-    'raven.contrib.django.raven_compat',
     'bootstrap4',
     'django_icons',
     'rest_framework',
@@ -293,28 +291,23 @@ logging.config.dictConfig({
             'class': 'logging.StreamHandler',
             'formatter': 'console',
         },
-        # Add Handler for Sentry for `warning` and above
-        'sentry': {
-            'level': 'WARNING',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        },
         'django.server': DEFAULT_LOGGING['handlers']['django.server'],
     },
     'loggers': {
         # root logger
         '': {
             'level': 'WARNING',
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console',],
         },
         'codeshepherds': {
             'level': LOGLEVEL,
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console',],
             # required to avoid double logging with root logger
             'propagate': False,
         },
         'django.server': DEFAULT_LOGGING['loggers']['django.server'],
         'werkzeug': {
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console',],
             'level': 'DEBUG',
             'propagate': True,
         },
