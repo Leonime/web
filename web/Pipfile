@@ -30,6 +30,7 @@ hiredis = "*"
 whitenoise = {extras = ["brotli"],version = "*"}
 channels = "*"
 channels-redis = "*"
+uvicorn = "*"
 
 [dev-packages]
 coverage = "*"
