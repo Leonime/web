@@ -56,7 +56,7 @@ services:
       context: ./web
       dockerfile: Dockerfile.prod
     image: localhost:5000/codeshepherds/django
-    command: gunicorn codeshepherds.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 8 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
       - django_app:/usr/src/app/
       - django_static:/home/app/web/static
