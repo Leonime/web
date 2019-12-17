@@ -81,6 +81,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'analytics.apps.AnalyticsConfig',
     'base.apps.BaseConfig',
+    'chat.apps.ChatConfig',
     'cookbook.apps.CookbookConfig',
     'home.apps.HomeConfig',
     'party.apps.PartyConfig',
