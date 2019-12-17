@@ -288,7 +288,7 @@ logging.config.dictConfig({
     'loggers': {
         # root logger
         '': {
-            'level': 'WARNING',
+            'level': LOGLEVEL,
             'handlers': ['console', ],
         },
         'codeshepherds': {
@@ -300,7 +300,7 @@ logging.config.dictConfig({
         'django.server': DEFAULT_LOGGING['loggers']['django.server'],
         'werkzeug': {
             'handlers': ['console', ],
-            'level': 'DEBUG',
+            'level': LOGLEVEL,
             'propagate': True,
         },
     },
