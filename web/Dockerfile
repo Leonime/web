@@ -24,6 +24,9 @@ RUN apk add --no-cache graphviz graphviz-dev
 # install brotli dependencies
 RUN apk add --no-cache g++
 
+# install uvicorn dependencies
+RUN apk add --no-cache make
+
 # install project dependencies
 RUN pip install --upgrade setuptools
 RUN pip install --upgrade virtualenv

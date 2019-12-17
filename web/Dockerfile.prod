@@ -28,6 +28,9 @@ RUN apk add --no-cache graphviz graphviz-dev
 # install brotli dependencies
 RUN apk add --no-cache g++
 
+# install uvicorn dependencies
+RUN apk add --no-cache make
+
 # lint
 RUN pip install flake8
 COPY . /usr/src/app/
