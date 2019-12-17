@@ -16,7 +16,8 @@ class Index(View):
 class Room(View):
     template_name = 'chat/room.html'
 
-    def get(self, request, room_name, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        room_name = kwargs['room_name']
         context = {
             'room_name_json': mark_safe(json.dumps(room_name))
         }
