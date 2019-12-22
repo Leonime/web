@@ -30,6 +30,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
+    image: localhost:5000/codeshepherds/celery
     command: celery -A codeshepherds worker -l info
     secrets:
       - django_db_name
