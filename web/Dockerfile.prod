@@ -31,11 +31,6 @@ RUN apk add --no-cache g++
 # install uvicorn dependencies
 RUN apk add --no-cache make
 
-# lint
-RUN pip install flake8
-COPY . /usr/src/app/
-RUN flake8 --ignore=E501,F401 .
-
 # install project dependencies
 RUN pip install pipenv
 COPY ./Pipfile* ./
