@@ -21,7 +21,6 @@ django-extensions = "*"
 pygraphviz = "*"
 werkzeug = {extras = ["watchdog"],version = "*"}
 sentry-sdk = "*"
-raven = "*"
 redis = "*"
 celery = "*"
 django-widget-tweaks = "*"
@@ -29,6 +28,9 @@ django-debug-toolbar = "*"
 django-redis-cache = "*"
 hiredis = "*"
 whitenoise = {extras = ["brotli"],version = "*"}
+channels = "*"
+channels-redis = "*"
+uvicorn = "*"
 
 [dev-packages]
 coverage = "*"

@@ -11,18 +11,16 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 import logging.config
 import os
-from pathlib import Path
+import re
 
-import django_heroku
-import raven
 import sentry_sdk
 from django.utils.log import DEFAULT_LOGGING
+from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
 
-from core.utils import load_db_config
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from codeshepherds import version
+from core.utils import load_db_config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault('CODESHEPHERDS_BASE_DIR', BASE_DIR)
@@ -46,9 +44,9 @@ CONFIG_FILE = os.environ.get('CONFIG_FILE')
 DROPBOX_ACCESS_TOKEN = os.environ.get('DROPBOX_ACCESS_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=False))
+DEBUG = int(os.environ.get('DEBUG', default=False))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(',')
 
 SITE_ID = 1
 
@@ -57,6 +55,7 @@ REDIS_URL = os.environ.get('REDIS_URL')
 
 # Installed apps
 PRIORITY_APPS = [
+    'channels',
     'whitenoise.runserver_nostatic',
 ]
 # Default apps
@@ -71,24 +70,24 @@ DEFAULT_APPS = [
 ]
 # Third party apps.
 THIRD_PARTY_APPS = [
-    'raven.contrib.django.raven_compat',
     'bootstrap4',
+    'debug_toolbar',
+    'django_extensions',
     'django_icons',
     'rest_framework',
-    'django_extensions',
     'widget_tweaks',
-    'debug_toolbar',
 ]
 # Local Apps
 LOCAL_APPS = [
+    'analytics.apps.AnalyticsConfig',
+    'base.apps.BaseConfig',
+    'chat.apps.ChatConfig',
+    'cookbook.apps.CookbookConfig',
     'home.apps.HomeConfig',
     'party.apps.PartyConfig',
     'shortener.apps.ShortenerConfig',
-    'analytics.apps.AnalyticsConfig',
     'testing.apps.TestingConfig',
-    'base.apps.BaseConfig',
     'thumbnailer.apps.ThumbnailerConfig',
-    'cookbook.apps.CookbookConfig',
 ]
 # Application definition
 INSTALLED_APPS = PRIORITY_APPS + DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -173,13 +172,13 @@ if not os.path.exists(MEDIA_ROOT) or not os.path.exists(IMAGES_DIR):
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+# Examples: 'http://media.lawrence.com/media/', 'http://example.com/media/'
 MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
+# in apps' 'static/' subdirectories and in STATICFILES_DIRS.
+# Example: '/home/media/media.lawrence.com/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -189,7 +188,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Put strings here, like '/home/html/static' or 'C:/www/django/static'.
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'assets'),
@@ -231,12 +230,12 @@ DATABASES = {
 
 if 'TRAVIS' not in os.environ:
     DATABASES['default'] = {
-        'ENGINE': config["DB"]["ENGINE"],
-        'NAME': config["DB"]["NAME"],
-        'USER': config["DB"]["USER"],
-        'PASSWORD': config["DB"]["PASSWORD"],
-        'HOST': config["DB"]["HOST"],
-        'PORT': config["DB"]["PORT"],
+        'ENGINE': config['DB']['ENGINE'],
+        'NAME': config['DB']['NAME'],
+        'USER': config['DB']['USER'],
+        'PASSWORD': config['DB']['PASSWORD'],
+        'HOST': config['DB']['HOST'],
+        'PORT': config['DB']['PORT'],
     }
 else:
     DATABASES['default'] = {
@@ -265,16 +264,8 @@ GRAPH_MODELS = {
 # Sentry
 sentry_sdk.init(
     dsn=os.environ.get('SENTRY_DSN'),
-    integrations=[DjangoIntegration()]
+    integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()]
 )
-
-# Raven
-RAVEN_CONFIG = {
-    'dsn': os.environ.get('SENTRY_DSN'),
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': version,
-}
 
 # Logging
 LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
@@ -293,29 +284,24 @@ logging.config.dictConfig({
             'class': 'logging.StreamHandler',
             'formatter': 'console',
         },
-        # Add Handler for Sentry for `warning` and above
-        'sentry': {
-            'level': 'WARNING',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        },
         'django.server': DEFAULT_LOGGING['handlers']['django.server'],
     },
     'loggers': {
         # root logger
         '': {
-            'level': 'WARNING',
-            'handlers': ['console', 'sentry'],
+            'level': LOGLEVEL,
+            'handlers': ['console', ],
         },
         'codeshepherds': {
             'level': LOGLEVEL,
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console', ],
             # required to avoid double logging with root logger
             'propagate': False,
         },
         'django.server': DEFAULT_LOGGING['loggers']['django.server'],
         'werkzeug': {
-            'handlers': ['console', 'sentry'],
-            'level': 'DEBUG',
+            'handlers': ['console', ],
+            'level': LOGLEVEL,
             'propagate': True,
         },
     },
@@ -362,3 +348,22 @@ CACHE_TTL = 60 * 15
 
 # Whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# channels
+ASGI_APPLICATION = 'codeshepherds.routing.application'
+
+# channels_redis
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [f'redis://{REDIS_URL}/'],
+            "symmetric_encryption_keys": [SECRET_KEY],
+            'channel_capacity': {
+                'http.request': 200,
+                'http.response!*': 10,
+                re.compile(r'^websocket.send!.+'): 20,
+            },
+        },
+    },
+}

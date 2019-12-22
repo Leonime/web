@@ -34,6 +34,9 @@ urlpatterns = [
     # Admin urls
     path('admin/', admin.site.urls),
 
+    # Chat app urls
+    path('chat/', include('chat.urls', namespace='chat')),
+
     # Home urls
     path('', Index.as_view(), name='index'),
     path('s/', include('shortener.urls', namespace='shortener')),

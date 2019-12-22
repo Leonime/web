@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+{% block title %}Chat Rooms{% endblock %}
+
+{% block container %}
+    {% include 'navbar.html' %}
+    <main role="main" class="container">
+        <label for="room-name-input">
+            What chat room would you like to enter?
+        </label>
+        <input id="room-name-input" type="text" size="100" /><br/>
+        <input id="room-name-submit" type="button" value="Enter"/>
+    </main>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function (e) {
+            const roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+    </script>
+{% endblock %}

@@ -12,9 +12,11 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# check for updates
+RUN apk update && apk upgrade
+
 # install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+RUN apk add --no-cache postgresql-dev gcc python3-dev musl-dev
 
 # install cffi dependencies
 RUN apk add --no-cache openssl-dev libffi-dev
@@ -28,14 +30,14 @@ RUN apk add --no-cache graphviz graphviz-dev
 # install brotli dependencies
 RUN apk add --no-cache g++
 
-# lint
-RUN pip install flake8
-COPY . /usr/src/app/
-RUN flake8 --ignore=E501,F401 .
+# install uvicorn dependencies
+RUN apk add --no-cache make
 
 # install project dependencies
+RUN pip install --upgrade setuptools
+RUN pip install --upgrade virtualenv
 RUN pip install pipenv
-COPY ./Pipfile* ./
+COPY ./Pipfile* /usr/src/app/
 RUN pipenv lock -r > requirements.txt
 # Pipenv insist on creating a virtualenv lets delete it.
 RUN pipenv --rm
@@ -49,9 +51,14 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # pull official base image
 FROM python:3.8-alpine
 
+# Update
+RUN apk update && apk upgrade
+
 # install pillow dependencies
-RUN apk update
 RUN apk add --no-cache libjpeg-turbo
+
+# install psycopg2 dependencies
+RUN apk add --no-cache libpq
 
 # create directory for the app user
 RUN mkdir -p /home/app
@@ -59,6 +66,7 @@ RUN mkdir -p /home/app
 # create the app user
 RUN addgroup -S app && adduser -S app -G app
 
+# chown all the files to the app user
 RUN chown app:app -R /home/app
 
 # create the appropriate directories
@@ -70,7 +78,6 @@ RUN mkdir -p $APP_HOME/media
 WORKDIR $APP_HOME
 
 # install project dependencies
-RUN apk update && apk add --no-cache libpq
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --no-cache /wheels/*

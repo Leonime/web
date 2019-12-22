@@ -8,9 +8,11 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# check for updates
+RUN apk update && apk upgrade
+
 # install psycopg2 dependencies
-RUN apk update \
-    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev
+RUN apk add --no-cache postgresql-dev gcc python3-dev musl-dev
 
 # install cffi dependencies
 RUN apk add --no-cache openssl-dev libffi-dev
@@ -23,6 +25,9 @@ RUN apk add --no-cache graphviz graphviz-dev
 
 # install brotli dependencies
 RUN apk add --no-cache g++
+
+# install uvicorn dependencies
+RUN apk add --no-cache make
 
 # install project dependencies
 RUN pip install --upgrade setuptools
@@ -43,6 +48,11 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 
 # copy project
 COPY . /usr/src/app/
+
+# lint
+RUN pip install flake8
+COPY . /usr/src/app/
+RUN flake8 --ignore=E501,F401 .
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
