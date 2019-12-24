@@ -51,7 +51,7 @@ services:
       - codeshepherds-backend
   django:
     image: registry.sector7g.rocks/codeshepherds/django
-    command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 8 -k uvicorn.workers.UvicornWorker --log-level WARNING
+    command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 2 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
       - django_app:/usr/src/app/
       - django_static:/home/app/web/static
@@ -130,13 +130,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/www/html
+      device: "${PWD}/www/html"
       o: bind
   dhparam:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/dhparam
+      device: "${PWD}/dhparam"
       o: bind
 
 networks:
