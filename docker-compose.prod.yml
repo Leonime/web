@@ -30,7 +30,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
-    image: localhost:5000/codeshepherds/celery
+    image: registry.sector7g.rocks/codeshepherds/celery
     command: celery -A codeshepherds worker -l info
     secrets:
       - django_db_name
@@ -56,7 +56,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
-    image: localhost:5000/codeshepherds/django
+    image: registry.sector7g.rocks/codeshepherds/django
     command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 8 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
       - django_app:/usr/src/app/
@@ -97,9 +97,9 @@ services:
   certbot:
     image: certbot/certbot
     volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
+      - certbot_etc:/etc/letsencrypt
+      - certbot_var:/var/lib/letsencrypt
+      - web_root:/var/www/html
     depends_on:
       - nginx
     command: certonly --webroot --webroot-path=/var/www/html --email lparra.dev@gmail.com --agree-tos --no-eff-email --force-renewal --staging -d sector7g.rocks -d www.sector7g.rocks
