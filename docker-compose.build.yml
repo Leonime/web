@@ -27,6 +27,9 @@ services:
     networks:
       - codeshepherds-backend
   celery:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.prod
     image: registry.sector7g.rocks/codeshepherds/celery
     command: celery -A codeshepherds worker -l info
     secrets:
@@ -50,6 +53,9 @@ services:
     networks:
       - codeshepherds-backend
   django:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.prod
     image: registry.sector7g.rocks/codeshepherds/django
     command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 8 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
