@@ -119,24 +119,29 @@ secrets:
     file: ./secrets/django_db_engine
 
 volumes:
-  postgres_data: {}
   pgadmin_data: {}
   django_static: {}
   django_media: {}
   django_app: {}
   certbot_etc: {}
   certbot_var: {}
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "${PWD}/data/postgres"
+      o: bind
   web_root:
     driver: local
     driver_opts:
       type: none
-      device: "${PWD}/www/html"
+      device: "${PWD}/data/www/html"
       o: bind
   dhparam:
     driver: local
     driver_opts:
       type: none
-      device: "${PWD}/dhparam"
+      device: "${PWD}/data/dhparam"
       o: bind
 
 networks:
