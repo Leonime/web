@@ -10,13 +10,22 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from configurator.corelibs.environment_file import DotEnv
 
+from configurator.corelibs.utils import code_generator
+
 
 class Encryptor:
     def __init__(self):
         self.crypt_key = str(os.environ.get('CRYPT_KEY'))
+        if not self.crypt_key:
+            self.save_crypt_key()
         self.salt = str(os.environ.get('CRYPT_SALT'))
         if not self.salt:
             self.save_salt()
+
+    def save_crypt_key(self):
+        self.crypt_key = code_generator()
+        dot_env = DotEnv()
+        dot_env.set_environment_variable('CRYPT_KEY', self.salt)
 
     def save_salt(self):
         self.salt = uuid.uuid4().hex
