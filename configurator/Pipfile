@@ -10,6 +10,7 @@ cryptography = "*"
 pyside2 = "*"
 colorama = "*"
 docker = "*"
+pyyaml = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3"
