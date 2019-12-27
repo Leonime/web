@@ -125,10 +125,21 @@ class Secrets:
             self.save_env_var('django_db_host_dev', 'postgres_dev', 'SQL_HOST')
             self.save_env_var('django_db_engine', 'django.db.backends.postgresql', 'SQL_ENGINE')
 
-            self.save_env_var('django_su_name', 'Leonime', 'DJANGO_SU_NAME', False)
-            self.save_env_var('django_su_email', 'lparra.dev@gmail.com', 'DJANGO_SU_EMAIL', False)
-            self.save_env_var('django_su_password', 'nomas123', 'DJANGO_SU_PASSWORD', False)
+            kwargs = {
+                'encrypt': False,
+                'env': True
+            }
+            self.save_env_var('django_su_name', 'Leonime', 'DJANGO_SU_NAME', **kwargs)
+            self.save_env_var('django_su_email', 'lparra.dev@gmail.com', 'DJANGO_SU_EMAIL', **kwargs)
+            self.save_env_var('django_su_password', 'nomas123', 'DJANGO_SU_PASSWORD', **kwargs)
 
-            self.save_env_var('postgres_user', 'leonime', '', False, False)
-            self.save_env_var('postgres_password', 'nomas123', '', False, False)
-            self.save_env_var('postgres_database', 'codeshepherds', '', False, False)
+            kwargs = {
+                'env_name': '',
+                'encrypt': False,
+                'env': False
+            }
+            self.save_env_var('postgres_user', 'leonime', **kwargs)
+            self.save_env_var('postgres_password', 'nomas123', **kwargs)
+            self.save_env_var('postgres_database', 'codeshepherds', **kwargs)
+
+            self.save_yaml()
