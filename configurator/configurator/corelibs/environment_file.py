@@ -46,6 +46,10 @@ class DotEnv:
         with open(self.path, 'a') as file:
             file.write(f'\n{key}={{{{{value}}}}}')
 
+    def save_blank_line(self):
+        with open(self.path, 'a') as file:
+            file.write(f'\n')
+
     def set_environment_variable(self, key=str(), value=str()):
         if self.exist_in_file(key):
             self.replace_environment_variable(key, value)
