@@ -80,15 +80,16 @@ services:
   nginx:
     image: nginx:1-alpine
     volumes:
-      - django_static:/home/app/web/static
-      - django_media:/home/app/web/media
       - ./configs/nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf
-      - web_root:/var/www/html
+      - acme_challenge:/var/www/html
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
       - dhparam:/etc/ssl/certs
+      - django_static:/home/app/web/static
+      - django_media:/home/app/web/media
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - django
     networks:
@@ -97,9 +98,9 @@ services:
   certbot:
     image: certbot/certbot
     volumes:
+      - acme_challenge:/var/www/html
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
-      - web_root:/var/www/html
     depends_on:
       - nginx
     command: certonly --webroot --webroot-path=/var/www/html --email lparra.dev@gmail.com --agree-tos --no-eff-email --force-renewal --staging -d sector7g.rocks -d www.sector7g.rocks
@@ -125,24 +126,44 @@ secrets:
     file: ./secrets/django_db_engine
 
 volumes:
-  postgres_data: {}
-  pgadmin_data: {}
   django_static: {}
   django_media: {}
   django_app: {}
-  certbot_etc: {}
-  certbot_var: {}
-  web_root:
+  acme_challenge:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/www/html
+      device: ${PWD}/.data/certbot/challenge
+      o: bind
+  certbot_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/etc
+      o: bind
+  certbot_var:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/var
       o: bind
   dhparam:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/dhparam
+      device: ${PWD}/.data/dhparam/
+      o: bind
+  pgadmin_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/pgadmin/data
+      o: bind
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/postgres/data
       o: bind
 
 networks:
