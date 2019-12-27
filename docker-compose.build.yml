@@ -30,7 +30,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
-    image: registry.sector7g.rocks/codeshepherds/celery
+    image: registry.sector7g.rocks:444/codeshepherds/celery
     command: celery -A codeshepherds worker -l info
     secrets:
       - django_db_name
@@ -56,7 +56,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
-    image: registry.sector7g.rocks/codeshepherds/django
+    image: registry.sector7g.rocks:444/codeshepherds/django
     command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 8 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
       - django_app:/usr/src/app/
