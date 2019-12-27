@@ -71,8 +71,12 @@ services:
       - django_db_engine
     environment:
       - CONTAINER=production
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,[::1],codeshepherds.com,www.codeshepherds.com
+      - DEBUG=0
+      - ENV_SECRETS_DEBUG=false
+      - LOGLEVEL=warning
     env_file:
-      - ./configs/django/.env.prod
+      - ./configs/django/.env
     depends_on:
       - postgres
     networks:
