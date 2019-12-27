@@ -97,13 +97,15 @@ class Secrets:
         with open(self.secret_path / filename, 'w') as file:
             file.write(data)
 
-    def save_env_var(self, file_name=str(), data=str(), env_name=str()):
-        dot_env = DotEnv()
-        encryptor = Encryptor()
-        f = encryptor.create_encryptor()
-        data = f.encrypt(data.encode()).decode('utf-8')
+    def save_env_var(self, file_name=str(), data=str(), env_name=str(), encrypt=True, env=True):
+        if encrypt:
+            encryptor = Encryptor()
+            f = encryptor.create_encryptor()
+            data = f.encrypt(data.encode()).decode('utf-8')
         self.create_text_secret(file_name, data)
-        dot_env.set_environment_variable(env_name, file_name)
+        if env:
+            dot_env = DotEnv()
+            dot_env.set_environment_variable(env_name, file_name)
 
     def create_default(self, docker_secret=False):
         if docker_secret:
@@ -122,3 +124,11 @@ class Secrets:
             self.save_env_var('django_db_host', 'postgres', 'SQL_HOST')
             self.save_env_var('django_db_host_dev', 'postgres_dev', 'SQL_HOST')
             self.save_env_var('django_db_engine', 'django.db.backends.postgresql', 'SQL_ENGINE')
+
+            self.save_env_var('django_su_name', 'Leonime', 'DJANGO_SU_NAME', False)
+            self.save_env_var('django_su_email', 'lparra.dev@gmail.com', 'DJANGO_SU_EMAIL', False)
+            self.save_env_var('django_su_password', 'nomas123', 'DJANGO_SU_PASSWORD', False)
+
+            self.save_env_var('postgres_user', 'leonime', '', False, False)
+            self.save_env_var('postgres_password', 'nomas123', '', False, False)
+            self.save_env_var('postgres_database', 'codeshepherds', '', False, False)
