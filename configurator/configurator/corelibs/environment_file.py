@@ -14,10 +14,11 @@ class DotEnv:
     def exist_in_file(self, key=str()):
         with open(self.path, 'r') as file:
             for line in file:
-                name, value = line.split('=', 1)
-                if name == key:
-                    print(f'Found "{key}"')
-                    return True
+                if line:
+                    name, value = line.split('=', 1)
+                    if name == key:
+                        print(f'Found "{key}"')
+                        return True
         return False
 
     def is_set_in_file(self, key=str()):
@@ -29,32 +30,38 @@ class DotEnv:
                     return True
         return False
 
-    def replace_environment_variable(self, key=str(), value=str()):
+    def replace_environment_variable(self, key=str(), value=str(), secret=True):
         temp_file, abs_path = mkstemp()
         with open(temp_file, 'w') as new_file:
             with open(self.path, 'r') as old_file:
                 for line in old_file:
                     name, data = line.split('=', 1)
                     if name == key:
-                        new_file.write(f'{key}={value}')
+                        if secret:
+                            new_file.write(f'{key}={{{{{value}}}}}\n')
+                        else:
+                            new_file.write(f'{key}={value}\n')
                     else:
                         new_file.write(f'{name}={data}')
         tmp_path = Path(abs_path)
         move(tmp_path, self.path)
 
-    def save_environment_variable(self, key=str(), value=str()):
+    def save_environment_variable(self, key=str(), value=str(), secret=True):
         with open(self.path, 'a') as file:
-            file.write(f'\n{key}={{{{{value}}}}}')
+            if secret:
+                file.write(f'{key}={{{{{value}}}}}\n')
+            else:
+                file.write(f'{key}={value}\n')
 
     def save_blank_line(self):
         with open(self.path, 'a') as file:
             file.write(f'\n')
 
-    def set_environment_variable(self, key=str(), value=str()):
+    def set_environment_variable(self, key=str(), value=str(), secret=True):
         if self.exist_in_file(key):
-            self.replace_environment_variable(key, value)
+            self.replace_environment_variable(key, value, secret)
         else:
-            self.save_environment_variable(key, value)
+            self.save_environment_variable(key, value, secret)
             pass
         pass
 
