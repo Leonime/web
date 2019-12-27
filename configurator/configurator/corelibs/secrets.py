@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 import docker
+import yaml
 from docker.errors import APIError, NotFound
 
 from configurator import ENV_SECRETS_DIR, BASE_DIR
@@ -68,6 +69,8 @@ class Secrets:
         self.interactive = interactive
         self.verbosity = verbosity
         self.secret_path = secret_path
+        self.yaml_file = Path().cwd().parent / 'docker-compose.yml'
+        self.secrets_yml = {'secrets': {}}
 
         self.client = docker.from_env()
 
@@ -91,21 +94,31 @@ class Secrets:
         except NotFound:
             self.client.secrets.create(name=name, data=data)
 
+    def save_yaml(self):
+        with open(str(self.yaml_file), 'w') as file:
+            file.write(yaml.dump(self.secrets_yml))
+
     def create_text_secret(self, filename=str(), data=str()):
         if filename is None or data is None:
             raise Exception('Filename or data can\'t be None')
         with open(self.secret_path / filename, 'w') as file:
             file.write(data)
 
-    def save_env_var(self, file_name=str(), data=str(), env_name=str(), encrypt=True, env=True):
+    def save_env_var(self, file_name=str(), data=str(), env_name=str(), encrypt=True, env=True, yaml=True):
         if encrypt:
             encryptor = Encryptor()
             f = encryptor.create_encryptor()
             data = f.encrypt(data.encode()).decode('utf-8')
-        self.create_text_secret(file_name, data)
         if env:
             dot_env = DotEnv()
             dot_env.set_environment_variable(env_name, file_name)
+        if yaml:
+            self.secrets_yml['secrets'].update({
+                f'{file_name}': {
+                    'file': f'./secrets/{file_name}'
+                }
+            })
+        self.create_text_secret(file_name, data)
 
     def create_default(self, docker_secret=False):
         if docker_secret:
