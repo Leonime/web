@@ -38,7 +38,7 @@ class DotEnv:
                     name, data = line.split('=', 1)
                     if name == key:
                         if secret:
-                            new_file.write(f'{key}={{{{{value}}}}}\n')
+                            new_file.write(f'{key}={{{{DOCKER_SECRET:{value}}}}}\n')
                         else:
                             new_file.write(f'{key}={value}\n')
                     else:
@@ -49,7 +49,7 @@ class DotEnv:
     def save_environment_variable(self, key=str(), value=str(), secret=True):
         with open(self.path, 'a') as file:
             if secret:
-                file.write(f'{key}={{{{{value}}}}}\n')
+                file.write(f'{key}={{{{DOCKER_SECRET:{value}}}}}\n')
             else:
                 file.write(f'{key}={value}\n')
 
