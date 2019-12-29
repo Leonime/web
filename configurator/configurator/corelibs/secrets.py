@@ -9,7 +9,7 @@ from docker.errors import APIError, NotFound
 from configurator import ENV_SECRETS_DIR, BASE_DIR
 from configurator.corelibs.encryption import Encryptor
 from configurator.corelibs.environment_file import DotEnv
-from configurator.corelibs.utils import get_input
+from configurator.corelibs.utils import get_input, code_generator
 
 
 class SecretsFolder:
@@ -70,7 +70,10 @@ class Secrets:
         self.verbosity = verbosity
         self.secret_path = secret_path
         self.yaml_file = Path().cwd().parent / 'docker-compose.yml'
-        self.secrets_yml = {'secrets': {}}
+        self.secrets_yml = {
+            'services': {},
+            'secrets': {}
+        }
 
         self.client = docker.from_env()
 
@@ -104,21 +107,30 @@ class Secrets:
         with open(self.secret_path / filename, 'w') as file:
             file.write(data)
 
-    def save_env_var(self, env_name=str(), value=str(), file_name=str(), encrypt=True, env=True, yml=True):
+    def save_env_var(self, env_name=str(), value=str(), file_name=str(), service=str(),
+                     encrypt=True, env=True, yml=True, secret=True):
         if encrypt:
             encryptor = Encryptor()
             f = encryptor.create_encryptor()
             value = f.encrypt(value.encode()).decode('utf-8')
         if env:
             dot_env = DotEnv()
-            dot_env.set_environment_variable(env_name, file_name)
-        if yml:
+            if secret:
+                dot_env.set_environment_variable(env_name, file_name)
+            else:
+                dot_env.set_environment_variable(env_name, value)
+        if secret:
+            self.create_text_secret(file_name, value)
+        if yml and secret:
             self.secrets_yml['secrets'].update({
                 f'{file_name}': {
                     'file': f'./secrets/{file_name}'
                 }
             })
-        self.create_text_secret(file_name, value)
+        if service:
+            self.secrets_yml['services'][f'{service}']['secrets'].append(file_name)\
+                if f'{service}' in self.secrets_yml['services']\
+                else self.secrets_yml['services'].update({f'{service}': {'secrets': [file_name], }})
 
     def create_default(self, docker_secret=False):
         if docker_secret:
@@ -130,40 +142,36 @@ class Secrets:
             self.create_docker_secret('django_db_host', 'postgres')
             self.create_docker_secret('django_db_engine', 'django.db.backends.postgresql')
         else:
-            self.save_env_var('SQL_DATABASE', 'codeshepherds', 'django_db_name')
-            self.save_env_var('SQL_PASSWORD', 'nomas123', 'django_db_password')
-            self.save_env_var('SQL_PORT', '5432', 'django_db_port')
-            self.save_env_var('SQL_USER', 'leonime', 'django_db_user')
-            self.save_env_var('SQL_HOST', 'postgres', 'django_db_host')
-            self.save_env_var('SQL_HOST', 'postgres_dev', 'django_db_host_dev')
-            self.save_env_var('SQL_ENGINE', 'django.db.backends.postgresql', 'django_db_engine')
+            self.save_env_var('SQL_DATABASE', 'codeshepherds', 'django_db_name', 'django')
+            self.save_env_var('SQL_PASSWORD', 'nomas123', 'django_db_password', 'django')
+            self.save_env_var('SQL_PORT', '5432', 'django_db_port', 'django')
+            self.save_env_var('SQL_USER', 'leonime', 'django_db_user', 'django')
+            self.save_env_var('SQL_HOST', 'postgres', 'django_db_host', 'django')
+            self.save_env_var('SQL_ENGINE', 'django.db.backends.postgresql', 'django_db_engine', 'django')
 
             kwargs = {
                 'encrypt': False,
                 'env': True
             }
-            self.save_env_var('DJANGO_SU_NAME', 'Leonime', 'django_su_name', **kwargs)
-            self.save_env_var('DJANGO_SU_EMAIL', 'lparra.dev@gmail.com', 'django_su_email', **kwargs)
-            self.save_env_var('DJANGO_SU_PASSWORD', 'nomas123', 'django_su_password', **kwargs)
+            self.save_env_var('DJANGO_SU_NAME', 'Leonime', 'django_su_name', 'django', **kwargs)
+            self.save_env_var('DJANGO_SU_EMAIL', 'lparra.dev@gmail.com', 'django_su_email', 'django', **kwargs)
+            self.save_env_var('DJANGO_SU_PASSWORD', 'nomas123', 'django_su_password', 'django', **kwargs)
 
             DotEnv().save_blank_line()
 
             kwargs = {
-                'env_name': '',
-                'encrypt': False,
-                'env': False
+                'encrypt': False
             }
-            self.save_env_var('SECRET_KEY', 'E4JSUPAQsVHzl4brGeoYKJGtYuIfvpSQEkzJ8yiLLa0jMhEvUB', **kwargs)
-            self.save_env_var('DJANGO_SETTINGS_MODULE', 'codeshepherds.settings', **kwargs)
-            self.save_env_var('LOAD_FROM_ENVIRONMENT', 'True', **kwargs)
+            self.save_env_var('SECRET_KEY', code_generator(), 'secret_key', **kwargs)
+            self.save_env_var('DJANGO_SETTINGS_MODULE', 'codeshepherds.settings', 'django_settings_module', **kwargs)
+            self.save_env_var('LOAD_FROM_ENVIRONMENT', 'True', 'load_from_environment', **kwargs)
 
             kwargs = {
-                'env_name': '',
                 'encrypt': False,
                 'env': False
             }
-            self.save_env_var('postgres_user', 'leonime', **kwargs)
-            self.save_env_var('postgres_password', 'nomas123', **kwargs)
-            self.save_env_var('postgres_database', 'codeshepherds', **kwargs)
+            self.save_env_var('', 'leonime', 'postgres_user', 'postgres', **kwargs)
+            self.save_env_var('', 'nomas123', 'postgres_password', 'postgres', **kwargs)
+            self.save_env_var('', 'codeshepherds', 'postgres_database', 'postgres', **kwargs)
 
             self.save_yaml()
