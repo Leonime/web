@@ -14,7 +14,7 @@ class DotEnv:
     def exist_in_file(self, key=str()):
         with open(self.path, 'r') as file:
             for line in file:
-                if line:
+                if line and line.strip():
                     name, value = line.split('=', 1)
                     if name == key:
                         print(f'Found "{key}"')
@@ -35,14 +35,17 @@ class DotEnv:
         with open(temp_file, 'w') as new_file:
             with open(self.path, 'r') as old_file:
                 for line in old_file:
-                    name, data = line.split('=', 1)
-                    if name == key:
-                        if secret:
-                            new_file.write(f'{key}={{{{DOCKER_SECRET:{value}}}}}\n')
+                    if line and line.strip():
+                        name, data = line.split('=', 1)
+                        if name == key:
+                            if secret:
+                                new_file.write(f'{key}={{{{DOCKER_SECRET:{value}}}}}\n')
+                            else:
+                                new_file.write(f'{key}={value}\n')
                         else:
-                            new_file.write(f'{key}={value}\n')
+                            new_file.write(f'{name}={data}')
                     else:
-                        new_file.write(f'{name}={data}')
+                        new_file.write(line)
         tmp_path = Path(abs_path)
         move(tmp_path, self.path)
 
