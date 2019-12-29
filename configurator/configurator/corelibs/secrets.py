@@ -104,21 +104,21 @@ class Secrets:
         with open(self.secret_path / filename, 'w') as file:
             file.write(data)
 
-    def save_env_var(self, file_name=str(), data=str(), env_name=str(), encrypt=True, env=True, yaml=True):
+    def save_env_var(self, env_name=str(), value=str(), file_name=str(), encrypt=True, env=True, yml=True):
         if encrypt:
             encryptor = Encryptor()
             f = encryptor.create_encryptor()
-            data = f.encrypt(data.encode()).decode('utf-8')
+            value = f.encrypt(value.encode()).decode('utf-8')
         if env:
             dot_env = DotEnv()
             dot_env.set_environment_variable(env_name, file_name)
-        if yaml:
+        if yml:
             self.secrets_yml['secrets'].update({
                 f'{file_name}': {
                     'file': f'./secrets/{file_name}'
                 }
             })
-        self.create_text_secret(file_name, data)
+        self.create_text_secret(file_name, value)
 
     def create_default(self, docker_secret=False):
         if docker_secret:
@@ -130,21 +130,32 @@ class Secrets:
             self.create_docker_secret('django_db_host', 'postgres')
             self.create_docker_secret('django_db_engine', 'django.db.backends.postgresql')
         else:
-            self.save_env_var('django_db_name', 'codeshepherds', 'SQL_DATABASE')
-            self.save_env_var('django_db_password', 'nomas123', 'SQL_PASSWORD')
-            self.save_env_var('django_db_port', '5432', 'SQL_PORT')
-            self.save_env_var('django_db_user', 'leonime', 'SQL_USER')
-            self.save_env_var('django_db_host', 'postgres', 'SQL_HOST')
-            self.save_env_var('django_db_host_dev', 'postgres_dev', 'SQL_HOST')
-            self.save_env_var('django_db_engine', 'django.db.backends.postgresql', 'SQL_ENGINE')
+            self.save_env_var('SQL_DATABASE', 'codeshepherds', 'django_db_name')
+            self.save_env_var('SQL_PASSWORD', 'nomas123', 'django_db_password')
+            self.save_env_var('SQL_PORT', '5432', 'django_db_port')
+            self.save_env_var('SQL_USER', 'leonime', 'django_db_user')
+            self.save_env_var('SQL_HOST', 'postgres', 'django_db_host')
+            self.save_env_var('SQL_HOST', 'postgres_dev', 'django_db_host_dev')
+            self.save_env_var('SQL_ENGINE', 'django.db.backends.postgresql', 'django_db_engine')
 
             kwargs = {
                 'encrypt': False,
                 'env': True
             }
-            self.save_env_var('django_su_name', 'Leonime', 'DJANGO_SU_NAME', **kwargs)
-            self.save_env_var('django_su_email', 'lparra.dev@gmail.com', 'DJANGO_SU_EMAIL', **kwargs)
-            self.save_env_var('django_su_password', 'nomas123', 'DJANGO_SU_PASSWORD', **kwargs)
+            self.save_env_var('DJANGO_SU_NAME', 'Leonime', 'django_su_name', **kwargs)
+            self.save_env_var('DJANGO_SU_EMAIL', 'lparra.dev@gmail.com', 'django_su_email', **kwargs)
+            self.save_env_var('DJANGO_SU_PASSWORD', 'nomas123', 'django_su_password', **kwargs)
+
+            DotEnv().save_blank_line()
+
+            kwargs = {
+                'env_name': '',
+                'encrypt': False,
+                'env': False
+            }
+            self.save_env_var('SECRET_KEY', 'E4JSUPAQsVHzl4brGeoYKJGtYuIfvpSQEkzJ8yiLLa0jMhEvUB', **kwargs)
+            self.save_env_var('DJANGO_SETTINGS_MODULE', 'codeshepherds.settings', **kwargs)
+            self.save_env_var('LOAD_FROM_ENVIRONMENT', 'True', **kwargs)
 
             kwargs = {
                 'env_name': '',
