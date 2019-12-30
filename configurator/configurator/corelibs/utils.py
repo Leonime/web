@@ -1,3 +1,5 @@
+import random
+import string
 from getpass import getpass
 
 from colorama import Fore
@@ -29,3 +31,7 @@ def get_input(blank=False, is_pass=False, confirmation=False, msg=''):
                 print(f'{Fore.RED}Input can\'t be blank{Fore.RESET}')
                 value = None
     return value
+
+
+def code_generator(size=50, char=string.ascii_letters + string.digits):
+    return ''.join(random.SystemRandom().choice(char) for _ in range(size))
