@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -142,44 +143,72 @@ class Secrets:
             self.create_docker_secret('django_db_host', 'postgres')
             self.create_docker_secret('django_db_engine', 'django.db.backends.postgresql')
         else:
-            self.save_env_var('SQL_DATABASE', 'codeshepherds', 'django_db_name', 'django')
-            self.save_env_var('SQL_PASSWORD', 'nomas123', 'django_db_password', 'django')
-            self.save_env_var('SQL_PORT', '5432', 'django_db_port', 'django')
-            self.save_env_var('SQL_USER', 'leonime', 'django_db_user', 'django')
-            self.save_env_var('SQL_HOST', 'postgres', 'django_db_host', 'django')
-            self.save_env_var('SQL_ENGINE', 'django.db.backends.postgresql', 'django_db_engine', 'django')
+            kwargs = {
+                'service': 'django'
+            }
+            self.save_env_var('SQL_DATABASE', 'codeshepherds', 'django_db_name', **kwargs)
+            self.save_env_var('SQL_PASSWORD', 'nomas123', 'django_db_password', **kwargs)
+            self.save_env_var('SQL_PORT', '5432', 'django_db_port', **kwargs)
+            self.save_env_var('SQL_USER', 'leonime', 'django_db_user', **kwargs)
+            self.save_env_var('SQL_HOST', 'postgres', 'django_db_host', **kwargs)
+            self.save_env_var('SQL_ENGINE', 'django.db.backends.postgresql', 'django_db_engine', **kwargs)
 
             kwargs = {
+                'service': 'django',
                 'encrypt': False,
                 'env': True
             }
-            self.save_env_var('DJANGO_SU_NAME', 'Leonime', 'django_su_name', 'django', **kwargs)
-            self.save_env_var('DJANGO_SU_EMAIL', 'lparra.dev@gmail.com', 'django_su_email', 'django', **kwargs)
-            self.save_env_var('DJANGO_SU_PASSWORD', 'nomas123', 'django_su_password', 'django', **kwargs)
+            self.save_env_var('DJANGO_SU_NAME', 'Leonime', 'django_su_name', **kwargs)
+            self.save_env_var('DJANGO_SU_EMAIL', 'lparra.dev@gmail.com', 'django_su_email', **kwargs)
+            self.save_env_var('DJANGO_SU_PASSWORD', 'nomas123', 'django_su_password', **kwargs)
 
             DotEnv().save_blank_line()
 
             kwargs = {
+                'service': 'django',
                 'encrypt': False
             }
             self.save_env_var('SECRET_KEY', code_generator(), 'secret_key', **kwargs)
             self.save_env_var('DJANGO_SETTINGS_MODULE', 'codeshepherds.settings', 'django_settings_module', **kwargs)
             self.save_env_var('LOAD_FROM_ENVIRONMENT', 'True', 'load_from_environment', **kwargs)
 
+            DotEnv().save_blank_line()
+
             kwargs = {
+                'service': 'django',
+                'encrypt': False
+            }
+            self.save_env_var('DATABASE', 'postgres', 'database', **kwargs)
+            self.save_env_var('SQL_HOST_TEST', 'postgres', 'sql_host_test', **kwargs)
+            self.save_env_var('SQL_PORT_TEST', '5432', 'sql_port_test', **kwargs)
+
+            DotEnv().save_blank_line()
+
+            kwargs = {
+                'service': 'django',
+                'encrypt': False
+            }
+
+            dropbox_token = os.environ.get('DROPBOX_ACCESS_TOKEN')
+            if not dropbox_token:
+                raise Exception('DROPBOX_ACCESS_TOKEN must be set')
+            sentry_dsn = os.environ.get('SENTRY_DSN')
+            if not sentry_dsn:
+                raise Exception('SENTRY_DSN must be set')
+            self.save_env_var('DROPBOX_ACCESS_TOKEN', dropbox_token, 'dropbox_access_token', **kwargs)
+            self.save_env_var('SENTRY_DSN', sentry_dsn, 'sentry_dsn', **kwargs)
+
+            DotEnv().save_blank_line()
+
+            self.save_env_var('REDIS_URL', 'redis:6379', 'redis_url', **kwargs)
+
+            kwargs = {
+                'service': 'postgres',
                 'encrypt': False,
                 'env': False
             }
-            self.save_env_var('', 'leonime', 'postgres_user', 'postgres', **kwargs)
-            self.save_env_var('', 'nomas123', 'postgres_password', 'postgres', **kwargs)
-            self.save_env_var('', 'codeshepherds', 'postgres_database', 'postgres', **kwargs)
-
-            kwargs = {
-                'encrypt': False,
-                'secret': False
-            }
-            self.save_env_var('DATABASE', 'postgres', **kwargs)
-            self.save_env_var('SQL_HOST_TEST', 'postgres', **kwargs)
-            self.save_env_var('SQL_PORT_TEST', '5432', **kwargs)
+            self.save_env_var('', 'leonime', 'postgres_user', **kwargs)
+            self.save_env_var('', 'nomas123', 'postgres_password', **kwargs)
+            self.save_env_var('', 'codeshepherds', 'postgres_database', **kwargs)
 
             self.save_yaml()
