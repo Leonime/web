@@ -118,7 +118,7 @@ class Secrets:
             if secret:
                 dot_env.set_environment_variable(env_name, file_name)
             else:
-                dot_env.set_environment_variable(env_name, value)
+                dot_env.set_environment_variable(env_name, value, secret)
         if secret:
             self.create_text_secret(file_name, value)
         if yml and secret:
@@ -173,5 +173,13 @@ class Secrets:
             self.save_env_var('', 'leonime', 'postgres_user', 'postgres', **kwargs)
             self.save_env_var('', 'nomas123', 'postgres_password', 'postgres', **kwargs)
             self.save_env_var('', 'codeshepherds', 'postgres_database', 'postgres', **kwargs)
+
+            kwargs = {
+                'encrypt': False,
+                'secret': False
+            }
+            self.save_env_var('DATABASE', 'postgres', **kwargs)
+            self.save_env_var('SQL_HOST_TEST', 'postgres', **kwargs)
+            self.save_env_var('SQL_PORT_TEST', '5432', **kwargs)
 
             self.save_yaml()
