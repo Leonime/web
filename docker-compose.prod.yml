@@ -6,7 +6,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./configs/postgres/.env
+      - ./..configs/postgres/.env
     secrets:
       - postgres_user
       - postgres_password
@@ -19,7 +19,7 @@ services:
       - pgadmin_data:/var/lib/pgadmin
       - pgadmin_data:/servers.json
     env_file:
-      - ./configs/pgadmin/.env
+      - ./..configs/pgadmin/.env
     networks:
       - codeshepherds-backend
   redis:
@@ -55,7 +55,7 @@ services:
       - ENV_SECRETS_DEBUG=false
       - LOGLEVEL=warning
     env_file:
-      - ./configs/django/.env
+      - ./..configs/django/.env
     volumes:
       - django_app:/usr/src/app/
       - django_static:/home/app/web/static
@@ -95,7 +95,7 @@ services:
     environment:
       - CONTAINER=production
     env_file:
-      - ./configs/django/.env
+      - ./..configs/django/.env
     depends_on:
       - postgres
     networks:
@@ -105,7 +105,7 @@ services:
     volumes:
       - django_static:/home/app/web/static
       - django_media:/home/app/web/media
-      - ./configs/nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf
+      - ./..configs/nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf
       - web_root:/var/www/html
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
