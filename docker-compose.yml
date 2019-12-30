@@ -6,7 +6,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./..configs/postgres/.env
+      - ./.configs/postgres/.env
     secrets:
       - postgres_user
       - postgres_password
@@ -19,7 +19,7 @@ services:
       - pgadmin_data:/var/lib/pgadmin
       - pgadmin_data:/servers.json
     env_file:
-      - ./..configs/pgadmin/.env
+      - ./.configs/pgadmin/.env
     ports:
       - 5050:5050
     depends_on:
@@ -57,7 +57,7 @@ services:
       - CONTAINER=celery
       - STAGE=development
     env_file:
-      - ./..configs/django/.env
+      - ./.configs/django/.env
     volumes:
       - ./web/:/usr/src/app/
       - django_staticfiles:/usr/src/app/static/
@@ -103,7 +103,7 @@ services:
       - ENV_SECRETS_DEBUG=true
       - LOGLEVEL=debug
     env_file:
-      - ./..configs/django/.env
+      - ./.configs/django/.env
     depends_on:
       - postgres
     networks:
