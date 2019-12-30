@@ -108,8 +108,10 @@ class Secrets:
         with open(self.secret_path / filename, 'w') as file:
             file.write(data)
 
-    def save_env_var(self, env_name=str(), value=str(), file_name=str(), service=str(),
+    def save_env_var(self, env_name=str(), value=str(), file_name=str(), services=None,
                      encrypt=True, env=True, yml=True, secret=True):
+        if services is None:
+            services = []
         if encrypt:
             encryptor = Encryptor()
             f = encryptor.create_encryptor()
@@ -128,10 +130,11 @@ class Secrets:
                     'file': f'./secrets/{file_name}'
                 }
             })
-        if service:
-            self.secrets_yml['services'][f'{service}']['secrets'].append(file_name)\
-                if f'{service}' in self.secrets_yml['services']\
-                else self.secrets_yml['services'].update({f'{service}': {'secrets': [file_name], }})
+        if services:
+            for service in services:
+                self.secrets_yml['services'][f'{service}']['secrets'].append(file_name)\
+                    if f'{service}' in self.secrets_yml['services']\
+                    else self.secrets_yml['services'].update({f'{service}': {'secrets': [file_name], }})
 
     def create_default(self, docker_secret=False):
         if docker_secret:
@@ -144,7 +147,7 @@ class Secrets:
             self.create_docker_secret('django_db_engine', 'django.db.backends.postgresql')
         else:
             kwargs = {
-                'service': 'django'
+                'services': ['django', 'celery']
             }
             self.save_env_var('SQL_DATABASE', 'codeshepherds', 'django_db_name', **kwargs)
             self.save_env_var('SQL_PASSWORD', 'nomas123', 'django_db_password', **kwargs)
@@ -154,7 +157,7 @@ class Secrets:
             self.save_env_var('SQL_ENGINE', 'django.db.backends.postgresql', 'django_db_engine', **kwargs)
 
             kwargs = {
-                'service': 'django',
+                'services': ['django', 'celery'],
                 'encrypt': False,
                 'env': True
             }
@@ -165,7 +168,7 @@ class Secrets:
             DotEnv().save_blank_line()
 
             kwargs = {
-                'service': 'django',
+                'services': ['django', 'celery'],
                 'encrypt': False
             }
             self.save_env_var('SECRET_KEY', code_generator(), 'secret_key', **kwargs)
@@ -175,7 +178,7 @@ class Secrets:
             DotEnv().save_blank_line()
 
             kwargs = {
-                'service': 'django',
+                'services': ['django', 'celery'],
                 'encrypt': False
             }
             self.save_env_var('DATABASE', 'postgres', 'database', **kwargs)
@@ -183,27 +186,30 @@ class Secrets:
             self.save_env_var('SQL_PORT_TEST', '5432', 'sql_port_test', **kwargs)
 
             DotEnv().save_blank_line()
-
-            kwargs = {
-                'service': 'django',
-                'encrypt': False
-            }
-
             dropbox_token = os.environ.get('DROPBOX_ACCESS_TOKEN')
             if not dropbox_token:
                 raise Exception('DROPBOX_ACCESS_TOKEN must be set')
             sentry_dsn = os.environ.get('SENTRY_DSN')
             if not sentry_dsn:
                 raise Exception('SENTRY_DSN must be set')
+
+            kwargs = {
+                'services': ['django', 'celery'],
+                'encrypt': False
+            }
             self.save_env_var('DROPBOX_ACCESS_TOKEN', dropbox_token, 'dropbox_access_token', **kwargs)
             self.save_env_var('SENTRY_DSN', sentry_dsn, 'sentry_dsn', **kwargs)
 
             DotEnv().save_blank_line()
 
+            kwargs = {
+                'services': ['django', 'celery'],
+                'encrypt': False
+            }
             self.save_env_var('REDIS_URL', 'redis:6379', 'redis_url', **kwargs)
 
             kwargs = {
-                'service': 'postgres',
+                'services': ['postgres'],
                 'encrypt': False,
                 'env': False
             }
