@@ -50,8 +50,12 @@ services:
       - redis_url
     environment:
       - CONTAINER=celery
+      - DJANGO_ALLOWED_HOSTS=codeshepherds.com,www.codeshepherds.com
+      - DEBUG=0
+      - ENV_SECRETS_DEBUG=false
+      - LOGLEVEL=warning
     env_file:
-      - ./configs/django/.env.prod
+      - ./configs/django/.env
     volumes:
       - django_app:/usr/src/app/
       - django_static:/home/app/web/static
@@ -90,7 +94,7 @@ services:
     environment:
       - CONTAINER=production
     env_file:
-      - ./configs/django/.env.prod
+      - ./configs/django/.env
     depends_on:
       - postgres
     networks:
