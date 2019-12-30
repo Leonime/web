@@ -50,7 +50,7 @@ services:
       - redis_url
     environment:
       - CONTAINER=celery
-      - DJANGO_ALLOWED_HOSTS=codeshepherds.com,www.codeshepherds.com
+      - DJANGO_ALLOWED_HOSTS=codeshepherds.com,www.codeshepherds.com,sector7g.rocks,www.sector7g.rocks
       - DEBUG=0
       - ENV_SECRETS_DEBUG=false
       - LOGLEVEL=warning
@@ -94,6 +94,10 @@ services:
       - redis_url
     environment:
       - CONTAINER=production
+      - DJANGO_ALLOWED_HOSTS=codeshepherds.com,www.codeshepherds.com,sector7g.rocks,www.sector7g.rocks
+      - DEBUG=0
+      - ENV_SECRETS_DEBUG=false
+      - LOGLEVEL=warning
     env_file:
       - ./.configs/django/.env
     depends_on:
