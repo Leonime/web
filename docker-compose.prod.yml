@@ -122,7 +122,7 @@ services:
     volumes:
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
-      - web_root:/var/www/html
+      - acme_challenge:/var/www/html
     depends_on:
       - nginx
     command: certonly --webroot -w /var/www/html --rsa-key-size 4096 --email lparra.dev@gmail.com --agree-tos --no-eff-email --force-renewal --staging -d sector7g.rocks -d www.sector7g.rocks
