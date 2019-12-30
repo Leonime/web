@@ -34,8 +34,11 @@ class DotEnv:
         temp_file, abs_path = mkstemp()
         with open(temp_file, 'w') as new_file:
             with open(self.path, 'r') as old_file:
+                blank_line = False
                 for line in old_file:
                     if line and line.strip():
+                        if blank_line:
+                            blank_line = False
                         name, data = line.split('=', 1)
                         if name == key:
                             if secret:
@@ -44,8 +47,9 @@ class DotEnv:
                                 new_file.write(f'{key}={value}\n')
                         else:
                             new_file.write(f'{name}={data}')
-                    else:
+                    elif not blank_line:
                         new_file.write(line)
+                        blank_line = True
         tmp_path = Path(abs_path)
         move(tmp_path, self.path)
 
