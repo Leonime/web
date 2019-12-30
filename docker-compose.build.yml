@@ -76,6 +76,7 @@ services:
     command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 8 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
       - django_app:/usr/src/app/
+      - django_data:/var/lib/codeshepherds/data
       - django_static:/home/app/web/static
       - django_media:/home/app/web/media
     secrets:
@@ -208,6 +209,12 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/.data/dhparam/
+      o: bind
+  django_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/django/data
       o: bind
   pgadmin_data:
     driver: local

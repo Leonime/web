@@ -70,6 +70,7 @@ services:
     command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 2 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
       - django_app:/usr/src/app/
+      - django_data:/var/lib/codeshepherds/data
       - django_static:/home/app/web/static
       - django_media:/home/app/web/media
     secrets:
@@ -171,29 +172,50 @@ secrets:
     file: ./secrets/sql_port_test
 
 volumes:
-  pgadmin_data: {}
   django_static: {}
   django_media: {}
   django_app: {}
-  certbot_etc: {}
-  certbot_var: {}
-  postgres_data:
+  acme_challenge:
     driver: local
     driver_opts:
       type: none
-      device: "${PWD}/data/postgres"
+      device: ${PWD}/.data/certbot/challenge
       o: bind
-  web_root:
+  certbot_etc:
     driver: local
     driver_opts:
       type: none
-      device: "${PWD}/data/www/html"
+      device: ${PWD}/.data/certbot/etc
+      o: bind
+  certbot_var:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/var
       o: bind
   dhparam:
     driver: local
     driver_opts:
       type: none
-      device: "${PWD}/data/dhparam"
+      device: ${PWD}/.data/dhparam/
+      o: bind
+  django_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/django/data
+      o: bind
+  pgadmin_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/pgadmin/data
+      o: bind
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/postgres/data
       o: bind
 
 networks:
