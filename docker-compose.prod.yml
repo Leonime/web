@@ -130,7 +130,7 @@ services:
       - acme_challenge:/var/www/html
     depends_on:
       - nginx
-    command: certonly --webroot -w /var/www/html --rsa-key-size 4096 --email lparra.dev@gmail.com --agree-tos --no-eff-email --force-renewal --staging -d sector7g.rocks -d www.sector7g.rocks
+    command: certonly --webroot -w /var/www/html --rsa-key-size 4096 --email lparra.dev@gmail.com --agree-tos --no-eff-email --force-renewal -d sector7g.rocks -d www.sector7g.rocks
 
 secrets:
   database:
