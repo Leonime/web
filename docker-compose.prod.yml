@@ -27,7 +27,7 @@ services:
     networks:
       - codeshepherds-backend
   celery:
-    image: registry.sector7g.rocks:444/codeshepherds/django
+    image: leonime/codeshepherds
     command: celery -A codeshepherds worker -l info
     secrets:
       - django_db_name
@@ -67,7 +67,7 @@ services:
     networks:
       - codeshepherds-backend
   django:
-    image: registry.sector7g.rocks/codeshepherds/django
+    image: leonime/codeshepherds
     command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 2 -k uvicorn.workers.UvicornWorker --log-level WARNING
     volumes:
       - django_app:/usr/src/app/
