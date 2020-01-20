@@ -132,7 +132,7 @@ services:
       - ./.configs/nginx/codeshepherds.prod.nginx:/etc/nginx/conf.d/codeshepherds.conf
       - ./.configs/nginx/repo.prod.nginx:/etc/nginx/conf.d/repo.conf
       - ./.configs/nginx/solder.prod.nginx:/etc/nginx/conf.d/solder.conf
-      - ./.configs/nginx/up.nginx:/etc/nginx/conf.d/up.conf
+      - ./.configs/nginx/up.prod.nginx:/etc/nginx/conf.d/up.conf
       - acme_challenge:/var/www/html
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
