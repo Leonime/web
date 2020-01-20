@@ -1,15 +1,11 @@
-upstream codeshepherds {
-    server django:8000;
-}
-
-upstream pgadmin {
-    server pgadmin:5050;
+upstream gfs {
+    server gfs:8080;
 }
 
 server {
     listen [::]:80;
     listen 80;
-    server_name sector7g.rocks www.sector7g.rocks codeshepherds.com www.codeshepherds.com;
+    server_name up.codeshepherds.com;
 
     # Redirect all non-https requests
     rewrite ^ https://$host$request_uri? permanent;
@@ -22,7 +18,7 @@ server {
     error_log /dev/stdout error;
     access_log off;
 
-    server_name sector7g.rocks www.sector7g.rocks  codeshepherds.com www.codeshepherds.com;
+    server_name up.codeshepherds.com;
 
     # Certificate(s) and private key
     ssl_certificate /etc/letsencrypt/live/sector7g.rocks/fullchain.pem;
@@ -62,29 +58,12 @@ server {
     client_max_body_size 4G;
 
     location / {
-        proxy_pass http://codeshepherds/;
+        proxy_pass http://gfs/;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";
         proxy_redirect off;
-    }
-
-    location /pgadmin/ {
-        proxy_set_header X-Script-Name /pgadmin/;
-        proxy_set_header Host $host;
-        proxy_redirect off;
-        proxy_pass http://pgadmin/;
-    }
-
-    location /static/ {
-        autoindex on;
-        alias /home/app/web/static/;
-    }
-
-    location /media/ {
-        autoindex on;
-        alias /home/app/web/media/;
     }
 
     location ~ /.well-known/acme-challenge {

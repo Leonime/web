@@ -27,10 +27,7 @@ services:
     networks:
       - codeshepherds-backend
   celery:
-    build:
-      context: ./web
-      dockerfile: Dockerfile.prod
-    image: registry.sector7g.rocks:444/codeshepherds/celery
+    image: registry.sector7g.rocks:444/codeshepherds/django
     command: celery -A codeshepherds worker -l info
     secrets:
       - django_db_name
@@ -66,6 +63,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - django
     networks:
       - codeshepherds-backend
   django:
@@ -110,21 +108,49 @@ services:
       - postgres
     networks:
       - codeshepherds-backend
+  solder:
+    image: leonime/solder
+    env_file:
+      - ./.configs/solder/.env
+    volumes:
+      - solder_repo:/var/www/repo.solder
+      - solder_storage:/var/www/technicsolder/app/storage
+      - solder_public:/var/www/technicsolder/public/
+    depends_on:
+      - postgres
+    networks:
+      - codeshepherds-backend
+      - codeshepherds-frontend
+  gfs:
+    image: leonime/gfs
+    env_file:
+      - ./.configs/gfs/.env
+    volumes:
+      - solder_repo:/var/www/repo.solder
+    networks:
+      - codeshepherds-backend
   nginx:
     image: nginx:1-alpine
     volumes:
       - ./.configs/nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf
+      - ./.configs/nginx/solder.nginx:/etc/nginx/conf.d/solder.conf
+      - ./.configs/nginx/repo.nginx:/etc/nginx/conf.d/repo.conf
+      - ./.configs/nginx/up.nginx:/etc/nginx/conf.d/up.conf
       - acme_challenge:/var/www/html
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
       - dhparam:/etc/ssl/certs
       - django_static:/home/app/web/static
       - django_media:/home/app/web/media
+      - solder_public:/var/www/technicsolder/public/
+      - solder_repo:/var/www/repo.solder
     ports:
       - 80:80
       - 443:443
     depends_on:
       - django
+      - solder
+      - gfs
     networks:
       - codeshepherds-backend
       - codeshepherds-frontend
@@ -227,6 +253,24 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/.data/postgres/data
+      o: bind
+  solder_public:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/public
+      o: bind
+  solder_repo:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/repo
+      o: bind
+  solder_storage:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/storage
       o: bind
 
 networks:

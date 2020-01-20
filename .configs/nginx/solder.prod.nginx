@@ -1,15 +1,11 @@
-upstream codeshepherds {
-    server django:8000;
-}
-
-upstream pgadmin {
-    server pgadmin:5050;
+upstream solder {
+    server solder:9000;
 }
 
 server {
     listen [::]:80;
     listen 80;
-    server_name sector7g.rocks www.sector7g.rocks codeshepherds.com www.codeshepherds.com;
+    server_name solder.codeshepherds.com;
 
     # Redirect all non-https requests
     rewrite ^ https://$host$request_uri? permanent;
@@ -22,7 +18,7 @@ server {
     error_log /dev/stdout error;
     access_log off;
 
-    server_name sector7g.rocks www.sector7g.rocks  codeshepherds.com www.codeshepherds.com;
+    server_name solder.codeshepherds.com;
 
     # Certificate(s) and private key
     ssl_certificate /etc/letsencrypt/live/sector7g.rocks/fullchain.pem;
@@ -59,32 +55,38 @@ server {
     add_header X-XSS-Protection "1; mode=block";
     add_header Expect-CT "max-age=0";
 
-    client_max_body_size 4G;
+    root /var/www/technicsolder/public;
+    index index.php;
 
     location / {
-        proxy_pass http://codeshepherds/;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_redirect off;
+        # URLs to attempt, including pretty ones
+        try_files   $uri $uri/ /index.php?$query_string;
     }
 
-    location /pgadmin/ {
-        proxy_set_header X-Script-Name /pgadmin/;
-        proxy_set_header Host $host;
-        proxy_redirect off;
-        proxy_pass http://pgadmin/;
+    # PHP FPM configuration.
+    location ~* \.php$ {
+        fastcgi_pass                    solder;
+        fastcgi_index                   index.php;
+        fastcgi_split_path_info         ^(.+\.php)(.*)$;
+        include                         fastcgi_params;
+        fastcgi_param PATH_INFO         $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME   $document_root$fastcgi_script_name;
     }
 
-    location /static/ {
-        autoindex on;
-        alias /home/app/web/static/;
+    # We don't need .ht files with nginx.
+    location ~ /\.ht {
+        deny all;
     }
 
-    location /media/ {
-        autoindex on;
-        alias /home/app/web/media/;
+    # Hide dot files/folders
+    location ~ .*/\. {
+        return 403;
+    }
+
+    # Set header expirations on per-project basis
+    location ~* \.(?:ico|css|js|jpe?g|JPG|png|svg|woff)$ {
+        expires 365d;
+
     }
 
     location ~ /.well-known/acme-challenge {
