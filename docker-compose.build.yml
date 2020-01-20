@@ -27,10 +27,7 @@ services:
     networks:
       - codeshepherds-backend
   celery:
-    build:
-      context: ./web
-      dockerfile: Dockerfile.prod
-    image: registry.sector7g.rocks:444/codeshepherds/celery
+    image: registry.sector7g.rocks:444/codeshepherds/django
     command: celery -A codeshepherds worker -l info
     secrets:
       - django_db_name
@@ -66,6 +63,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - django
     networks:
       - codeshepherds-backend
   django:
