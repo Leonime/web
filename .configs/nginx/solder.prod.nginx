@@ -12,8 +12,8 @@ server {
 }
 
 server {
-    listen [::]:443 default_server ssl http2;
-    listen 443 default_server ssl http2;
+    listen [::]:443 ssl http2;
+    listen 443 ssl http2;
 
     error_log /dev/stdout error;
     access_log off;
