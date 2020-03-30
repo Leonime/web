@@ -56,6 +56,10 @@ services:
     environment:
       - CONTAINER=celery
       - STAGE=development
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,[::1]
+      - DEBUG=1
+      - ENV_SECRETS_DEBUG=true
+      - LOGLEVEL=debug
     env_file:
       - ./.configs/django/.env
     volumes:
@@ -106,6 +110,8 @@ services:
       - ./.configs/django/.env
     depends_on:
       - postgres
+      - celery
+      - pgadmin
     networks:
       - codeshepherds-backend
       - codeshepherds-frontend
