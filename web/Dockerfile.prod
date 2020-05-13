@@ -36,13 +36,11 @@ RUN apk add --no-cache make
 # install project dependencies
 RUN pip install --upgrade setuptools
 RUN pip install --upgrade virtualenv
-RUN pip install pipenv
-COPY ./Pipfile* /usr/src/app/
-RUN pipenv lock -r > requirements.txt
-# Pipenv insist on creating a virtualenv lets delete it.
-RUN pipenv --rm
-# It's recommended to use pip to install dependancies on docker containers.
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+RUN pip install poetry
+COPY ./poetry.lock ./pyproject.toml /usr/src/app/
+# To reduce the size of the image is recomended to build the dependencies,
+# pip is better at this, so we export the dependencies to a requirements file
+RUN poetry export -f requirements.txt  | pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r /dev/stdin
 
 #########
 # FINAL #
@@ -81,7 +79,6 @@ WORKDIR $APP_HOME
 
 # install project dependencies
 COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
 # copy shell scripts
