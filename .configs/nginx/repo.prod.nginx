@@ -55,6 +55,11 @@ server {
     root /var/www/repo.solder;
     index index.php index.html index.htm;
 
+    location ~ /.well-known/acme-challenge/ {
+        allow all;
+        root /var/www/html;
+    }
+
     location / {
         # URLs to attempt, including pretty ones.
         try_files $uri $uri/ /index.html;
@@ -76,10 +81,5 @@ server {
     # Set header expirations on per-project basis
     location ~* \.(?:ico|css|js|jpe?g|JPG|png|svg|woff)$ {
         expires 365d;
-    }
-
-    location ~ /.well-known/acme-challenge {
-        allow all;
-        root /var/www/html;
     }
 }

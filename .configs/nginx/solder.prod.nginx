@@ -58,6 +58,11 @@ server {
     root /var/www/technicsolder/public;
     index index.php;
 
+    location ~ /.well-known/acme-challenge/ {
+        allow all;
+        root /var/www/html;
+    }
+
     location / {
         # URLs to attempt, including pretty ones
         try_files   $uri $uri/ /index.php?$query_string;
@@ -87,10 +92,5 @@ server {
     location ~* \.(?:ico|css|js|jpe?g|JPG|png|svg|woff)$ {
         expires 365d;
 
-    }
-
-    location ~ /.well-known/acme-challenge {
-        allow all;
-        root /var/www/html;
     }
 }
