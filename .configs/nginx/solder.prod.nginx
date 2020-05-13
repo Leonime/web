@@ -58,7 +58,7 @@ server {
     root /var/www/technicsolder/public;
     index index.php;
 
-    location ~ /.well-known/acme-challenge/ {
+    location ~ /\.well-known/acme-challenge/ {
         allow all;
         root /var/www/html;
     }

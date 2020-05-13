@@ -55,7 +55,7 @@ server {
     root /var/www/repo.solder;
     index index.php index.html index.htm;
 
-    location ~ /.well-known/acme-challenge/ {
+    location ~ /\.well-known/acme-challenge/ {
         allow all;
         root /var/www/html;
     }

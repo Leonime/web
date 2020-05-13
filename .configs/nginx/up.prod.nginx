@@ -66,7 +66,7 @@ server {
         proxy_redirect off;
     }
 
-    location ~ /.well-known/acme-challenge {
+    location ~ /\.well-known/acme-challenge {
         allow all;
         root /var/www/html;
     }
