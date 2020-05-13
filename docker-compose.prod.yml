@@ -136,6 +136,7 @@ services:
       - acme_challenge:/var/www/html
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
+      - certbot_log:/var/log/letsencrypt
       - dhparam:/etc/ssl/certs
       - django_static:/home/app/web/static
       - django_media:/home/app/web/media
@@ -226,6 +227,12 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/.data/certbot/var
+      o: bind
+  certbot_log:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/log
       o: bind
   dhparam:
     driver: local
