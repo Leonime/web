@@ -32,13 +32,12 @@ RUN apk add --no-cache make
 # install project dependencies
 RUN pip install --upgrade setuptools
 RUN pip install --upgrade virtualenv
-RUN pip install pipenv
-COPY ./Pipfile* /usr/src/app/
-RUN pipenv lock -r > requirements.txt
-# Pipenv insist on creating a virtualenv lets delete it.
-RUN pipenv --rm
-# It's recommended to use pip to install dependancies on docker containers.
-RUN pip install -v --no-cache-dir -r requirements.txt
+RUN pip install poetry
+COPY ./poetry.lock ./pyproject.toml /usr/src/app/
+
+# Project initialization:
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-interaction --no-ansi
 
 # copy env_secrets_expand.sh
 COPY ./env_secrets_expand.sh /usr/src/app/env_secrets_expand.sh
