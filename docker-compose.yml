@@ -73,7 +73,7 @@ services:
       - codeshepherds-backend
   django:
     build: ./web
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn codeshepherds.asgi:application -b 0.0.0.0:8000 -w 1 -k uvicorn.workers.UvicornWorker --log-level DEBUG
     secrets:
       - django_db_name
       - django_db_password
