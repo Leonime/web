@@ -34,7 +34,6 @@ whitenoise = "*"
 channels = "*"
 channels-redis = "*"
 uvicorn = "*"
-pandas = "*"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
