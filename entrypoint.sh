@@ -15,6 +15,8 @@ if [ "$DATABASE" = "postgres" ]; then
   printf "PostgreSQL started\n\n"
 fi
 
+CONTAINER_FIRST_RUN="/var/lib/codeshepherds/data/CONTAINER_HAS_RUN_BEFORE"
+
 if [ "$CONTAINER" = "development" ]; then
   printf "#####\n"
   printf "# Django development setup\n"
@@ -23,15 +25,22 @@ if [ "$CONTAINER" = "development" ]; then
   python manage.py flush --no-input
   python manage.py makemigrations
   python manage.py migrate
-  python manage.py loaddata ./cookbook/fixtures/initial_data.json
-  python manage.py loaddata ./base/fixtures/initial_data.json
+  if [ ! -e $CONTAINER_FIRST_RUN ]; then
+    touch $CONTAINER_FIRST_RUN
+    echo "-- First container startup --"
+    # LOGIC HERE
+    python manage.py createsuperuser --noinput
+    python manage.py loaddata ./cookbook/fixtures/initial_data.json
+    python manage.py loaddata ./base/fixtures/initial_data.json
+  else
+    echo "-- Not first container startup --"
+  fi
 elif [ "$CONTAINER" = "production" ]; then
   printf "#####\n"
   printf "# Django production setup\n"
   printf "#####\n"
   python manage.py collectstatic --no-input --clear
   python manage.py migrate
-  CONTAINER_FIRST_RUN="/var/lib/codeshepherds/data/CONTAINER_HAS_RUN_BEFORE"
   if [ ! -e $CONTAINER_FIRST_RUN ]; then
     touch $CONTAINER_FIRST_RUN
     echo "-- First container startup --"
