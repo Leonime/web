@@ -33,6 +33,9 @@ router.register(r'photos', views.PhotoViewSet)
 urlpatterns = [
     # Admin urls
     path('admin/', admin.site.urls),
+    
+    # Account urls
+    path('account/', include('account.urls', namespace='account')),
 
     # Chat app urls
     path('chat/', include('chat.urls', namespace='chat')),
