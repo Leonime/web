@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block container %}
+    {% include 'navbar.html' %}
+    <main role="main" class="container">
+        <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="button">Register</button>
+        </form>
+    </main>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
