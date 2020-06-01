@@ -88,6 +88,7 @@ LOCAL_APPS = [
     'shortener.apps.ShortenerConfig',
     'testing.apps.TestingConfig',
     'thumbnailer.apps.ThumbnailerConfig',
+    'forum.apps.ForumConfig',
 ]
 # Application definition
 INSTALLED_APPS = PRIORITY_APPS + DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
