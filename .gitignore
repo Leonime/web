@@ -6,6 +6,7 @@ dhparam/
 /web/mediafiles/
 /web/staticfiles/
 /pgadmin/data/
+.idea/workspace.xml
 /web/*.json
 *.pyc
 *.ipynb
