@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class Chirp(models.Model):
+    content = models.TextField()
+    image = models.FileField()
