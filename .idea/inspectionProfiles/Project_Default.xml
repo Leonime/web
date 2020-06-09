@@ -1,0 +1,30 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="10">
+            <item index="0" class="java.lang.String" itemvalue="docker" />
+            <item index="1" class="java.lang.String" itemvalue="django" />
+            <item index="2" class="java.lang.String" itemvalue="raven" />
+            <item index="3" class="java.lang.String" itemvalue="rest_framework" />
+            <item index="4" class="java.lang.String" itemvalue="celery" />
+            <item index="5" class="java.lang.String" itemvalue="PIL" />
+            <item index="6" class="java.lang.String" itemvalue="debug_toolbar" />
+            <item index="7" class="java.lang.String" itemvalue="channels" />
+            <item index="8" class="java.lang.String" itemvalue="colorama" />
+            <item index="9" class="java.lang.String" itemvalue="cryptography" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="forum.models.settings" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
