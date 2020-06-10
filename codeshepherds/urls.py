@@ -19,17 +19,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
-from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
 
+from codeshepherds.api import router
 from home.views import Index
-from party.views import PartyViewSet, WishViewSet, PhotoViewSet
-
-router = routers.DefaultRouter()
-router.register(r'parties', PartyViewSet)
-router.register(r'wishes', WishViewSet)
-router.register(r'photos', PhotoViewSet)
-
 
 urlpatterns = [
     # Admin urls
@@ -51,6 +44,7 @@ urlpatterns = [
     # REST API urls
     path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/docs/', include_docs_urls(title='API Docs', public=False)),
+    path(f'{settings.API_URL}', include(router.urls)),
 
     # Testing urls
     path('test/', include('testing.urls', namespace='testing')),
