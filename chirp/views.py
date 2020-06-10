@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.views import View
 from django.views.generic import TemplateView
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from chirp.forms import ChirpForm
@@ -56,13 +56,7 @@ class ChirpCreateView(View):
         return render(request, 'chirp/create_chirp.html', context={"form": form})
 
 
-class ChirpList(generics.ListCreateAPIView):
-    queryset = Chirp.objects.all()
-    serializer_class = ChirpSerializer
-    permission_classes = [IsAuthenticated, ]
-
-
-class ChirpDetail(generics.RetrieveUpdateDestroyAPIView):
+class ChirpViewSet(viewsets.ModelViewSet):
     queryset = Chirp.objects.all()
     serializer_class = ChirpSerializer
     permission_classes = [IsAuthenticated, ]
