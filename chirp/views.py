@@ -1,5 +1,3 @@
-import random
-
 from django.conf import settings
 from django.conf.global_settings import ALLOWED_HOSTS
 from django.http import JsonResponse
@@ -7,9 +5,11 @@ from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.views import View
 from django.views.generic import TemplateView
+from rest_framework import generics, permissions
 
 from chirp.forms import ChirpForm
 from chirp.models import Chirp
+from chirp.serializers import ChirpSerializer
 
 
 class Index(TemplateView):
@@ -53,3 +53,15 @@ class ChirpCreateView(View):
     def get(self, request, *args, **kwargs):
         form = ChirpForm(request.GET or None)
         return render(request, 'chirp/create_chirp.html', context={"form": form})
+
+
+class ChirpList(generics.ListCreateAPIView):
+    queryset = Chirp.objects.all()
+    serializer_class = ChirpSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class ChirpDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Chirp.objects.all()
+    serializer_class = ChirpSerializer
+    permission_classes = (permissions.IsAuthenticated,)
