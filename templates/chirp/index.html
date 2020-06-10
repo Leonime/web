@@ -14,7 +14,8 @@
         <div class='col-md-4 mx-auto col-10'>
             <form class='form' id='chirp_create_form' method='POST' action='/chipper/create-chirp/'>
                 {% csrf_token %}
-                <input type='hidden' value='/' name='next'/>
+                <input type='hidden' value='/chipper/' name='next'/>
+                <div class='d-none alert alert-danger' id="error_display_div"></div>
                 <textarea required='required' class='form-control' name='content' placeholder='Your chirp...'></textarea>
                 <button type='submit' class='btn btn-primary'>Tweet</button>
             </form>
@@ -32,6 +33,16 @@
         chirp_create_form_el.addEventListener("submit", handle_chirp_submit)
         load_chirps(chirps_container_element)
 
+        function handle_chirp_error(msg, display) {
+            const error_div = document.getElementById("error_display_div");
+            if (display === true) {
+                error_div.setAttribute("class", "d-block alert alert-danger")
+                error_div.innerText = msg
+            } else {
+                error_div.setAttribute("class", "d-none alert alert-danger")
+            }
+        }
+
         function handle_chirp_submit(event) {
             event.preventDefault()
             const my_form = event.target
@@ -45,12 +56,34 @@
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
             xhr.onload = function () {
                 if (xhr.status === 201) {
+                    handle_chirp_error("", false)
                     const newTweetJson = xhr.response
                     const newTweetElement = format_chirp_element(newTweetJson)
                     const ogHtml = chirps_container_element.innerHTML
                     chirps_container_element.innerHTML = newTweetElement + ogHtml
                     my_form.reset()
                 }
+                else if (xhr.status === 400) {
+                    const errorJson = xhr.response
+                    const contentError = errorJson.content
+                    let contentErrorMsg;
+                    if (contentError) {
+                        contentErrorMsg = contentError[0]
+                        if (contentErrorMsg) {
+                            handle_chirp_error(contentErrorMsg, true)
+                        } else {
+                            alert("An error occurred. Please try again.")
+                        }
+                    } else {
+                        alert("An error occurred. Please try again.")
+                    }
+                }
+                else if (xhr.status === 500) {
+                    alert("There was a server error, please try again.")
+                }
+            }
+            xhr.onerror = function () {
+                alert("An error occurred. Please try again later.")
             }
             xhr.send(my_form_data)
         }

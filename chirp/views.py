@@ -38,6 +38,10 @@ class ChirpCreateView(View):
             if next_url is not None and is_safe_url(next_url, ALLOWED_HOSTS):
                 return redirect(next_url)
             form = ChirpForm()
+
+        if form.errors:
+            if request.is_ajax():
+                return JsonResponse(form.errors, status=400)
         return render(request, 'chirp/create_chirp.html', context={"form": form})
 
     def get(self, request, *args, **kwargs):
