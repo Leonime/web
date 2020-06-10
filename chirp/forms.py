@@ -1,8 +1,7 @@
 from django import forms
+from django.conf import settings
 
 from chirp.models import Chirp
-
-MAX_TWEET_LENGTH = 240
 
 
 class ChirpForm(forms.ModelForm):
@@ -12,6 +11,6 @@ class ChirpForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get("content")
-        if len(content) > MAX_TWEET_LENGTH:
+        if len(content) > settings.MAX_CHIRP_LENGTH:
             raise forms.ValidationError("This chirp is too long")
         return content
