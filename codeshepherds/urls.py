@@ -38,7 +38,7 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat')),
 
     # Chipper app urls
-    path('chipper/', include('chirp.urls', namespace='chirp')),
+    path('chipper/', include('chirp.urls', namespace='chipper')),
 
     # Home urls
     path('', Index.as_view(), name='index'),
