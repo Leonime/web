@@ -10,51 +10,80 @@
         </div>
     </div>
 
+    <div class='row mb-3'>
+        <div class='col-md-4 mx-auto col-10'>
+            <form class='form' id='chirp_create_form' method='POST' action='/chipper/create-chirp/'>
+                {% csrf_token %}
+                <input type='hidden' value='/' name='next'/>
+                <textarea class='form-control' name='content' placeholder='Your chirp...'></textarea>
+                <button type='submit' class='btn btn-primary'>Tweet</button>
+            </form>
+        </div>
+    </div>
 
     <div class='row' id='chirps'>
         Loading...
     </div>
 
     <script>
-        const tweetsElement = document.getElementById("chirps")
+        const chirp_create_form_el = document.getElementById("chirp_create_form")
+        const chirps_el = document.getElementById("chirps")
 
-        const xhr = new XMLHttpRequest()
-        const method = 'GET' // "POST"
-        const url = "/chipper/chirps"
-        const responseType = "json"
+        chirp_create_form_el.addEventListener("submit", handle_chirp_submit)
+        load_chirps(chirps_el)
 
-        function handleDidLike(tweet_id, currentCount) {
-            console.log(tweet_id, currentCount)
-            return 0
+        function handle_chirp_submit(event) {
+            event.preventDefault()
+            const my_form = event.target
+            const my_form_data = new FormData(my_form)
+            const url = my_form.getAttribute("action")
+            const method = my_form.getAttribute("method")
+            const xhr = new XMLHttpRequest()
+            xhr.open(method, url)
+            xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+            xhr.onload = function () {
+                const chirps_el = document.getElementById("chirps")
+                load_chirps(chirps_el)
+            }
+            xhr.send(my_form_data)
         }
 
-        function LikeBtn(tweet) {
-            return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" +
+        function load_chirps(chirp_element) {
+            const xhr = new XMLHttpRequest()
+            const method = 'GET' // "POST"
+            const url = "/chipper/chirps/"
+            xhr.responseType = "json"
+            xhr.open(method, url)
+            xhr.onload = function () {
+                const serverResponse = xhr.response
+                const listedItems = serverResponse.response
+                let final_chirp = "";
+                for (let i = 0; i < listedItems.length; i++) {
+                    const chirp_obj = listedItems[i];
+                    const currentItem = format_chirp_element(chirp_obj);
+                    final_chirp += currentItem
+                }
+                chirp_element.innerHTML = final_chirp
+            }
+            xhr.send()
+        }
+
+        function handle_did_like(tweet_id, currentCount) {
+            console.log(tweet_id, currentCount)
+        }
+
+        function like_btn(tweet) {
+            return "<button class='btn btn-primary btn-sm' onclick=handle_did_like(" +
                 tweet.id + "," + tweet.likes + ")>" + tweet.likes + " Likes</button>"
         }
 
-        function formatTweetElement(tweet) {
+        function format_chirp_element(tweet) {
             return "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet' id='tweet-" + tweet.id
                 + "'><p>" + tweet.content +
-                "</p><div class='btn-group'>" + LikeBtn(tweet) +
+                "</p><div class='btn-group'>" + like_btn(tweet) +
                 "</div></div>"
         }
-
-        xhr.responseType = responseType
-        xhr.open(method, url)
-        xhr.onload = function () {
-            const serverResponse = xhr.response
-            const listedItems = serverResponse.response // array
-            var finalTweetStr = ""
-            var i;
-            for (i = 0; i < listedItems.length; i++) {
-                var tweetObj = listedItems[i]
-                var currentItem = formatTweetElement(tweetObj)
-                finalTweetStr += currentItem
-            }
-            tweetsElement.innerHTML = finalTweetStr
-        }
-        xhr.send()
     </script>
 {% endblock %}
 

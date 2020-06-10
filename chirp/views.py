@@ -1,7 +1,9 @@
 import random
 
+from django.conf.global_settings import ALLOWED_HOSTS
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.utils.http import is_safe_url
 from django.views import View
 from django.views.generic import TemplateView
 
@@ -26,10 +28,14 @@ class ChirpListView(View):
 class ChirpCreateView(View):
     def post(self, request, *args, **kwargs):
         form = ChirpForm(request.POST or None)
+        next_url = request.POST.get("next") or None
         if form.is_valid():
             obj = form.save(commit=False)
-            # do other form related logic
             obj.save()
+            if request.is_ajax():
+                return JsonResponse({}, status=201)
+            if next_url is not None and is_safe_url(next_url, ALLOWED_HOSTS):
+                return redirect(next_url)
             form = ChirpForm()
         return render(request, 'chirp/create_chirp.html', context={"form": form})
 
