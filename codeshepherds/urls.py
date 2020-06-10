@@ -23,12 +23,12 @@ from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
 
 from home.views import Index
-from party import views
+from party.views import PartyViewSet, WishViewSet, PhotoViewSet
 
 router = routers.DefaultRouter()
-router.register(r'parties', views.PartyViewSet)
-router.register(r'wishes', views.WishViewSet)
-router.register(r'photos', views.PhotoViewSet)
+router.register(r'parties', PartyViewSet)
+router.register(r'wishes', WishViewSet)
+router.register(r'photos', PhotoViewSet)
 
 
 urlpatterns = [
