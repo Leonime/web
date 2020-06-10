@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from rest_framework import routers
+from rest_framework.documentation import include_docs_urls
 
 from home.views import Index
 from party import views
@@ -38,7 +39,7 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat')),
 
     # Chipper app urls
-    path('chipper/', include('chirp.urls', namespace='chipper')),
+    path('', include('chirp.urls', namespace='chipper')),
 
     # Home urls
     path('', Index.as_view(), name='index'),
@@ -46,7 +47,10 @@ urlpatterns = [
 
     # party App Urls
     path('party/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # REST API urls
+    path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/docs/', include_docs_urls(title='API Docs', public=False)),
 
     # Testing urls
     path('test/', include('testing.urls', namespace='testing')),
