@@ -3,6 +3,38 @@
 {% block title %}Chat Rooms{% endblock %}
 
 {% block container %}
+    <div id='chirps'>
+        Loading...
+    </div>
+
+    <script>
+        const tweetsElement = document.getElementById("chirps")
+
+        const xhr = new XMLHttpRequest()
+        const method = 'GET' // "POST"
+        const url = "/chipper/chirps"
+        const responseType = "json"
+
+        function formatTweetElement(tweet) {
+            return "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'><p>" + tweet.content + "</p></div>"
+        }
+
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function () {
+            const serverResponse = xhr.response
+            const listedItems = serverResponse.response // array
+            let finalTweetStr = "";
+            let i;
+            for (i = 0; i < listedItems.length; i++) {
+                const tweetObj = listedItems[i];
+                const currentItem = formatTweetElement(tweetObj);
+                finalTweetStr += currentItem
+            }
+            tweetsElement.innerHTML = finalTweetStr
+        }
+        xhr.send()
+    </script>
 {% endblock %}
 
 {% block javascript %}
