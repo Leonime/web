@@ -18,8 +18,9 @@ class Index(TemplateView):
 class ChirpListView(View):
     def get(self, request, *args, **kwargs):
         qs = Chirp.objects.all()
-        tweets_list = [{"id": x.id, "content": x.content, "likes": random.randint(0, 122)} for x in qs]
+        tweets_list = [x.serialize() for x in qs]
         data = {
+            "is_user": False,
             "response": tweets_list
         }
         return JsonResponse(data)
@@ -33,7 +34,7 @@ class ChirpCreateView(View):
             obj = form.save(commit=False)
             obj.save()
             if request.is_ajax():
-                return JsonResponse({}, status=201)
+                return JsonResponse(obj.serialize(), status=201)
             if next_url is not None and is_safe_url(next_url, ALLOWED_HOSTS):
                 return redirect(next_url)
             form = ChirpForm()

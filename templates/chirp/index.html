@@ -15,7 +15,7 @@
             <form class='form' id='chirp_create_form' method='POST' action='/chipper/create-chirp/'>
                 {% csrf_token %}
                 <input type='hidden' value='/' name='next'/>
-                <textarea class='form-control' name='content' placeholder='Your chirp...'></textarea>
+                <textarea required='required' class='form-control' name='content' placeholder='Your chirp...'></textarea>
                 <button type='submit' class='btn btn-primary'>Tweet</button>
             </form>
         </div>
@@ -27,10 +27,10 @@
 
     <script>
         const chirp_create_form_el = document.getElementById("chirp_create_form")
-        const chirps_el = document.getElementById("chirps")
+        const chirps_container_element = document.getElementById("chirps")
 
         chirp_create_form_el.addEventListener("submit", handle_chirp_submit)
-        load_chirps(chirps_el)
+        load_chirps(chirps_container_element)
 
         function handle_chirp_submit(event) {
             event.preventDefault()
@@ -39,12 +39,18 @@
             const url = my_form.getAttribute("action")
             const method = my_form.getAttribute("method")
             const xhr = new XMLHttpRequest()
+            xhr.responseType = "json"
             xhr.open(method, url)
             xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
             xhr.onload = function () {
-                const chirps_el = document.getElementById("chirps")
-                load_chirps(chirps_el)
+                if (xhr.status === 201) {
+                    const newTweetJson = xhr.response
+                    const newTweetElement = format_chirp_element(newTweetJson)
+                    const ogHtml = chirps_container_element.innerHTML
+                    chirps_container_element.innerHTML = newTweetElement + ogHtml
+                    my_form.reset()
+                }
             }
             xhr.send(my_form_data)
         }
