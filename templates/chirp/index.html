@@ -3,7 +3,15 @@
 {% block title %}Chat Rooms{% endblock %}
 
 {% block container %}
-    <div id='chirps'>
+    {% include 'components/navbar.html' %}
+    <div class='row text-center'>
+        <div class='col'>
+            <h1>Welcome to Chipper</h1>
+        </div>
+    </div>
+
+
+    <div class='row' id='chirps'>
         Loading...
     </div>
 
@@ -26,7 +34,7 @@
         }
 
         function formatTweetElement(tweet) {
-            return "<div class='mb-4 tweet' id='tweet-" + tweet.id
+            return "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet' id='tweet-" + tweet.id
                 + "'><p>" + tweet.content +
                 "</p><div class='btn-group'>" + LikeBtn(tweet) +
                 "</div></div>"
