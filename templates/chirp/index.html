@@ -95,12 +95,12 @@
         function load_chirps(chirp_element) {
             const xhr = new XMLHttpRequest()
             const method = 'GET' // "POST"
-            const url = "/chipper/chirps/"
+            const url = "/api/v1/chipper/chirps/"
             xhr.responseType = "json"
             xhr.open(method, url)
             xhr.onload = function () {
-                const serverResponse = xhr.response
-                const listedItems = serverResponse.response
+                const listedItems = xhr.response.results
+                console.log(listedItems)
                 let final_chirp = "";
                 for (let i = 0; i < listedItems.length; i++) {
                     const chirp_obj = listedItems[i];
