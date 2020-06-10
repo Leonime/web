@@ -1,3 +1,5 @@
+import random
+
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import TemplateView
@@ -12,7 +14,7 @@ class Index(TemplateView):
 class ChirpListView(View):
     def get(self, request, *args, **kwargs):
         qs = Chirp.objects.all()
-        tweets_list = [{"id": x.id, "content": x.content} for x in qs]
+        tweets_list = [{"id": x.id, "content": x.content, "likes": random.randint(0, 122)} for x in qs]
         data = {
             "response": tweets_list
         }
