@@ -1,5 +1,6 @@
 import random
 
+from django.conf import settings
 from django.conf.global_settings import ALLOWED_HOSTS
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -28,10 +29,15 @@ class ChirpListView(View):
 
 class ChirpCreateView(View):
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            if request.is_ajax():
+                return JsonResponse({}, status=401)
+            return redirect(settings.LOGIN_URL)
         form = ChirpForm(request.POST or None)
         next_url = request.POST.get("next") or None
         if form.is_valid():
             obj = form.save(commit=False)
+            obj.user = request.user or None
             obj.save()
             if request.is_ajax():
                 return JsonResponse(obj.serialize(), status=201)
