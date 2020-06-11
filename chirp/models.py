@@ -14,7 +14,7 @@ class Chirp(models.Model):
     parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     likes = models.ManyToManyField(User, related_name='chirp_user', blank=True, through=ChirpLike)
-    content = models.TextField(null=False, blank=False)
+    content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to='images/chipper/', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
