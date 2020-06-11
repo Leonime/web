@@ -249,6 +249,7 @@ SHORT_CODE_MIN = 8
 
 # Chipper
 MAX_CHIRP_LENGTH = 240
+CHIRP_ACTION_OPTIONS = ["chirp", "unchirp", "rechirp"]
 
 # django-extensions settings
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 5
