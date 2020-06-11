@@ -24,17 +24,6 @@ class Index(TemplateView):
     template_name = 'chirp/index.html'
 
 
-class ChirpListView(View):
-    def get(self, request, *args, **kwargs):
-        qs = Chirp.objects.all()
-        tweets_list = [x.serialize() for x in qs]
-        data = {
-            "is_user": False,
-            "response": tweets_list
-        }
-        return JsonResponse(data)
-
-
 class ChirpCreateView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
