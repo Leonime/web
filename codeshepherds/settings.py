@@ -76,6 +76,7 @@ THIRD_PARTY_APPS = [
     'django_icons',
     'rest_framework',
     'widget_tweaks',
+    'corsheaders',
 ]
 # Local Apps
 LOCAL_APPS = [
@@ -97,6 +98,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -376,3 +378,7 @@ REST_FRAMEWORK = {
 }
 
 API_URL = 'api/v1/'
+
+# Cors
+CORS_ORIGIN_ALLOW_ALL = True  # any website has access to my api
+CORS_URLS_REGEX = r'^/api/.*$'
