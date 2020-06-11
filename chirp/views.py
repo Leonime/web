@@ -27,8 +27,6 @@ class Index(TemplateView):
 class ChirpCreateView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            if request.is_ajax():
-                return JsonResponse({}, status=401)
             return redirect(settings.LOGIN_URL)
         form = ChirpForm(request.POST or None)
         next_url = request.POST.get("next") or None
@@ -36,8 +34,6 @@ class ChirpCreateView(View):
             obj = form.save(commit=False)
             obj.user = request.user or None
             obj.save()
-            if request.is_ajax():
-                return JsonResponse(obj.serialize(), status=201)
             if next_url is not None and is_safe_url(next_url, ALLOWED_HOSTS):
                 return redirect(next_url)
             form = ChirpForm()
