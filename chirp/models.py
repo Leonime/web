@@ -2,7 +2,6 @@ import random
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
 
 
 class ChirpLike(models.Model):
@@ -12,10 +11,11 @@ class ChirpLike(models.Model):
 
 
 class Chirp(models.Model):
+    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     likes = models.ManyToManyField(User, related_name='chirp_user', blank=True, through=ChirpLike)
     content = models.TextField(null=False, blank=False)
-    image = models.FileField(null=True, blank=True)
+    image = models.FileField(upload_to='images/chipper/', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -23,6 +23,10 @@ class Chirp(models.Model):
 
     def __str__(self):
         return f'{self.content}'
+
+    @property
+    def is_rechirp(self):
+        return self.parent is not None
 
     def serialize(self):
         return {
