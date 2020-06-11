@@ -12,7 +12,7 @@
 
     <div class='row mb-3'>
         <div class='col-md-4 mx-auto col-10'>
-            <form class='form' id='chirp_create_form' method='POST' action='/chipper/create-chirp/'>
+            <form class='form' id='chirp_create_form' method='POST' action='/api/v1/chipper/chirps/'>
                 {% csrf_token %}
                 <div class='d-none alert alert-danger' id="error_display_div"></div>
                 <input type='hidden' value='/chipper/' name='next'/>
