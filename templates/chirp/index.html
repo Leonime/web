@@ -1,6 +1,6 @@
 {% extends 'main.html' %}
 
-{% block title %}Chat Rooms{% endblock %}
+{% block title %}Welcome to Chipper{% endblock %}
 
 {% block container %}
     {% include 'components/navbar.html' %}
@@ -14,10 +14,10 @@
         <div class='col-md-4 mx-auto col-10'>
             <form class='form' id='chirp_create_form' method='POST' action='/chipper/create-chirp/'>
                 {% csrf_token %}
-                <input type='hidden' value='/chipper/' name='next'/>
                 <div class='d-none alert alert-danger' id="error_display_div"></div>
+                <input type='hidden' value='/chipper/' name='next'/>
                 <textarea required='required' class='form-control' name='content' placeholder='Your chirp...'></textarea>
-                <button type='submit' class='btn btn-primary'>Tweet</button>
+                <button type='submit' class='btn btn-primary'>Chirp</button>
             </form>
         </div>
     </div>
@@ -112,19 +112,50 @@
             xhr.send()
         }
 
-        function handle_did_like(tweet_id, currentCount) {
-            console.log(tweet_id, currentCount)
+        function handle_did_like(chirp_id, currentCount, action) {
+            console.log(chirp_id, currentCount)
+            const url = "/api/v1/chipper/chirps/" + chirp_id + "/like_action/"
+            const method = "POST"
+            const data = JSON.stringify({
+                id: chirp_id,
+                action: action
+            })
+            const xhr = new XMLHttpRequest()
+            const csrftoken = Cookies.get('csrftoken');
+            xhr.open(method, url)
+            xhr.setRequestHeader("Content-Type", "application/json")
+            xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            xhr.onload = function () {
+                // react.js this handle the state much better
+                load_chirps(chirps_container_element)
+            }
+            xhr.send(data)
         }
 
-        function like_btn(tweet) {
+        function chirp_btn(chirp) {
             return "<button class='btn btn-primary btn-sm' onclick=handle_did_like(" +
-                tweet.id + "," + tweet.likes + ")>" + tweet.likes + " Likes</button>"
+                chirp.id + "," + chirp.likes + ",'chirp')>" + chirp.likes + " Chirps</button>"
         }
 
-        function format_chirp_element(tweet) {
-            return "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet' id='tweet-" + tweet.id
-                + "'><p>" + tweet.content +
-                "</p><div class='btn-group'>" + like_btn(tweet) +
+        function unchirp_btn(chirp) {
+            return "<button class='btn btn-outline-primary btn-sm' onclick=handle_did_like(" +
+                chirp.id + "," + chirp.likes + ",'unchirp')>Unchirp</button>"
+        }
+
+        function rechirp_btn(chirp) {
+            return "<button class='btn btn-outline-success btn-sm' onclick=handleTweetActionBtn(" +
+                chirp.id + "," + chirp.likes + ",'rechirp')>Rechirp</button>"
+        }
+
+        function format_chirp_element(chirp) {
+            return "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet' id='tweet-" + chirp.id
+                + "'><p>" + chirp.content +
+                "</p><div class='btn-group'>" +
+                chirp_btn(chirp) +
+                unchirp_btn(chirp) +
+                rechirp_btn(chirp) +
                 "</div></div>"
         }
     </script>
