@@ -27,10 +27,3 @@ class Chirp(models.Model):
     @property
     def is_rechirp(self):
         return self.parent is not None
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "content": self.content,
-            "likes": random.randint(0, 200)
-        }
