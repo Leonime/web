@@ -34,6 +34,9 @@ urlpatterns = [
     # Chipper app urls
     path('', include('chirp.urls', namespace='chipper')),
 
+    # Frontend app urls
+    path('', include('frontend.urls', namespace='frontend')),
+
     # Home urls
     path('', Index.as_view(), name='index'),
     path('s/', include('shortener.urls', namespace='shortener')),
