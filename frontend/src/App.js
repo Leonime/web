@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 
 function loadTweets(callback) {
     const xhr = new XMLHttpRequest()
-    const method = 'GET'
+    const method = 'GET' // "POST"
     const url = "/api/v1/chipper/chirps/"
     xhr.responseType = "json"
     xhr.open(method, url)
@@ -21,7 +20,7 @@ function loadTweets(callback) {
 
 function Tweet(props) {
     const {tweet} = props
-    const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
+    const className = props.className ? props.className : 'col-5 mx-auto col-md-3 align-self-center'
     return <div className={className}>
         <p>{tweet.id} - {tweet.content}</p>
     </div>
@@ -43,25 +42,13 @@ function App() {
     }, [])
     return (
         <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <div>
+            <header className="App-header container col-sm-12">
+                <div className='row justify-content-md-center'>
                     {tweets.map((item, index) => {
-                        return <Tweet tweet={item} className='my-5 py-5 border bg-white text-dark'
+                        return <Tweet tweet={item} className='row col-sm-5 my-3 py-3 border bg-white text-dark'
                                       key={`${index}-{item.id}`}/>
                     })}
                 </div>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
             </header>
         </div>
     );
