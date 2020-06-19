@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}Welcome to Chipper{% endblock %}
+
+{% block container %}
+    {% include 'components/navbar.html' %}
+    <div class='row text-center'>
+        <div class='col'>
+            <h1>Welcome to Chipper</h1>
+        </div>
+    </div>
+
+    <div id="root">
+        <!-- React will load here -->
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static "react/chirp/main.js" %}"></script>
+{% endblock %}
