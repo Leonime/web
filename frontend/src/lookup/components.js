@@ -29,11 +29,3 @@ export function backendLookup(method, endpoint, callback, data) {
     }
     xhr.send(jsonData)
 }
-
-export function createTweet(newTweet, callback) {
-    lookup("POST", "chirps/", callback, {content: newTweet})
-}
-
-export function loadTweets(callback) {
-    lookup("GET", "chirps/", callback)
-}
