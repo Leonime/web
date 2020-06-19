@@ -5,10 +5,9 @@ import './App.css';
 
 function loadTweets(callback) {
     const xhr = new XMLHttpRequest()
-    const method = 'GET' // "POST"
-    const url = "http://localhost:8000/api/v1/chipper/chirps/"
-    const responseType = "json"
-    xhr.responseType = responseType
+    const method = 'GET'
+    const url = "/api/v1/chipper/chirps/"
+    xhr.responseType = "json"
     xhr.open(method, url)
     xhr.onload = function () {
         callback(xhr.response.results, xhr.status)
