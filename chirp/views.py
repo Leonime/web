@@ -66,7 +66,7 @@ class ChirpViewSet(viewsets.ModelViewSet):
                 if like_action == "chirp":
                     chirp.likes.add(request.user)
                     serializer = ChirpSerializer(chirp)
-                    return Response(serializer.data, status=200)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
                 elif like_action == "unchirp":
                     chirp.likes.remove(request.user)
                 elif like_action == "rechirp":
@@ -76,9 +76,9 @@ class ChirpViewSet(viewsets.ModelViewSet):
                         content=content,
                     )
                     serializer = ChirpSerializer(new_tweet)
-                    return Response(serializer.data, status=201)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.data, status.HTTP_202_ACCEPTED)
         except ObjectDoesNotExist:
-            return Response({}, status=404)
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             logger.exception(e)
