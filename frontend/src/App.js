@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import './App.css';
 
 
 function loadTweets(callback) {
     const xhr = new XMLHttpRequest()
-    const method = 'GET' // "POST"
+    const method = 'GET'
     const url = "/api/v1/chipper/chirps/"
     xhr.responseType = "json"
     xhr.open(method, url)
