@@ -20,7 +20,7 @@ class ChirpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chirp
-        fields = ['id', 'content', 'likes']
+        fields = ['id', 'content', 'likes', 'is_rechirp', "parent"]
 
     def get_likes(self, obj):
         return obj.likes.count()
