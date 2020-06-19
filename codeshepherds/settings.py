@@ -85,6 +85,7 @@ LOCAL_APPS = [
     'chat.apps.ChatConfig',
     'chirp.apps.ChirpConfig',
     'cookbook.apps.CookbookConfig',
+    'frontend.apps.FrontendConfig',
     'home.apps.HomeConfig',
     'party.apps.PartyConfig',
     'shortener.apps.ShortenerConfig',
