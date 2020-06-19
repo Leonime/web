@@ -1,4 +1,11 @@
+.idea/
+media/
+static/
 .env
-install-postgres-11.sh
 .travis.yml
+.coveragerc
+.coverage
+.gitignore
 Dockerfile*
+Procfile
+install-postgres-11.sh
