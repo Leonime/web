@@ -12,9 +12,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "webpack --mode development ./src/index.js --output ../assets/js/chirp/main.js",
+    "build": "webpack --mode production ./src/index.js --output ../assets/js/chirp/main.js"
   },
   "eslintConfig": {
     "extends": "react-app"
