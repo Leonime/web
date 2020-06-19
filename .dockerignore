@@ -1,6 +1,7 @@
 .idea/
 media/
 static/
+frontend/node_modules/
 .env
 .travis.yml
 .coveragerc
