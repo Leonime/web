@@ -16,8 +16,6 @@ export function backendLookup(method, endpoint, callback, data) {
     }
 
     xhr.onload = function () {
-        console.log(xhr.response)
-        console.log(xhr.status)
         if (xhr.response.results != null && xhr.status === 200) {
             callback(xhr.response.results, xhr.status)
         }
