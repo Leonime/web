@@ -6,6 +6,7 @@ static/
 mediafiles/
 staticfiles/
 /pgadmin/data/
+assets/react/*
 .idea/workspace.xml
 /web/*.json
 *.pyc
