@@ -10,7 +10,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from chirp.forms import ChirpForm
@@ -51,9 +51,9 @@ class ChirpCreateView(View):
 class ChirpViewSet(viewsets.ModelViewSet):
     queryset = Chirp.objects.all()
     serializer_class = ChirpSerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
 
-    @action(detail=True, methods=['post', 'get'])
+    @action(detail=True, methods=['post'])
     def like_action(self, request, pk=None):
         try:
             chirp = self.get_object()
