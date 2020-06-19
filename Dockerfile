@@ -49,7 +49,6 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY . /usr/src/app/
 
 # lint
-RUN pip install flake8
 COPY . /usr/src/app/
 RUN flake8 --ignore=E501,F401 .
 
