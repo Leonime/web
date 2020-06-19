@@ -13,8 +13,8 @@
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
-    "dev": "webpack --mode development ./src/index.js --output ../assets/js/chirp/main.js",
-    "build": "webpack --mode production ./src/index.js --output ../assets/js/chirp/main.js"
+    "dev": "webpack --mode development ./src/index.js --output ../assets/react/chirp/main.js",
+    "build": "webpack --mode production ./src/index.js --output ../assets/react/chirp/main.js"
   },
   "eslintConfig": {
     "extends": "react-app"
