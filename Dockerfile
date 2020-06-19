@@ -29,9 +29,13 @@ RUN apk add --no-cache g++
 # install uvicorn dependencies
 RUN apk add --no-cache make
 
+# install npm
+RUN apk add --no-cache npm
+
 # install project dependencies
 RUN pip install --upgrade setuptools
 RUN pip install --upgrade virtualenv
+RUN pip install --upgrade pip
 RUN pip install poetry
 COPY ./poetry.lock ./pyproject.toml /usr/src/app/
 
@@ -49,8 +53,17 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY . /usr/src/app/
 
 # lint
-COPY . /usr/src/app/
 RUN flake8 --ignore=E501,F401 .
+
+# react
+WORKDIR /usr/src/app/frontend
+RUN npm install
+RUN npm run build
+WORKDIR /usr/src/app/
+RUN rm -rfv /usr/src/app/frontend/node_modules/
+RUN rm -rfv /usr/src/app/frontend/src/
+RUN rm -rfv /usr/src/app/frontend/.babelrc
+RUN rm -rfv /usr/src/app/frontend/*.js*
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

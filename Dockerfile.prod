@@ -6,7 +6,7 @@
 FROM python:3.8-alpine as builder
 
 # set work directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -33,14 +33,47 @@ RUN apk add --no-cache g++
 # install uvicorn dependencies
 RUN apk add --no-cache make
 
+# install npm
+RUN apk add --no-cache npm
+
 # install project dependencies
 RUN pip install --upgrade setuptools
 RUN pip install --upgrade virtualenv
+RUN pip install --upgrade pip
 RUN pip install poetry
-COPY ./poetry.lock ./pyproject.toml /usr/src/app/
+COPY ./poetry.lock ./pyproject.toml /usr/src/
 # To reduce the size of the image is recomended to build the dependencies,
 # pip is better at this, so we export the dependencies to a requirements file
-RUN poetry export -f requirements.txt  | pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r /dev/stdin
+RUN poetry export -f requirements.txt  | pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/wheels -r /dev/stdin
+
+# changing working dir to bring the app here
+WORKDIR /usr/src/app/
+
+# copy project
+COPY . /usr/src/app/
+
+# react
+
+# changing working dir once more, this makes running the commands a lot more easier.
+WORKDIR /usr/src/app/frontend
+RUN npm install
+RUN npm run build
+
+# lets return to out original working dir so we can do a cleanup.
+WORKDIR /usr/src/app/
+
+# to reduce the image size lets delete all the unneeded files.
+RUN rm -rf /usr/src/app/frontend/node_modules/
+RUN rm -rf /usr/src/app/frontend/src/
+RUN rm -rf /usr/src/app/frontend/.babelrc
+RUN rm -rf /usr/src/app/frontend/*.js*
+RUN rm -rf /usr/src/app/.coverage*
+RUN rm -rf /usr/src/app/.gitignore
+RUN rm -rf /usr/src/app/.travis.yml
+RUN rm -rf /usr/src/app/Dockerfile*
+RUN rm -rf /usr/src/app/*.sh
+RUN rm -rf /usr/src/app/Procfile
+
 
 #########
 # FINAL #
@@ -78,7 +111,7 @@ RUN mkdir -p $APP_HOME/media
 WORKDIR $APP_HOME
 
 # install project dependencies
-COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/wheels /wheels
 RUN pip install --no-cache /wheels/*
 
 # copy shell scripts
@@ -86,7 +119,7 @@ COPY ./env_secrets_expand.sh $APP_HOME
 COPY ./entrypoint.sh $APP_HOME
 
 # copy project
-COPY . $APP_HOME
+COPY --from=builder /usr/src/app $APP_HOME
 
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
