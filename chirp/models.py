@@ -11,12 +11,13 @@ class ChirpLike(models.Model):
 
 
 class Chirp(models.Model):
-    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    likes = models.ManyToManyField(User, related_name='chirp_user', blank=True, through=ChirpLike)
-    content = models.TextField(blank=True, null=True)
-    image = models.FileField(upload_to='images/chipper/', blank=True, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL, help_text='The parent chirp.')
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, help_text='Who is the owner of the chirp.')
+    likes = models.ManyToManyField(User, related_name='chirp_user', blank=True, through=ChirpLike,
+                                   help_text='It keeps a record on who likes the chirp.')
+    content = models.TextField(blank=True, null=True, help_text='The content of the chirp.')
+    image = models.FileField(upload_to='images/chipper/', blank=True, null=True, help_text='An image.')
+    timestamp = models.DateTimeField(auto_now_add=True, help_text='The time when the chirp was created.')
 
     class Meta:
         ordering = ['-id']
