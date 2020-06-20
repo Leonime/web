@@ -15,8 +15,25 @@ class ChirpActionSerializer(serializers.Serializer):
         return value
 
 
+class ChirpCreateSerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Chirp
+        fields = ['id', 'content', 'likes']
+
+    def get_likes(self, obj):
+        return obj.likes.count()
+
+    def validate_content(self, value):
+        if len(value) > MAX_CHIRP_LENGTH:
+            raise serializers.ValidationError("This chirp is too long")
+        return value
+
+
 class ChirpSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
+    parent = ChirpCreateSerializer(read_only=True)
 
     class Meta:
         model = Chirp
@@ -27,5 +44,5 @@ class ChirpSerializer(serializers.ModelSerializer):
 
     def validate_content(self, value):
         if len(value) > MAX_CHIRP_LENGTH:
-            raise serializers.ValidationError("This tweet is too long")
+            raise serializers.ValidationError("This chirp is too long")
         return value
