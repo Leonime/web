@@ -6,7 +6,7 @@ from django.db import models
 
 class ChirpLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tweet = models.ForeignKey("Chirp", on_delete=models.CASCADE)
+    chirp = models.ForeignKey("Chirp", on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
