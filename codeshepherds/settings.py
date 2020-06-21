@@ -53,6 +53,11 @@ SITE_ID = 1
 # Redis url
 REDIS_URL = os.environ.get('REDIS_URL')
 
+# Auth urls defaults
+LOGIN_URL = 'login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'login/'
+
 # Installed apps
 PRIORITY_APPS = [
     'channels',
