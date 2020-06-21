@@ -81,12 +81,12 @@ class ChirpViewSet(viewsets.ModelViewSet):
                 elif like_action == "unchirp":
                     chirp.likes.remove(request.user)
                 elif like_action == "rechirp":
-                    new_tweet = Chirp.objects.create(
+                    new_chirp = Chirp.objects.create(
                         user=request.user,
                         parent=chirp,
                         content=content,
                     )
-                    serializer = ChirpSerializer(new_tweet)
+                    serializer = ChirpSerializer(new_chirp)
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.data, status.HTTP_202_ACCEPTED)
         except ObjectDoesNotExist:
