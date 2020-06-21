@@ -11,7 +11,7 @@ class ChirpActionSerializer(serializers.Serializer):
     def validate_action(self, value):
         value = value.lower().strip()
         if value not in CHIRP_ACTION_OPTIONS:
-            raise serializers.ValidationError("This is not a valid action for tweets")
+            raise serializers.ValidationError("This is not a valid action for chirps")
         return value
 
 
