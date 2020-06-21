@@ -57,10 +57,10 @@
             xhr.onload = function () {
                 if (xhr.status === 201) {
                     handle_chirp_error("", false)
-                    const newTweetJson = xhr.response
-                    const newTweetElement = format_chirp_element(newTweetJson)
+                    const newChirpJson = xhr.response
+                    const newChirpElement = format_chirp_element(newChirpJson)
                     const ogHtml = chirps_container_element.innerHTML
-                    chirps_container_element.innerHTML = newTweetElement + ogHtml
+                    chirps_container_element.innerHTML = newChirpElement + ogHtml
                     my_form.reset()
                 }
                 else if (xhr.status === 400) {
@@ -113,7 +113,6 @@
         }
 
         function handle_did_like(chirp_id, currentCount, action) {
-            console.log(chirp_id, currentCount)
             const url = "/api/v1/chipper/chirps/" + chirp_id + "/like_action/"
             const method = "POST"
             const data = JSON.stringify({
@@ -150,7 +149,7 @@
         }
 
         function format_chirp_element(chirp) {
-            return "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet' id='tweet-" + chirp.id
+            return "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 chirp' id='chirp-" + chirp.id
                 + "'><p>" + chirp.content +
                 "</p><div class='btn-group'>" +
                 chirp_btn(chirp) +
