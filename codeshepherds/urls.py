@@ -28,6 +28,9 @@ urlpatterns = [
     # Admin urls
     path('admin/', admin.site.urls),
 
+    # Accounts app urls
+    path('', include('accounts.url', namespace='accounts')),
+
     # Chat app urls
     path('chat/', include('chat.urls', namespace='chat')),
 
