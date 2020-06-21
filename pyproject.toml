@@ -36,6 +36,7 @@ channels-redis = "*"
 uvicorn = "*"
 coreapi = "*"
 django-cors-headers = "*"
+django-crispy-forms = "*"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
