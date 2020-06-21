@@ -13,3 +13,7 @@ class UserLoginView(views.LoginView):
             'btn_label': 'Login',
         }
         return render(request, self.template_name, context)
+
+
+class UserLogoutView(views.LogoutView):
+    template_name = 'account/auth.html'
