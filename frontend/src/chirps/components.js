@@ -36,6 +36,5 @@ export function ChirpDetailComponent(props) {
             setDidLookup(true)
         }
     }, [chirpId, didLookup, setDidLookup])
-
     return chirp === null ? null : <Chirp chirp={chirp} className={props.className}/>
 }
