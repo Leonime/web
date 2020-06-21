@@ -77,6 +77,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'widget_tweaks',
     'corsheaders',
+    'crispy_forms',
 ]
 # Local Apps
 LOCAL_APPS = [
@@ -394,3 +395,6 @@ API_URL = 'api/v1/'
 # Cors
 CORS_ORIGIN_ALLOW_ALL = True  # any website has access to my api
 CORS_URLS_REGEX = r'^/api/.*$'
+
+# django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
