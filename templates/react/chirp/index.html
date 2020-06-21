@@ -10,11 +10,22 @@
             <h1>Welcome to Chipper</h1>
         </div>
     </div>
-
-    <div id="root">
-        <!-- React will load here -->
-    </div>
+    <div id='chirp-container'></div>
+    <div id="chirp" data-username="cfe" data-can-chirp="false"></div>
 {% endblock %}
 {% block javascript %}
+    <script>
+        const path = window.location.pathname;
+        const idRegex = /\/(\d+)\//;
+        const match = idRegex.exec(path);
+        if (match) {
+            const chirpId = match[1];
+            const chirpsEl = document.getElementById("chirp");
+            chirpsEl.className = 'd-none'
+            const chirpEl = "<div class='chirp-detail' data-chirp-id=" + chirpId + " data-class-name='col-6'></div>";
+            const mainContainer = document.getElementById("chirp-container");
+            mainContainer.innerHTML = chirpEl
+        }
+    </script>
     <script src="{% static "react/chirp/main.js" %}"></script>
 {% endblock %}
