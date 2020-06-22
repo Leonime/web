@@ -12,7 +12,7 @@ export function Chirp(props) {
 
     const handleLink = (event) => {
         event.preventDefault()
-        window.location.href = `/${chirp.id}`
+        window.location.href = `/frontend/${chirp.id}`
     }
 
     const handlePerformAction = (newActionChirp, status) => {
