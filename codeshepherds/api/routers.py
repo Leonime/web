@@ -1,12 +1,11 @@
 from rest_framework import routers
 
 from chirp.api.routers import chirp_router
-from party import views as party_views
+from party.api.routers import party_router
 
 router = routers.DefaultRouter()
-# Party app
-router.register(r'party/parties', party_views.PartyViewSet)
-router.register(r'party/wishes', party_views.WishViewSet)
-router.register(r'party/photos', party_views.PhotoViewSet)
 
+# Party app
+router.registry.extend(party_router.registry)
+# Chirp app
 router.registry.extend(chirp_router.registry)
