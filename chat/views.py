@@ -1,10 +1,12 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.views import View
 
 
+@login_required
 class Index(View):
     template_name = 'chat/index.html'
 
@@ -13,6 +15,7 @@ class Index(View):
         return render(request, self.template_name, context)
 
 
+@login_required
 class Room(View):
     template_name = 'chat/room.html'
 
