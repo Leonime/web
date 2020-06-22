@@ -15,7 +15,7 @@ from rest_framework.response import Response
 
 from chirp.forms import ChirpForm
 from chirp.models import Chirp
-from chirp.serializers import ChirpSerializer, ChirpActionSerializer
+from chirp.api.serializers import ChirpSerializer, ChirpActionSerializer
 
 logger = logging.getLogger(__name__)
 
