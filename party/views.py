@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 from party.models import Party, Wish, Photo
-from party.serializers import PartySerializer, WishSerializer, PhotoSerializer
+from party.api.serializers import PartySerializer, WishSerializer, PhotoSerializer
 
 
 class PartyViewSet(viewsets.ModelViewSet):
