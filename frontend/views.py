@@ -6,6 +6,10 @@ class Index(TemplateView):
     template_name = 'react/chirp/index.html'
 
 
+class ChirpList(TemplateView):
+    template_name = 'react/chirp/list.html'
+
+
 class ChirpDetail(TemplateView):
     template_name = 'react/chirp/detail.html'
 
