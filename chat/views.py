@@ -1,13 +1,12 @@
 import json
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.views import View
 
 
-@login_required
-class Index(View):
+class Index(LoginRequiredMixin, View):
     template_name = 'chat/index.html'
 
     def get(self, request, *args, **kwargs):
@@ -15,8 +14,7 @@ class Index(View):
         return render(request, self.template_name, context)
 
 
-@login_required
-class Room(View):
+class Room(LoginRequiredMixin, View):
     template_name = 'chat/room.html'
 
     def get(self, request, *args, **kwargs):
