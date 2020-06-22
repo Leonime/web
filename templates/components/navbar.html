@@ -1,8 +1,44 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<style type="text/css">
+    .smart-scroll {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+
+    .scrolled-down {
+        transform: translateY(-100%);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .scrolled-up {
+        transform: translateY(0);
+        transition: all 0.3s ease-in-out;
+    }
+</style>
+<nav class="navbar smart-scroll navbar-expand-lg navbar-dark bg-secondary">
     <a class="navbar-brand" href="#">
-        <img src="{% static 'logo/bit.png' %}" height="30" class="height: auto d-inline-block align-top"
+        <img src="{% static 'logo/bit.png' %}" height="25" class="height: auto d-inline-block align-top"
              alt="Responsive image">
         <a class="navbar-brand" href="#">Codeshepherds</a>
     </a>
 </nav>
+<script typeof="text/javascript">
+    $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
+
+    // detect scroll top or down
+    if ($('.smart-scroll').length > 0) { // check if element exists
+        let last_scroll_top = 0;
+        $(window).on('scroll', function () {
+            const scroll_top = $(this).scrollTop();
+            if (scroll_top < last_scroll_top) {
+                $('.smart-scroll').removeClass('scrolled-down').addClass('scrolled-up');
+            } else {
+                $('.smart-scroll').removeClass('scrolled-up').addClass('scrolled-down');
+            }
+            last_scroll_top = scroll_top;
+        });
+    }
+</script>
