@@ -54,7 +54,7 @@ SITE_ID = 1
 REDIS_URL = os.environ.get('REDIS_URL')
 
 # Auth urls defaults
-LOGIN_URL = 'login/'
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
@@ -94,6 +94,7 @@ LOCAL_APPS = [
     'frontend.apps.FrontendConfig',
     'home.apps.HomeConfig',
     'party.apps.PartyConfig',
+    'profiles.apps.ProfilesConfig',
     'shortener.apps.ShortenerConfig',
     'testing.apps.TestingConfig',
     'thumbnailer.apps.ThumbnailerConfig',
