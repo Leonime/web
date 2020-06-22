@@ -47,6 +47,9 @@ urlpatterns = [
     # party App Urls
     path('party/', include(router.urls)),
 
+    # Profile app urls
+    path('', include('profiles.urls', namespace='profiles')),
+
     # REST API urls
     path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/docs/', include_docs_urls(title='API Docs', public=False)),
