@@ -1,20 +1,20 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from chirp.api.serializers import ChirpSerializer, ChirpActionSerializer
 from chirp.models import Chirp
 from chirp.views import logger
+from codeshepherds.api.paginators import RelativePageNumberPagination
 
 
 class ChirpViewSet(viewsets.ModelViewSet):
     queryset = Chirp.objects.all()
     serializer_class = ChirpSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, ]
-    pagination_class = PageNumberPagination
+    pagination_class = RelativePageNumberPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
