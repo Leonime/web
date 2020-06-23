@@ -6,6 +6,6 @@ from profiles.views import UserProfileView
 
 app_name = 'profiles'
 urlpatterns = [
-    path('profiles/create/', UserProfileView.as_view(), name='login'),
+    path('profiles/edit/', UserProfileView.as_view(), name='user_profile'),
     path(f'{settings.API_URL}', include(profiles_router.urls)),
 ]
