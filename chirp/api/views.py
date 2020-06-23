@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
@@ -13,6 +14,7 @@ class ChirpViewSet(viewsets.ModelViewSet):
     queryset = Chirp.objects.all()
     serializer_class = ChirpSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, ]
+    pagination_class = PageNumberPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -54,3 +56,14 @@ class ChirpViewSet(viewsets.ModelViewSet):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             logger.exception(e)
+
+    @action(methods=['GET'], detail=False)
+    def feed(self, request, *args, **kwargs):
+        user = request.user
+        queryset = Chirp.objects.feed(user)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=200)
