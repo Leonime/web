@@ -21,7 +21,7 @@ def generate_superuser(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('base', '0001_initial'),
+        ('profiles', '0001_initial'),
     ]
 
     operations = [
