@@ -1,5 +1,3 @@
-import random
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
@@ -21,13 +19,12 @@ class ChirpQuerySet(models.QuerySet):
         if profiles_exist:
             followed_users_id = user.following.values_list("user__id", flat=True)
         return self.filter(
-            Q(user__id__in=followed_users_id) |
-            Q(user=user)
+            Q(user__id__in=followed_users_id) | Q(user=user)
         ).distinct().order_by("-timestamp")
 
 
 class ChirpManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
+    def get_queryset(self):
         return ChirpQuerySet(self.model, using=self._db)
 
     def feed(self, user):
