@@ -5,6 +5,7 @@ import {Chirp} from "./detail";
 export function ChirpList(props) {
     const [chirpsInit, setChirpsInit] = useState([])
     const [chirps, setChirps] = useState([])
+    const [nextUrl, setNextUrl] = useState(null)
     const [chirpsDidSet, setChirpsDidSet] = useState(false)
     useEffect(() => {
         const final = [...props.newChirps].concat(chirpsInit)
@@ -17,7 +18,8 @@ export function ChirpList(props) {
         if (chirpsDidSet === false) {
             const handleChirpListLookup = (response, status) => {
                 if (status === 200) {
-                    setChirpsInit(response)
+                    setNextUrl(response.next)
+                    setChirpsInit(response.results)
                     setChirpsDidSet(true)
                 } else {
                     alert("There was an error")
@@ -35,11 +37,33 @@ export function ChirpList(props) {
         updateFinalChirps.unshift(chirps)
         setChirps(updateFinalChirps)
     }
-    return chirps.map((item, index) => {
-        return <Chirp
-            chirp={item}
-            didRechirp={handleDidRechirp}
-            className='my-5 py-5 border bg-white text-dark'
-            key={`${index}-{item.id}`}/>
-    })
+
+    const handleLoadNext = (event) => {
+        event.preventDefault()
+        if (nextUrl !== null) {
+            const handleLoadNextResponse = (response, status) => {
+                if (status === 200) {
+                    setNextUrl(response.next)
+                    const newChirps = [...chirps].concat(response.results)
+                    setChirpsInit(newChirps)
+                    setChirps(newChirps)
+                } else {
+                    alert("There was an error")
+                }
+            }
+            apiChirpList(props.username, handleLoadNextResponse, nextUrl)
+        }
+    }
+
+    return <React.Fragment>{
+        chirps.map((item, index) => {
+            return <Chirp
+                chirp={item}
+                didRechirp={handleDidRechirp}
+                className='my-5 py-5 border bg-white text-dark'
+                key={`${index}-{item.id}`}/>
+        })
+    }
+        {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load next</button>}
+    </React.Fragment>
 }
