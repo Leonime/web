@@ -45,7 +45,7 @@ urlpatterns = [
     path('s/', include('shortener.urls', namespace='shortener')),
 
     # party App Urls
-    path('party/', include(router.urls)),
+    path('', include('party.urls', namespace='party')),
 
     # Profile app urls
     path('', include('profiles.urls', namespace='profiles')),
@@ -53,7 +53,7 @@ urlpatterns = [
     # REST API urls
     path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/docs/', include_docs_urls(title='API Docs', public=False)),
-    path(f'{settings.API_URL}', include(router.urls)),
+    # path(f'{settings.API_URL}', include(router.urls)),
 
     # Testing urls
     path('test/', include('testing.urls', namespace='testing')),
