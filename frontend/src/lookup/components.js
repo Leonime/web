@@ -16,10 +16,7 @@ export function backendLookup(method, endpoint, callback, data) {
     }
 
     xhr.onload = function () {
-        if (xhr.response.results != null && xhr.status === 200) {
-            callback(xhr.response.results, xhr.status)
-        }
-        else if(xhr.status === 201 || xhr.status === 200) {
+        if(xhr.status === 201 || xhr.status === 200) {
             callback(xhr.response, xhr.status)
         }
         else if(xhr.status === 403) {
