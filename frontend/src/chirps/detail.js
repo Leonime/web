@@ -1,10 +1,13 @@
 import React, {useState} from "react";
 import {ActionBtn} from "./buttons";
+import {UserDisplay, UserPicture} from "../profiles";
 
 export function Chirp(props) {
-    const {chirp, didRechirp, hideActions} = props
+    const {chirp, didRechirp, hideActions, isRechirp, rechirper} = props
+    console.log(props)
     const [actionChirp, setActionChirp] = useState(props.chirp ? props.chirp : null)
-    const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
+    let className = props.className ? props.className : 'col-10 mx-auto col-md-6'
+    className = isRechirp === true ? `${className} p-2 border rounded` : className
     const path = window.location.pathname
     const match = path.match(/(?<chirpid>\d+)/)
     const urlChirpId = match ? match.groups.chirpid : -1
@@ -26,33 +29,41 @@ export function Chirp(props) {
     }
 
     return <div className={className}>
-        <div>
-            <p>{chirp.id} - {chirp.content}</p>
-            <ParentChirp chirp={chirp}/>
+        {isRechirp === true && <div className='mb-2'>
+            <span className='small text-muted'>Rechirp via <UserDisplay user={rechirper}/></span>
+        </div>}
+        <div className='d-flex'>
+            <div className=''>
+                <UserPicture user={chirp.user}/>
+            </div>
+            <div className='col-11'>
+                <div>
+                    <p>
+                        <UserDisplay includeFullName user={chirp.user}/>
+                    </p>
+                    <p>{chirp.content}</p>
+                    <ParentChirp chirp={chirp} rechirper={chirp.user}/>
+                </div>
+                <div className='btn btn-group px-0'>
+                    {(actionChirp && hideActions !== true) && <React.Fragment>
+                        <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
+                                   action={{type: "chirp", display: "chirp"}}/>
+                        <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
+                                   action={{type: "unchirp", display: "Unchirp"}}/>
+                        <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
+                                   action={{type: "rechirp", display: "Rechirp"}}/>
+                    </React.Fragment>
+                    }
+                    {isDetail === true ? null :
+                        <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>}
+                </div>
+            </div>
         </div>
-        <div className='btn btn-group'>
-            {(actionChirp && hideActions !== true) && <React.Fragment>
-                <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
-                           action={{type: "chirp", display: chirp.likes + " Chirp"}}/>
-                <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
-                           action={{type: "unchirp", display: "Unchirp"}}/>
-                <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
-                           action={{type: "rechirp", display: "Rechirp"}}/>
-            </React.Fragment>
-            }
-            {isDetail === true ? null :
-                <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>}
-        </div>
-
     </div>
 }
 
 export function ParentChirp(props) {
     const {chirp} = props
-    return chirp.parent ? <div className='row'>
-        <div className='col-11 mx-auto p-3 border rounded'>
-            <p className='mb-0 text-muted small'>Rechirp</p>
-            <Chirp hideActions className={' '} chirp={chirp.parent}/>
-        </div>
-    </div> : null
+    return chirp.parent ?
+        <Chirp isRechirp rechirper={props.rechirper} hideActions className={' '} chirp={chirp.parent}/> : null
 }
