@@ -1,22 +1,25 @@
 import {backendLookup} from '../lookup'
 
 export function apiChirpCreate(newChirp, callback) {
-    backendLookup("POST", "chirps/", callback, {content: newChirp})
+    backendLookup("POST", "/api/v1/chipper/chirps/", callback, {content: newChirp})
 }
 
-export function apiChirpList(username, callback) {
-    let endpoint = "chirps/"
+export function apiChirpList(username, callback, nextUrl) {
+    let endpoint = "/api/v1/chipper/chirps/"
     if (username) {
-        endpoint = `chirps/?username=${username}`
+        endpoint += `?username=${username}`
+    }
+    if (nextUrl !== null && nextUrl !== undefined) {
+        endpoint = nextUrl
     }
     backendLookup("GET", endpoint, callback)
 }
 
 export function apiChirpDetail(chirpId, callback) {
-    backendLookup("GET", `chirps/${chirpId}/`, callback)
+    backendLookup("GET", `/api/v1/chipper/chirps/${chirpId}/`, callback)
 }
 
 export function apiChirpAction(chirp_id, action, callback) {
     const data = {id: chirp_id, action: action}
-    backendLookup("POST", "chirps/" + chirp_id + "/like_action/", callback, data)
+    backendLookup("POST", "/api/v1/chipper/chirps/" + chirp_id + "/like_action/", callback, data)
 }
