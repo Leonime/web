@@ -4,7 +4,7 @@ from django.db import models
 
 class FollowerRelation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, help_text='The user')
-    profile = models.ForeignKey("Profile", on_delete=models.CASCADE, help_text='The user profile')
+    profile = models.ForeignKey("profiles.Profile", on_delete=models.CASCADE, help_text='The user profile')
     timestamp = models.DateTimeField(auto_now_add=True, help_text='A record keeping timestamp.')
 
 
