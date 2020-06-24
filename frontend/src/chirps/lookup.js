@@ -7,13 +7,10 @@ export function apiChirpCreate(newChirp, callback) {
 export function apiChirpList(username, callback, nextUrl) {
     let endpoint = "/api/v1/chipper/chirps/"
     if (username) {
-        endpoint += `?username=${username}`
+        endpoint = `/api/v1/chipper/chirps/feed/`
     }
     if (nextUrl !== null && nextUrl !== undefined) {
         endpoint = nextUrl
-        if (username) {
-            endpoint += `&username=${username}`
-        }
     }
     backendLookup("GET", endpoint, callback)
 }
