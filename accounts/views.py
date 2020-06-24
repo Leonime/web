@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import views, login
 from django.shortcuts import render, redirect
 
@@ -32,6 +33,7 @@ class RegisterUserView(views.FormView):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, "User created successfully, you're now logged in.")
             return redirect(self.success_url)
 
         context = {
