@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login{% endblock %}
+
+{% block container %}
+    {% include 'components/navbar.html' %}
+    <div class='col-10 col-md-4 mx-auto'>
+        {% csrf_token %}
+        {{ form|crispy }}
+    </div>
+{% endblock %}
