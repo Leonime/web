@@ -11,6 +11,9 @@ export function apiChirpList(username, callback, nextUrl) {
     }
     if (nextUrl !== null && nextUrl !== undefined) {
         endpoint = nextUrl
+        if (username) {
+            endpoint += `&username=${username}`
+        }
     }
     backendLookup("GET", endpoint, callback)
 }
