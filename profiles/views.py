@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from django.shortcuts import render, redirect
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 
 from profiles.forms import UserProfileForm
 from profiles.models import Profile
@@ -55,3 +56,23 @@ class UserProfileView(LoginRequiredMixin, FormView):
             "btn_label": "Save",
         }
         return render(request, self.template_name, context)
+
+
+class UserProfileDetailView(LoginRequiredMixin, TemplateView):
+    template_name = 'react/profiles/detail.html'
+
+    def get(self, request, *args, **kwargs):
+        super(UserProfileDetailView, self).get(request, *args, **kwargs)
+        context = self.get_context_data(**kwargs)
+        username = kwargs.get('username' or None)
+
+        if username:
+            qs = Profile.objects.filter(user__username=username)
+            if not qs.exists():
+                raise Http404
+            profile_obj = qs.first()
+            context = {
+                "username": username,
+                "profile": profile_obj
+            }
+        return self.render_to_response(context)
