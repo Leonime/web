@@ -3,7 +3,7 @@ import React from 'react'
 export function UserLink(props) {
     const {username} = props
     const handleUserLink = (event) => {
-        window.location.href = `/profiles/${username}`
+        window.location.href = `/profiles/${username}/`
     }
     return <span className='pointer' onClick={handleUserLink}>
       {props.children}
