@@ -4,7 +4,6 @@ import {UserDisplay, UserPicture} from "../profiles";
 
 export function Chirp(props) {
     const {chirp, didRechirp, hideActions, isRechirp, rechirper} = props
-    console.log(props)
     const [actionChirp, setActionChirp] = useState(props.chirp ? props.chirp : null)
     let className = props.className ? props.className : 'col-10 mx-auto col-md-6'
     className = isRechirp === true ? `${className} p-2 border rounded` : className
