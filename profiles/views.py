@@ -4,7 +4,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, TemplateView
 
-from profiles.forms import UserProfileForm
+from profiles.forms import UserProfileForm, UserProfileReadOnlyForm
 from profiles.models import Profile
 
 
@@ -48,6 +48,36 @@ class UserProfileView(LoginRequiredMixin, FormView):
             "btn_label": "Save",
         }
         return render(request, self.template_name, context)
+
+    def get(self, request, *args, **kwargs):
+        form, user = self.set_form(request)
+        context = {
+            "form": form,
+            "btn_label": "Save",
+        }
+        return render(request, self.template_name, context)
+
+
+class UserProfileReadOnlyView(LoginRequiredMixin, FormView):
+    form_class = UserProfileReadOnlyForm
+    template_name = 'profiles/view.html'
+
+    def set_form(self, request):
+        user = request.user
+        user_data = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email
+        }
+        try:
+            my_profile = user.profile
+        except ObjectDoesNotExist:
+            my_profile, created = Profile.objects.get_or_create(user=user)
+            if not created:
+                raise Exception('Something went wrong.')
+        form = self.form_class(request.POST or None, instance=my_profile, initial=user_data)
+
+        return form, user
 
     def get(self, request, *args, **kwargs):
         form, user = self.set_form(request)
