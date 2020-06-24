@@ -30,10 +30,14 @@
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-{#{% include 'navbar.html' %}#}
-
-{% block container %}
-{% endblock container %}
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-sm-12 my-3">
+            {% block container %}
+            {% endblock container %}
+        </div>
+    </div>
+</main>
 </body>
 <footer>
     {% block javascript %}
