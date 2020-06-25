@@ -15,6 +15,10 @@ class ChirpList(TemplateView):
     template_name = 'react/chirp/list.html'
 
 
+class ChirpFrontPageView(TemplateView):
+    template_name = 'react/chirp/front_page.html'
+
+
 class ChirpDetail(TemplateView):
     template_name = 'react/chirp/detail.html'
 
