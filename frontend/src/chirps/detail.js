@@ -46,7 +46,7 @@ export function Chirp(props) {
                 <div className='btn btn-group px-0'>
                     {(actionChirp && hideActions !== true) && <React.Fragment>
                         <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
-                                   action={{type: "chirp", display: "chirp"}}/>
+                                   action={{type: "chirp", display: "Chirp"}}/>
                         <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
                                    action={{type: "unchirp", display: "Unchirp"}}/>
                         <ActionBtn chirp={actionChirp} didPerformAction={handlePerformAction}
