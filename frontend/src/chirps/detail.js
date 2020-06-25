@@ -6,7 +6,7 @@ export function Chirp(props) {
     const {chirp, didRechirp, hideActions, isRechirp, rechirper} = props
     const [actionChirp, setActionChirp] = useState(props.chirp ? props.chirp : null)
     let className = props.className ? props.className : 'col-10 mx-auto col-md-6'
-    className = isRechirp === true ? `${className} p-2 border rounded` : className
+    className = isRechirp === true ? `${className} p-2 border border-dark rounded` : className
     const path = window.location.pathname
     const match = path.match(/(?<chirpid>\d+)/)
     const urlChirpId = match ? match.groups.chirpid : -1
@@ -54,7 +54,7 @@ export function Chirp(props) {
                     </React.Fragment>
                     }
                     {isDetail === true ? null :
-                        <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>}
+                        <button className='btn btn-dark btn-sm' onClick={handleLink}>View</button>}
                 </div>
             </div>
         </div>

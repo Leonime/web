@@ -61,7 +61,7 @@ export function ChirpList(props) {
             return <Chirp
                 chirp={item}
                 didRechirp={handleDidRechirp}
-                className='my-5 py-5 border bg-white text-dark'
+                className='my-3 py-3 border border-dark rounded bg-secondary text-white'
                 key={`${index}-{item.id}`}/>
         })
     }
