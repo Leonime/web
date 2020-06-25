@@ -18,6 +18,19 @@ export function ChirpsComponent(props) {
     </div>
 }
 
+export function FrontPageComponent(props) {
+    const [newChirps, setNewChirps] = useState([])
+    const handleNewChirp = (newChirp) => {
+        let tempNewChirps = [...newChirps]
+        tempNewChirps.unshift(newChirp)
+        setNewChirps(tempNewChirps)
+    }
+    return <div className={props.className}>
+        <ChirpCreate didChirp={handleNewChirp} className='col-12 mb-3'/>
+        <ChirpList newChirps={newChirps} {...props} front_page={true} />
+    </div>
+}
+
 export function ChirpDetailComponent(props) {
     const {chirpId} = props
     const [didLookup, setDidLookup] = useState(false)
