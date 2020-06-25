@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {ChirpDetailComponent, ChirpsComponent} from "./chirps";
+import {ProfileBadgeComponent} from "./profiles";
 
 const appEl = document.getElementById('root')
 if (appEl) {
@@ -21,6 +22,14 @@ const chirpDetailElements = document.querySelectorAll(".chirp-detail")
 chirpDetailElements.forEach(container => {
     ReactDOM.render(
         e(ChirpDetailComponent, container.dataset),
+        container);
+})
+
+const userProfileBadgeElements = document.querySelectorAll(".profile-badge")
+
+userProfileBadgeElements.forEach(container => {
+    ReactDOM.render(
+        e(ProfileBadgeComponent, container.dataset),
         container);
 })
 
