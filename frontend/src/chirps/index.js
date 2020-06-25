@@ -1,4 +1,4 @@
-import {ChirpsComponent, ChirpDetailComponent} from './components'
+import {ChirpsComponent, ChirpDetailComponent, FrontPageComponent} from './components'
 import {ActionBtn} from './buttons'
 import {ChirpCreate} from './create'
 import {Chirp, ParentChirp} from "./detail";
@@ -11,5 +11,6 @@ export {
     ChirpCreate,
     ChirpsComponent,
     ChirpDetailComponent,
-    ParentChirp
+    ParentChirp,
+    FrontPageComponent
 }
