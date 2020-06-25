@@ -50,9 +50,9 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{% url 'frontend:chirp_list' %}">All</a>
-                <a class="dropdown-item" href="{% url 'profiles:user_profile' username=user.username %}">Front Page</a>
                 {% if user.is_authenticated %}
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'profiles:user_profile' username=user.username %}">Front Page</a>
                 {% endif %}
             </div>
         </li>
