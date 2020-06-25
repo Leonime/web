@@ -4,7 +4,6 @@ import {Chirp} from "./detail";
 
 export function ChirpList(props) {
     const {front_page} = props
-    console.log(front_page)
     const [chirpsInit, setChirpsInit] = useState([])
     const [chirps, setChirps] = useState([])
     const [nextUrl, setNextUrl] = useState(null)
