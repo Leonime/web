@@ -3,6 +3,8 @@ import {apiChirpList} from "./lookup";
 import {Chirp} from "./detail";
 
 export function ChirpList(props) {
+    const {front_page} = props
+    console.log(front_page)
     const [chirpsInit, setChirpsInit] = useState([])
     const [chirps, setChirps] = useState([])
     const [nextUrl, setNextUrl] = useState(null)
@@ -25,7 +27,7 @@ export function ChirpList(props) {
                     alert("There was an error")
                 }
             }
-            apiChirpList(props.username, handleChirpListLookup)
+            apiChirpList(props.username, handleChirpListLookup, null, front_page)
         }
     }, [chirpsInit, chirpsDidSet, setChirpsDidSet, props.username])
 
