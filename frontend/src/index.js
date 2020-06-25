@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {ChirpDetailComponent, ChirpsComponent} from "./chirps";
+import {ChirpDetailComponent, ChirpsComponent, FrontPageComponent} from "./chirps";
 import {ProfileBadgeComponent} from "./profiles";
 
 const appEl = document.getElementById('root')
@@ -15,6 +15,12 @@ const chirpsEl = document.getElementById("chirp")
 if (chirpsEl) {
     ReactDOM.render(
         e(ChirpsComponent, chirpsEl.dataset), chirpsEl);
+}
+
+const front_pageEl = document.getElementById("front_page")
+if (front_pageEl) {
+    ReactDOM.render(
+        e(FrontPageComponent, front_pageEl.dataset), front_pageEl);
 }
 
 const chirpDetailElements = document.querySelectorAll(".chirp-detail")
