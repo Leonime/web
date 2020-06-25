@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
@@ -34,3 +34,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
             pass
         current_followers_qs = profile.followers.all()
         return Response({"count": current_followers_qs.count()}, status=200)
+
+    @action(methods=['GET'], detail=False, url_path='profile/(?P<username>\\w+)')
+    def profile_username(self, request, username, *args, **kwargs):
+        qs = Profile.objects.filter(user__username=username)
+        if not qs.exists():
+            return Response({"detail": "User not found"}, status=404)
+        profile_obj = qs.first()
+        data = ProfileSerializer(instance=profile_obj, context={"request": request})
+        return Response(data.data, status=status.HTTP_200_OK)
