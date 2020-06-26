@@ -4,7 +4,6 @@
 {% block title %}Login{% endblock %}
 
 {% block container %}
-    {% include 'components/navbar.html' %}
     <div class='col-10 col-md-4 mx-auto'>
         {% csrf_token %}
         {{ form|crispy }}
