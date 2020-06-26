@@ -19,6 +19,8 @@ class UserProfileForm(forms.ModelForm):
     last_name = forms.CharField(required=False)
     email = forms.CharField(required=False)
 
+    field_order = ['first_name', 'last_name', 'email', 'image', 'bio', 'location']
+
     class Meta:
         model = Profile
         fields = ['location', 'bio', 'image']
@@ -29,6 +31,8 @@ class UserProfileReadOnlyForm(ReadOnlyFormMixin):
     last_name = forms.CharField(required=False)
     email = forms.CharField(required=False)
     image = forms.ImageField(widget=PictureWidget, label='Profile Picture', required=False)
+
+    field_order = ['image', 'first_name', 'last_name', 'email', 'bio', 'location']
 
     class Meta:
         model = Profile
