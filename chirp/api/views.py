@@ -45,6 +45,8 @@ class ChirpViewSet(viewsets.ModelViewSet):
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 elif like_action == "unchirp":
                     chirp.likes.remove(request.user)
+                    serializer = ChirpSerializer(chirp)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
                 elif like_action == "rechirp":
                     new_chirp = Chirp.objects.create(
                         user=request.user,
