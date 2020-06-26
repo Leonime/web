@@ -32,14 +32,8 @@
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 {% include 'components/navbar.html' %}
-<main role="main" class="container">
-    <div class="row">
-        <div class="col-sm-12 my-3">
-            {% block container %}
-            {% endblock container %}
-        </div>
-    </div>
-</main>
+{% block container %}
+{% endblock container %}
 </body>
 <footer>
     {% include 'components/libraries.html' %}
