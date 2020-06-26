@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}Welcome to Chipper{% endblock %}
+
+{% block css %}
+    <style type="text/css">
+        .v-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .v-height{
+            height: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block container %}
+    <div class='container my-3'>
+        <div id='profile-badge' class="profile-badge d-flex" data-username="{{ username }}" data-can-chirp="false">
+            <div class="d-flex flex-column border border-rounded border-secondary">
+                <div class="d-flex flex-row">
+                    <div class="d-flex p-1 v-center">
+                        @Leonime
+                    </div>
+                    <div class="d-flex p-1 v-center ml-auto">
+                        <button class="btn btn-sm btn-primary">Follow</button>
+                    </div>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="d-flex p-1 v-center">
+                        <span class="font-weight-bold">1 </span>&nbsp; Follower
+                    </div>
+                    <div class="d-flex p-1 v-center">
+                        <span class="font-weight-bold">1 </span>&nbsp; Following
+                    </div>
+                    <div class="d-flex p-1 v-center">
+                        <span class="font-weight-bold">1</span>&nbsp; Posts
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
