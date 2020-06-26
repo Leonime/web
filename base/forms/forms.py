@@ -8,4 +8,5 @@ class ReadOnlyFormMixin(ModelForm):
             self.fields[key].widget.attrs['readonly'] = True
 
     def save(self, *args, **kwargs):
+        # Override save so there's no possibility of anything getting saved.
         pass
