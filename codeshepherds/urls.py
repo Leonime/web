@@ -53,10 +53,6 @@ urlpatterns = [
     # REST API urls
     path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/docs/', include_docs_urls(title='API Docs', public=False)),
-    # path(f'{settings.API_URL}', include(router.urls)),
-
-    # Testing urls
-    path('test/', include('testing.urls', namespace='testing')),
 
     # Thumbnailer
     path('thumbnailer/', include('thumbnailer.urls', namespace='thumbnailer')),
@@ -75,4 +71,6 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
+        # Testing urls
+        path('test/', include('testing.urls', namespace='testing')),
     ]
