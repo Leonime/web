@@ -21,7 +21,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['location', 'bio']
+        fields = ['location', 'bio', 'image']
 
 
 class UserProfileReadOnlyForm(ReadOnlyFormMixin):
@@ -31,4 +31,4 @@ class UserProfileReadOnlyForm(ReadOnlyFormMixin):
 
     class Meta:
         model = Profile
-        fields = ['location', 'bio']
+        fields = ['location', 'bio', 'image']
