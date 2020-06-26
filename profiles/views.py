@@ -8,30 +8,35 @@ from profiles.forms import UserProfileForm, UserProfileReadOnlyForm
 from profiles.models import Profile
 
 
+def set_profile_form(form_class, request):
+    user = request.user
+    user_data = {
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email
+    }
+    try:
+        my_profile = user.profile
+    except ObjectDoesNotExist:
+        my_profile, created = Profile.objects.get_or_create(user=user)
+        if not created:
+            raise Http404
+
+    if request.method == "POST":
+        form = form_class(request.POST or None, request.FILES, instance=my_profile, initial=user_data)
+    else:
+        form = form_class(request.POST or None, instance=my_profile, initial=user_data)
+
+    return form, user
+
+
 class UserProfileView(LoginRequiredMixin, FormView):
     form_class = UserProfileForm
     template_name = 'profiles/form.html'
     success_url = '/'
 
-    def set_form(self, request):
-        user = request.user
-        user_data = {
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email
-        }
-        try:
-            my_profile = user.profile
-        except ObjectDoesNotExist:
-            my_profile, created = Profile.objects.get_or_create(user=user)
-            if not created:
-                raise Exception('Something went wrong.')
-        form = self.form_class(request.POST or None, instance=my_profile, initial=user_data)
-
-        return form, user
-
     def post(self, request, *args, **kwargs):
-        form, user = self.set_form(request)
+        form, user = set_profile_form(self.form_class, request)
         if form.is_valid():
             profile_obj = form.save(commit=False)
             first_name = form.cleaned_data.get('first_name')
@@ -50,7 +55,7 @@ class UserProfileView(LoginRequiredMixin, FormView):
         return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
-        form, user = self.set_form(request)
+        form, user = set_profile_form(self.form_class, request)
         context = {
             "form": form,
             "btn_label": "Save",
@@ -62,25 +67,8 @@ class UserProfileReadOnlyView(LoginRequiredMixin, FormView):
     form_class = UserProfileReadOnlyForm
     template_name = 'profiles/view.html'
 
-    def set_form(self, request):
-        user = request.user
-        user_data = {
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email
-        }
-        try:
-            my_profile = user.profile
-        except ObjectDoesNotExist:
-            my_profile, created = Profile.objects.get_or_create(user=user)
-            if not created:
-                raise Exception('Something went wrong.')
-        form = self.form_class(request.POST or None, instance=my_profile, initial=user_data)
-
-        return form, user
-
     def get(self, request, *args, **kwargs):
-        form, user = self.set_form(request)
+        form, user = set_profile_form(self.form_class, request)
         context = {
             "form": form,
             "btn_label": "Save",
