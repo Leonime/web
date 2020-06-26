@@ -1,4 +1,5 @@
 .data/
+.idea/sonarlint/
 htmlcov/
 secrets/
 dhparam/
@@ -7,6 +8,7 @@ mediafiles/
 staticfiles/
 /pgadmin/data/
 assets/react/*
+media/
 .idea/workspace.xml
 /web/*.json
 *.pyc
