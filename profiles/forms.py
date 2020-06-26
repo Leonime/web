@@ -28,6 +28,7 @@ class UserProfileReadOnlyForm(ReadOnlyFormMixin):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
     email = forms.CharField(required=False)
+    image = forms.ImageField(widget=PictureWidget, label='Profile Picture', required=False)
 
     class Meta:
         model = Profile
