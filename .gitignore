@@ -1,5 +1,6 @@
 .data/
 .idea/sonarlint/
+.scannerwork/
 htmlcov/
 secrets/
 dhparam/
