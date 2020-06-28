@@ -9,6 +9,9 @@ export function apiChirpList(username, callback, nextUrl, front_page) {
     if (front_page) {
         endpoint = `/api/v1/chipper/chirps/feed/`
     }
+    if (username){
+        endpoint = `/api/v1/chipper/chirps/feed/${username}/`
+    }
     if (nextUrl !== null && nextUrl !== undefined) {
         endpoint = nextUrl
     }
