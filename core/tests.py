@@ -1,5 +1,6 @@
 import base64
 import os
+import uuid
 from pathlib import Path
 
 from cryptography.fernet import InvalidToken, Fernet
@@ -9,6 +10,8 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from django.test import TestCase
 
 from core.utils import save_config_file, load_config_file, load_db_config
+
+CONFIG_FILE = 'test_development.json'
 
 
 class TestDecrypt(TestCase):
@@ -30,7 +33,7 @@ class TestDecrypt(TestCase):
 
 class TestSaveConfigFile(TestCase):
     def setUp(self):
-        config_file = 'test_development.json'
+        config_file = CONFIG_FILE
         base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
         self.path = Path(base_dir).joinpath(config_file)
 
@@ -46,7 +49,7 @@ class TestLoadConfigFile(TestCase):
     def setUp(self):
         self.config_file = os.environ.get('CONFIG_FILE')
 
-        config_file = 'test_development.json'
+        config_file = CONFIG_FILE
         base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
         os.environ['CONFIG_FILE'] = config_file
         self.path = Path(base_dir).joinpath(config_file)
@@ -65,7 +68,7 @@ class TestLoadDBConfig(TestCase):
     def setUp(self):
         self.config_file = os.environ.get('CONFIG_FILE')
 
-        config_file = 'test_development.json'
+        config_file = CONFIG_FILE
         base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
         os.environ['CONFIG_FILE'] = config_file
         self.crypt_key = os.environ.get('CRYPT_KEY')
