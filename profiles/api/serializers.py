@@ -9,6 +9,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField(read_only=True)
     follower_count = serializers.SerializerMethodField(read_only=True)
     following_count = serializers.SerializerMethodField(read_only=True)
+    chirp_count = serializers.SerializerMethodField(read_only=True)
     is_following = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -23,6 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "following_count",
             "is_following",
             "username",
+            'chirp_count',
         ]
 
     def get_first_name(self, obj):
@@ -39,6 +41,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_follower_count(self, obj):
         return obj.followers.count()
+
+    def get_chirp_count(self, obj):
+        return obj.user.chirp_set.count()
 
     def get_is_following(self, obj):
         is_following = False
