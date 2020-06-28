@@ -1,4 +1,5 @@
 import React from 'react'
+import {DisplayCount} from "./utils";
 
 export function UserLink(props) {
     const {username} = props
@@ -45,3 +46,14 @@ export function ProfileLocation(props) {
     return <span className="p-1 small text-muted">{location}</span>
 }
 
+export function ProfileStats(props) {
+    const {number} = props
+    let {display} = props
+    if(number > 1 && display.toLowerCase() === 'follower')
+        display = 'Followers'
+    if(number > 1 && display.toLowerCase() === 'chirp')
+        display = 'Chirps'
+    return <div className="p-1 v-center">
+        <DisplayCount>{number}</DisplayCount>&nbsp;{display}
+    </div>
+}
