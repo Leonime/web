@@ -57,7 +57,6 @@ class ShortURLView(View):  # class based view
             geolocation['country_code'] = ''
             geolocation['country'] = ''
             geolocation['found'] = False
-            pass
         else:
             # We got the client's IP address
             if is_routable:
@@ -68,7 +67,6 @@ class ShortURLView(View):  # class based view
                 geolocation['country_code'] = city['country_code']
                 geolocation['country'] = city['country_name']
                 geolocation['found'] = True
-                pass
             else:
                 # The client's IP address is private
                 geolocation['ipv4'] = client_ip
@@ -76,7 +74,6 @@ class ShortURLView(View):  # class based view
                 geolocation['country_code'] = ''
                 geolocation['country'] = ''
                 geolocation['found'] = None
-                pass
 
         SURLAnalytics.objects.create_event(obj, geolocation)
         return HttpResponseRedirect(obj.url)
