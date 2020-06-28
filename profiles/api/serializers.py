@@ -15,16 +15,16 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = [
-            "first_name",
-            "last_name",
-            "id",
-            "bio",
-            "location",
-            "follower_count",
-            "following_count",
-            "is_following",
-            "username",
+            'first_name',
+            'last_name',
+            'id',
+            'bio',
+            'location',
+            'follower_count',
+            'following_count',
             'chirp_count',
+            'is_following',
+            'username',
             'image',
         ]
 
@@ -49,7 +49,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_is_following(self, obj):
         is_following = False
         context = self.context
-        request = context.get("request")
+        request = context.get('request')
         if request:
             user = request.user
             is_following = user in obj.followers.all()
