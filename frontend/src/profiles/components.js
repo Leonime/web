@@ -31,3 +31,12 @@ export function ProfilePicture(props) {
     : <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>{user.username[0]}</span>
 }
 
+export function ProfileUser(props) {
+    const {user} = props
+    const nameDisplay = `${user.first_name} ${user.last_name}`
+    return <div className="d-flex flex-column p-1 v-center">
+        {user.username}
+        <span className="small text-muted">{nameDisplay}</span>
+    </div>
+}
+
