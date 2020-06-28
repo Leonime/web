@@ -35,7 +35,7 @@ export function ProfileUser(props) {
     const {user} = props
     const nameDisplay = `${user.first_name} ${user.last_name}`
     return <div className="d-flex flex-column p-1 v-center">
-        {user.username}
+        @{user.username}
         <span className="small text-muted">{nameDisplay}</span>
     </div>
 }
