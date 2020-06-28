@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import {ChirpDetailComponent, ChirpsComponent, FrontPageComponent} from "./chirps";
 import {ProfileBadgeComponent} from "./profiles";
 import {ProfileComponent} from "./profiles/badge";
+import {UserFeedComponent} from "./chirps/components";
 
 const appEl = document.getElementById('root')
 if (appEl) {
@@ -44,6 +45,12 @@ const profileElement = document.getElementById("profile")
 if (profileElement) {
     ReactDOM.render(
         e(ProfileComponent, profileElement.dataset), profileElement);
+}
+
+const userFeedElement = document.getElementById("user_feed")
+if (userFeedElement) {
+    ReactDOM.render(
+        e(UserFeedComponent, userFeedElement.dataset), userFeedElement);
 }
 
 // If you want your app to work offline and load faster, you can change
