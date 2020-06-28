@@ -10,36 +10,78 @@
             align-items: center;
             justify-content: center;
         }
-        .v-height{
-            height: 20px;
+
+        .cover {
+            object-fit: fill;
+            width: 50px;
+            height: 50px;
+        }
+
+        .full_text {
+            display: none;
         }
     </style>
 {% endblock %}
 
 {% block container %}
     <div class='container my-3'>
-        <div id='profile-badge' class="profile-badge d-flex" data-username="{{ username }}" data-can-chirp="false">
-            <div class="d-flex flex-column border border-rounded border-secondary">
+        <div id='profile-badge' class="profile-badge" data-username="{{ username }}" data-can-chirp="false">
+            <div class="d-flex border border-rounded border-secondary">
                 <div class="d-flex flex-row">
-                    <div class="d-flex p-1 v-center">
-                        @Leonime
+                    <div class="d-flex p-1">
+                        <img class="cover rounded-circle" src="/media/pictures/profile/2020/06/26/2_-_WzeMtiZ_964N4wS.jpg" alt="profile_picture">
                     </div>
-                    <div class="d-flex p-1 v-center ml-auto">
+                    <div class="d-flex">
+                        <div class="d-flex flex-column p-1 v-center">
+                            @Leonime
+                            <span class="small text-muted">
+                                Leopoldo Parra
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex p-1 v-center">
                         <button class="btn btn-sm btn-primary">Follow</button>
                     </div>
                 </div>
-                <div class="d-flex flex-row">
-                    <div class="d-flex p-1 v-center">
+                <div class="d-flex flex-fill flex-column border-left border-dark">
+                    <span class="p-1 small text-muted">Tijuana BC</span>
+                    <div class="p-1">
+
+
+                        <span class="teaser">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</span>
+                            <span class="full_text">
+                                Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
+                                mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
+                        quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
+                        rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.
+                        Integer tincidunt. Cras dapibus. Vivamus e</span>
+                            <span class="show_more pointer badge badge-secondary">mas...</span>
+                    </div>
+                </div>
+                <div class="d-flex border-left border-dark">
+                    <div class="p-1 v-center">
+                        <span class="font-weight-bold">1</span>&nbsp; Chirps
+                    </div>
+                    <div class="p-1 v-center">
                         <span class="font-weight-bold">1 </span>&nbsp; Follower
                     </div>
-                    <div class="d-flex p-1 v-center">
+                    <div class="p-1 v-center">
                         <span class="font-weight-bold">1 </span>&nbsp; Following
-                    </div>
-                    <div class="d-flex p-1 v-center">
-                        <span class="font-weight-bold">1</span>&nbsp; Posts
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(".show_more").click(function () {
+            $(this).siblings(".full_text").toggle(600);
+            if ($(this).text() === "less.")
+                $(this).text("more...");
+            else
+                $(this).text("less.")
+        });
+    </script>
 {% endblock %}
