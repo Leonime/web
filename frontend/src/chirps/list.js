@@ -2,34 +2,7 @@ import React, {useEffect, useState} from "react";
 import {apiChirpList} from "./lookup";
 import {Chirp} from "./detail";
 
-export function ChirpList(props) {
-    const {front_page} = props
-    const [chirpsInit, setChirpsInit] = useState([])
-    const [chirps, setChirps] = useState([])
-    const [nextUrl, setNextUrl] = useState(null)
-    const [chirpsDidSet, setChirpsDidSet] = useState(false)
-    useEffect(() => {
-        const final = [...props.newChirps].concat(chirpsInit)
-        if (final.length !== chirps.length) {
-            setChirps(final)
-        }
-    }, [props.newChirps, chirps, chirpsInit])
-
-    useEffect(() => {
-        if (chirpsDidSet === false) {
-            const handleChirpListLookup = (response, status) => {
-                if (status === 200) {
-                    setNextUrl(response.next)
-                    setChirpsInit(response.results)
-                    setChirpsDidSet(true)
-                } else {
-                    alert("There was an error")
-                }
-            }
-            apiChirpList(props.username, handleChirpListLookup, null, front_page)
-        }
-    }, [chirpsInit, chirpsDidSet, setChirpsDidSet, props.username])
-
+function ChirpHandlersReturn(chirpsInit, setChirpsInit, chirps, setChirps, nextUrl, setNextUrl, props) {
     const handleDidRechirp = newChirp => {
         const updateChirpsInit = [...chirpsInit]
         updateChirpsInit.unshift(newChirp)
@@ -67,4 +40,66 @@ export function ChirpList(props) {
     }
         {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load next</button>}
     </React.Fragment>
+}
+
+export function ChirpList(props) {
+    const {front_page} = props
+    const [chirpsInit, setChirpsInit] = useState([])
+    const [chirps, setChirps] = useState([])
+    const [nextUrl, setNextUrl] = useState(null)
+    const [chirpsDidSet, setChirpsDidSet] = useState(false)
+    useEffect(() => {
+        const final = [...props.newChirps].concat(chirpsInit)
+        if (final.length !== chirps.length) {
+            setChirps(final)
+        }
+    }, [props.newChirps, chirps, chirpsInit])
+
+    useEffect(() => {
+        if (chirpsDidSet === false) {
+            const handleChirpListLookup = (response, status) => {
+                if (status === 200) {
+                    setNextUrl(response.next)
+                    setChirpsInit(response.results)
+                    setChirpsDidSet(true)
+                } else {
+                    alert("There was an error")
+                }
+            }
+            apiChirpList(props.username, handleChirpListLookup, null, front_page)
+        }
+    }, [chirpsInit, chirpsDidSet, setChirpsDidSet, props.username])
+
+    return ChirpHandlersReturn(chirpsInit, setChirpsInit, chirps, setChirps, nextUrl, setNextUrl, props);
+}
+
+export function UserFeed(props) {
+    const [chirpsDidSet, setChirpsDidSet] = useState(false)
+    const [nextUrl, setNextUrl] = useState(null)
+    const [chirpsInit, setChirpsInit] = useState([])
+    const [chirps, setChirps] = useState([])
+
+    useEffect(() => {
+        const final = [...props.newChirps].concat(chirpsInit)
+        if (final.length !== chirps.length) {
+            setChirps(final)
+        }
+    }, [props.newChirps, chirps, chirpsInit])
+
+    useEffect(() => {
+        if (chirpsDidSet === false) {
+            const handleChirpListLookup = (response, status) => {
+                if (status === 200) {
+                    setNextUrl(response.next)
+                    setChirpsInit(response.results)
+                    setChirpsDidSet(true)
+                } else {
+                    alert("There was an error")
+                }
+            }
+            apiChirpList(props.username, handleChirpListLookup, null)
+        }
+    }, [chirpsInit, chirpsDidSet, setChirpsDidSet, props.username])
+
+    return ChirpHandlersReturn(chirpsInit, setChirpsInit, chirps, setChirps, nextUrl, setNextUrl, props);
 }

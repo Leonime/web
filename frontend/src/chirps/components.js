@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {ChirpCreate} from "./create";
-import {ChirpList} from "./list"
+import {ChirpList, UserFeed} from "./list"
 import {apiChirpDetail} from './lookup'
 import {Chirp} from './detail'
 
@@ -50,4 +50,11 @@ export function ChirpDetailComponent(props) {
         }
     }, [chirpId, didLookup, setDidLookup])
     return chirp === null ? null : <Chirp chirp={chirp} className={props.className}/>
+}
+
+export function UserFeedComponent(props) {
+    const [newChirps] = useState([])
+    return <div className={props.className}>
+        <UserFeed newChirps={newChirps} {...props}/>
+    </div>
 }
