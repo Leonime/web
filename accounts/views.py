@@ -4,9 +4,13 @@ from django.shortcuts import render, redirect
 
 from accounts.forms import UserCreateForm
 
+ACCOUNT_TEMPLATES = {
+    'auth': 'account/auth.html'
+}
+
 
 class UserLoginView(views.LoginView):
-    template_name = 'account/auth.html'
+    template_name = ACCOUNT_TEMPLATES['auth']
 
     def get(self, request, *args, **kwargs):
         super(UserLoginView, self).get(request, *args, **kwargs)
@@ -19,11 +23,11 @@ class UserLoginView(views.LoginView):
 
 
 class UserLogoutView(views.LogoutView):
-    template_name = 'account/auth.html'
+    template_name = ACCOUNT_TEMPLATES['auth']
 
 
 class RegisterUserView(views.FormView):
-    template_name = 'account/auth.html'
+    template_name = ACCOUNT_TEMPLATES['auth']
     form_class = UserCreateForm
     success_url = '/'
 
