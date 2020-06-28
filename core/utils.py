@@ -16,54 +16,6 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
 
 
-def decrypt(self, token, ttl=None, max_clock_skew=60):
-    current_time = int(time.time())
-    if not isinstance(token, bytes):
-        raise TypeError('token must be bytes.')
-
-    try:
-        data = base64.urlsafe_b64decode(token)
-    except (TypeError, binascii.Error):
-        raise InvalidToken
-
-    if not data or six.indexbytes(data, 0) != 0x80:
-        raise InvalidToken
-
-    timestamp, = struct.unpack('>Q', data[1:9])
-
-    if ttl and not isinstance(ttl, int):
-        raise TypeError('ttl must be int')
-
-    if ttl is not None:
-        if timestamp + ttl < current_time:
-            raise InvalidToken
-    if current_time + max_clock_skew < timestamp:
-        raise InvalidToken
-
-    h = HMAC(self._signing_key, hashes.SHA256(), backend=self._backend)
-    h.update(data[:-32])
-
-    try:
-        h.verify(data[-32:])
-    except InvalidSignature:
-        raise InvalidToken
-
-    iv = data[9:25]
-
-    cipher_text = data[25:-32]
-    decrypter = Cipher(
-        algorithms.AES(self._encryption_key), modes.CBC(iv), self._backend
-    ).decryptor()
-    plaintext_padded = decrypter.update(cipher_text)
-    plaintext_padded += decrypter.finalize()
-
-    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
-    unpadded = unpadder.update(plaintext_padded)
-    unpadded += unpadder.finalize()
-
-    return unpadded.decode('utf-8')
-
-
 def create_encryptor():
     crypt_key = os.environ.get('CRYPT_KEY')
     password = str.encode(crypt_key)
