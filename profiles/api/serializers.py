@@ -25,6 +25,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_following",
             "username",
             'chirp_count',
+            'image',
         ]
 
     def get_first_name(self, obj):
