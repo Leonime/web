@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SonarLintProjectSettings">
+    <option name="bindingEnabled" value="true" />
+    <option name="fileExclusions">
+      <list>
+        <option value="DIRECTORY:.idea" />
+        <option value="DIRECTORY:static" />
+        <option value="FILE:core/tests.py" />
+      </list>
+    </option>
+    <option name="projectKey" value="codeshepherds:web" />
+    <option name="serverId" value="local" />
+  </component>
+</project>
