@@ -29,6 +29,14 @@ class ChirpViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    def return_response(self, queryset):
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=200)
+
     @action(detail=True, methods=['post'])
     def like_action(self, request, pk=None):
         try:
@@ -65,9 +73,5 @@ class ChirpViewSet(viewsets.ModelViewSet):
     def feed(self, request, *args, **kwargs):
         user = request.user
         queryset = Chirp.objects.feed(user)
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=200)
+
+        return self.return_response(queryset)
