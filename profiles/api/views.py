@@ -30,8 +30,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
             profile.followers.add(me)
         elif follow_action == "unfollow":
             profile.followers.remove(me)
-        else:
-            pass
         data = ProfileSerializer(instance=profile, context={"request": request})
         return Response(data.data, status=200)
 
