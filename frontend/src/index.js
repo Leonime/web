@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {ChirpDetailComponent, ChirpsComponent, FrontPageComponent} from "./chirps";
 import {ProfileBadgeComponent} from "./profiles";
+import {ProfileComponent} from "./profiles/badge";
 
 const appEl = document.getElementById('root')
 if (appEl) {
@@ -38,6 +39,12 @@ userProfileBadgeElements.forEach(container => {
         e(ProfileBadgeComponent, container.dataset),
         container);
 })
+
+const profileElement = document.getElementById("profile")
+if (profileElement) {
+    ReactDOM.render(
+        e(ProfileComponent, profileElement.dataset), profileElement);
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
