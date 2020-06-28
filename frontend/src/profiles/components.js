@@ -11,8 +11,7 @@ export function UserLink(props) {
 }
 
 export function UserDisplay(props) {
-    const {user, includeFullName, hideLink} = props
-    const nameDisplay = includeFullName === true ? `${user.first_name} ${user.last_name} ` : null
+    const {user, hideLink} = props
     return <React.Fragment>
         {hideLink === true ? `@${user.username}` : <UserLink username={user.username}>@{user.username}</UserLink>}
     </React.Fragment>
