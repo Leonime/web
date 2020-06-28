@@ -52,8 +52,6 @@ def save_config_file(config_file='development.json',
 
     with path.open('w') as file:
         json.dump(json_data, file, sort_keys=True, indent=4)
-        pass
-    pass
 
 
 def load_config_file():
@@ -64,12 +62,9 @@ def load_config_file():
     if path.exists():
         with path.open() as cfg:
             config = json.load(cfg)
-            pass
-        pass
     else:
         save_config_file(config_file, 'codeshepherds', 'leonime', 'nomas123', 'localhost', '')
         config = load_config_file()
-        pass
     return config
 
 
