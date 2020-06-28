@@ -40,3 +40,8 @@ export function ProfileUser(props) {
     </div>
 }
 
+export function ProfileLocation(props) {
+    const {location} = props
+    return <span className="p-1 small text-muted">{location}</span>
+}
+
