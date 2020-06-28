@@ -277,6 +277,7 @@ sentry_sdk.init(
 )
 
 # Logging
+DJANGO_SERVER = 'django.server'
 LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
 logging.config.dictConfig({
     'version': 1,
@@ -286,14 +287,14 @@ logging.config.dictConfig({
             # exact format is not important, this is the minimum information
             'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
         },
-        'django.server': DEFAULT_LOGGING['formatters']['django.server'],
+        DJANGO_SERVER: DEFAULT_LOGGING['formatters'][DJANGO_SERVER],
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'console',
         },
-        'django.server': DEFAULT_LOGGING['handlers']['django.server'],
+        DJANGO_SERVER: DEFAULT_LOGGING['handlers'][DJANGO_SERVER],
     },
     'loggers': {
         # root logger
@@ -307,7 +308,7 @@ logging.config.dictConfig({
             # required to avoid double logging with root logger
             'propagate': False,
         },
-        'django.server': DEFAULT_LOGGING['loggers']['django.server'],
+        DJANGO_SERVER: DEFAULT_LOGGING['loggers'][DJANGO_SERVER],
         'werkzeug': {
             'handlers': ['console', ],
             'level': LOGLEVEL,
