@@ -18,7 +18,7 @@ class TestDecrypt(TestCase):
     @staticmethod
     def get_fernet(crypt_key):
         password = crypt_key
-        salt = b'Jc2K2QCCh7T2QFNfCsES7TTkv8f8cmRebTyRCrmjV7CmZBmHxW'
+        salt = uuid.uuid4().hex
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
