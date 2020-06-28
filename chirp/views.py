@@ -31,9 +31,8 @@ class ChirpCreateView(View):
                 return redirect(next_url)
             form = ChirpForm()
 
-        if form.errors:
-            if request.is_ajax():
-                return JsonResponse(form.errors, status=400)
+        if form.errors and request.is_ajax():
+            return JsonResponse(form.errors, status=400)
         return render(request, 'chirp/create_chirp.html', context={"form": form})
 
     def get(self, request, *args, **kwargs):
