@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -73,5 +75,14 @@ class ChirpViewSet(viewsets.ModelViewSet):
     def feed(self, request, *args, **kwargs):
         user = request.user
         queryset = Chirp.objects.feed(user)
+
+        return self.return_response(queryset)
+
+    @action(methods=['GET'], detail=False, url_path='feed/(?P<username>\\w+)')
+    def user_feed(self, request, username, *args, **kwargs):
+        user = User.objects.filter(username=username)
+        if not user.exists():
+            return JsonResponse({}, status=status.HTTP_404_NOT_FOUND)
+        queryset = Chirp.objects.filter(user__in=user)
 
         return self.return_response(queryset)
