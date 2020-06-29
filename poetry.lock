@@ -396,7 +396,7 @@ Django = ">=1.11"
 sqlparse = ">=0.2.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Extensions for Django"
 name = "django-extensions"
 optional = false
@@ -1036,7 +1036,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "d8f6a79e9655adb307c48103742e618eec91560538f93e94ad402893fda6cf94"
+content-hash = "bfc3ae27f022558cec2714b730a0613f4ce7a6eac1c0cd9c6ddff3dd2145947d"
 python-versions = "3.8.*"
 
 [metadata.files]
