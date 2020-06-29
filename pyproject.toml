@@ -32,7 +32,6 @@ pygraphviz = "*"
 redis = "*"
 sentry-sdk = "*"
 uvicorn = "*"
-werkzeug = "*"
 whitenoise = "*"
 
 [tool.poetry.dev-dependencies]
@@ -40,6 +39,7 @@ coverage = "*"
 flake8 = "*"
 django-debug-toolbar = "*"
 django-extensions = "*"
+werkzeug = "*"
 
 [build-system]
 requires = ["poetry>=0.12"]
