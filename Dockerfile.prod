@@ -56,7 +56,7 @@ COPY . /usr/src/app/
 
 # changing working dir once more, this makes running the commands a lot more easier.
 WORKDIR /usr/src/app/frontend
-RUN npm install
+RUN npm ci --only=production
 RUN npm run build
 
 # lets return to out original working dir so we can do a cleanup.
