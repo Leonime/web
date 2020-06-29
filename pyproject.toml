@@ -17,7 +17,6 @@ django = "*"
 django-bootstrap4 = "*"
 django-cors-headers = "*"
 django-crispy-forms = "*"
-django-debug-toolbar = "*"
 django-extensions = "*"
 django-heroku = "*"
 django-icons = "*"
@@ -41,6 +40,7 @@ whitenoise = "*"
 [tool.poetry.dev-dependencies]
 coverage = "*"
 flake8 = "*"
+django-debug-toolbar = "*"
 
 [build-system]
 requires = ["poetry>=0.12"]
