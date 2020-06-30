@@ -9,3 +9,4 @@ from .installed_apps import *
 from .logging import *
 from .media import *
 from .static_files import *
+from .templates import *
