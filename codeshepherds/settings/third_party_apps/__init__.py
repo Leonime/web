@@ -8,3 +8,4 @@ from .dropbox import *
 from .geolocation import *
 from .redis import *
 from .sentry import *
+from .whitenoise import *
