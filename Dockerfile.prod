@@ -87,7 +87,7 @@ FROM python:3.8-alpine
 RUN apk update && apk upgrade
 
 # install pillow dependencies
-RUN apk add --no-cache libjpeg-turbo
+RUN apk add --no-cache libjpeg-turbo libxcb
 
 # install psycopg2 dependencies
 RUN apk add --no-cache libpq
