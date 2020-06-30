@@ -7,7 +7,7 @@ from codeshepherds.settings import CHIRP_ACTION_OPTIONS, MAX_CHIRP_LENGTH
 from profiles.api.serializers import ProfileSerializer
 
 
-class ChirpActionSerializer(serializers.Serializer, ABC):
+class ChirpActionSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     action = serializers.CharField()
     content = serializers.CharField(allow_blank=True, required=False)
