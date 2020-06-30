@@ -34,8 +34,8 @@ class PhotoViewSet(viewsets.ModelViewSet):
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, pk=None, *args, **kwargs):
         print(pk)
         photo = self.get_object()
         photo.image.delete()
-        return super().destroy(request, pk)
+        return super().destroy(request, pk, *args, **kwargs)
