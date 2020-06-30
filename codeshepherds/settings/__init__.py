@@ -5,3 +5,4 @@ from .apps_custom_settings import *
 from .auth import *
 from .database import *
 from .django import *
+from .installed_apps import *
