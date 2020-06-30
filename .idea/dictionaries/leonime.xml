@@ -10,10 +10,12 @@
       <w>dropbox</w>
       <w>encryptor</w>
       <w>hiredis</w>
+      <w>jpegoptim</w>
       <w>levelname</w>
       <w>mmdb</w>
       <w>navbar</w>
       <w>nostatic</w>
+      <w>optipng</w>
       <w>poller</w>
       <w>rechirp</w>
       <w>rechirper</w>
