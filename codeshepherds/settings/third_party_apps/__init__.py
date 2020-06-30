@@ -5,4 +5,5 @@ from .django_crispy_forms import *
 from .django_icons import *
 from .django_rest_framework import *
 from .dropbox import *
+from .geolocation import *
 from .redis import *
