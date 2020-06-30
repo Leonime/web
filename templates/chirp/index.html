@@ -15,7 +15,9 @@
                 {% csrf_token %}
                 <div class='d-none alert alert-danger' id="error_display_div"></div>
                 <input type='hidden' value='/chipper/' name='next'/>
-                <textarea required='required' class='form-control' name='content' placeholder='Your chirp...'></textarea>
+                <label>
+                    <textarea required='required' class='form-control' name='content' placeholder='Your chirp...'></textarea>
+                </label>
                 <button type='submit' class='btn btn-primary'>Chirp</button>
             </form>
         </div>
