@@ -76,8 +76,6 @@ DEFAULT_APPS = [
 # Third party apps.
 THIRD_PARTY_APPS = [
     'bootstrap4',
-    'debug_toolbar',
-    'django_extensions',
     'django_icons',
     'rest_framework',
     'widget_tweaks',
@@ -103,7 +101,6 @@ LOCAL_APPS = [
 INSTALLED_APPS = PRIORITY_APPS + DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -329,9 +326,6 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG
-}
 
 # redis_cache
 CACHES = {
@@ -383,11 +377,6 @@ DEFAULT_RENDERER_CLASSES = [
     'rest_framework.renderers.JSONRenderer',
 ]
 
-if DEBUG:
-    DEFAULT_RENDERER_CLASSES += [
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAdminUser', ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
@@ -405,3 +394,19 @@ CORS_URLS_REGEX = r'^/api/.*$'
 
 # django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+if DEBUG:
+    # Django debug toolbar
+    INSTALLED_APPS += [
+        'debug_toolbar',
+        'django_extensions',
+    ]
+    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG
+    }
+
+    # REST Framework
+    DEFAULT_RENDERER_CLASSES += [
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
