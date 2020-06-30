@@ -7,3 +7,4 @@ from .django_rest_framework import *
 from .dropbox import *
 from .geolocation import *
 from .redis import *
+from .sentry import *
