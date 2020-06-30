@@ -1,12 +1,19 @@
 <component name="ProjectDictionaryState">
   <dictionary name="leonime">
     <words>
+      <w>asctime</w>
+      <w>asgi</w>
+      <w>browsable</w>
       <w>codeshepherds</w>
       <w>corsheaders</w>
       <w>csrftoken</w>
       <w>dropbox</w>
       <w>encryptor</w>
+      <w>hiredis</w>
+      <w>levelname</w>
+      <w>mmdb</w>
       <w>navbar</w>
+      <w>nostatic</w>
       <w>poller</w>
       <w>rechirp</w>
       <w>rechirper</w>
@@ -17,6 +24,8 @@
       <w>unchirp</w>
       <w>unfollow</w>
       <w>var&quot;</w>
+      <w>werkzeug</w>
+      <w>whitenoise</w>
     </words>
   </dictionary>
 </component>
