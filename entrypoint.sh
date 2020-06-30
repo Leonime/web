@@ -16,9 +16,9 @@ if [ "$DATABASE" = "postgres" ]; then
 fi
 
 if [ "$CONTAINER" = "development" ]; then
-  printf "#####\n"
-  printf "# Django development setup\n"
-  printf "#####\n"
+  printf "############################\n"
+  printf "# Django development setup #\n"
+  printf "############################\n"
   python manage.py collectstatic --no-input --clear
   python manage.py makemigrations
   python manage.py migrate
