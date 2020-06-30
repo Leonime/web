@@ -40,7 +40,7 @@ class ChirpViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=200)
 
     @action(detail=True, methods=['post'])
-    def like_action(self, request, pk=None):
+    def like_action(self, request):
         try:
             chirp = self.get_object()
             serializer = ChirpActionSerializer(data=request.data)
