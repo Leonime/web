@@ -7,3 +7,4 @@ from .database import *
 from .django import *
 from .installed_apps import *
 from .logging import *
+from .media import *
