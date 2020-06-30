@@ -53,7 +53,7 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY . /usr/src/app/
 
 # lint
-RUN flake8 --ignore=E501,F401 .
+RUN flake8 --ignore=E501,F401,F403 .
 
 # react
 WORKDIR /usr/src/app/frontend
