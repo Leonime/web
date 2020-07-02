@@ -58,6 +58,7 @@ RUN flake8 --ignore=E501,F401,F403 .
 # react
 WORKDIR /usr/src/app/frontend
 RUN npm ci --only=production
+RUN npm install webpack-cli
 RUN npm run build
 WORKDIR /usr/src/app/
 RUN rm -rf /usr/src/app/frontend/node_modules/
