@@ -29,6 +29,9 @@ RUN apk add --no-cache g++
 # install uvicorn dependencies
 RUN apk add --no-cache make
 
+# install cd-django-thumbnails dependencies
+RUN apk add --no-cache optipng
+
 # install npm
 RUN apk add --no-cache npm
 
