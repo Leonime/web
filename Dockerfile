@@ -60,10 +60,10 @@ WORKDIR /usr/src/app/frontend
 RUN npm ci --only=production
 RUN npm run build
 WORKDIR /usr/src/app/
-RUN rm -rfv /usr/src/app/frontend/node_modules/
-RUN rm -rfv /usr/src/app/frontend/src/
-RUN rm -rfv /usr/src/app/frontend/.babelrc
-RUN rm -rfv /usr/src/app/frontend/*.js*
+RUN rm -rf /usr/src/app/frontend/node_modules/
+RUN rm -rf /usr/src/app/frontend/src/
+RUN rm -rf /usr/src/app/frontend/.babelrc
+RUN rm -rf /usr/src/app/frontend/*.js*
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
