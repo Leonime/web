@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -17,6 +18,19 @@ class ChirpViewSet(viewsets.ModelViewSet):
     serializer_class = ChirpSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     pagination_class = RelativePageNumberPagination
+
+    def get_queryset(self):
+        return Chirp.objects.all().prefetch_related(
+            'user',
+            'user__chirp_set',
+            'user__profile',
+            'user__profile__followers',
+            'user__following',
+            'parent',
+            'parent__user',
+            'parent__user__profile',
+            'likes'
+        ).annotate(Count('likes', distinct=True))
 
     def perform_create(self, serializer, *args, **kwargs):
         if 'user' in kwargs:
