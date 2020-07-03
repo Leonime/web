@@ -29,6 +29,7 @@ THIRD_PARTY_APPS = [
     'widget_tweaks',
     'corsheaders',
     'crispy_forms',
+    'thumbnails',
 ]
 
 ##############
