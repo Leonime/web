@@ -71,5 +71,5 @@ if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
         # Testing urls
-        path('test/', include('testing.urls', namespace='testing')),
+        path('', include('testing.urls', namespace='testing')),
     ]
