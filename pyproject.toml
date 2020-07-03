@@ -33,6 +33,7 @@ redis = "*"
 sentry-sdk = "*"
 uvicorn = "*"
 whitenoise = "*"
+cs-django-thumbnails = "*"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
