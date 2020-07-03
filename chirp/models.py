@@ -37,7 +37,8 @@ class Chirp(models.Model):
     likes = models.ManyToManyField(User, related_name='chirp_user', blank=True, through=ChirpLike,
                                    help_text='It keeps a record on who likes the chirp.')
     content = models.TextField(blank=True, null=True, help_text='The content of the chirp.')
-    image = models.FileField(upload_to='images/chipper/', blank=True, null=True, help_text='An image.')
+    image = models.FileField(upload_to='chirp/chirp/%Y/%m/%d/',
+                             max_length=1024, blank=True, null=True, help_text='An image.')
     timestamp = models.DateTimeField(auto_now_add=True, help_text='The time when the chirp was created.')
 
     objects = ChirpManager()
