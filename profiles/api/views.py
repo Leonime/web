@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -12,6 +13,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, ]
+
+    def get_queryset(self):
+        return Profile.objects.all().prefetch_related(
+            'user',
+            'followers',
+            'followers__following'
+        ).annotate(Count('followers', distinct=True))
 
     @action(methods=['POST'], detail=False, url_path='follow/(?P<username>\\w+)')
     def follow(self, request, username, *args, **kwargs):
@@ -35,7 +43,15 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=False, url_path='profile/(?P<username>\\w+)')
     def profile_username(self, request, username, *args, **kwargs):
-        qs = Profile.objects.filter(user__username=username)
+        qs = Profile.objects.filter(user__username=username).prefetch_related(
+            'user',
+            'user__following',
+            'user__chirp_set',
+            'followers',
+            'followers__following'
+        ).annotate(Count('followers', distinct=True))\
+            .annotate(Count('user__following', distinct=True))\
+            .annotate(Count('user__chirp', distinct=True))
         if not qs.exists():
             return Response({"detail": "User not found"}, status=404)
         profile_obj = qs.first()
