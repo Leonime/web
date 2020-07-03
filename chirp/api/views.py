@@ -41,9 +41,8 @@ class ChirpViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def like_action(self, request, pk):
-        # TODO: Remove pk requirement.
         try:
-            chirp = self.get_object()
+            chirp = Chirp.objects.filter(pk=pk).first()
             serializer = ChirpActionSerializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
                 data = serializer.validated_data
