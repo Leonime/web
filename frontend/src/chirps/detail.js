@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {ActionBtn} from "./buttons";
 import {UserDisplay, UserPicture} from "../profiles";
+import {ProfilePicture} from "../profiles/components";
 
 export function Chirp(props) {
     const {chirp, didRechirp, hideActions, isRechirp, rechirper} = props
@@ -33,7 +34,7 @@ export function Chirp(props) {
         </div>}
         <div className='d-flex'>
             <div className=''>
-                <UserPicture user={chirp.user}/>
+                <ProfilePicture user={chirp.user}/>
             </div>
             <div className='col-11'>
                 <div>

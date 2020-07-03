@@ -20,9 +20,9 @@ export function UserDisplay(props) {
 
 export function UserPicture(props) {
     const {user, hideLink} = props
-    const userIdSpan = <a href={user.image}>
-        <img className="cover rounded-circle" src={user.thumbnail} alt={'Profile picture'}/>
-    </a>
+    const userIdSpan = <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
+      {user.username[0]}
+    </span>
     return hideLink === true ? userIdSpan : <UserLink username={user.username}>{userIdSpan}</UserLink>
 }
 
