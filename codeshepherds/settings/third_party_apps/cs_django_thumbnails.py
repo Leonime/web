@@ -1,4 +1,4 @@
-from .redis import REDIS_URL
+from .redis import REDIS_URL, REDIS_PORT
 
 THUMBNAILS_PROCESSORS = 'thumbnails.processors.resize'
 THUMBNAILS_POST_PROCESSORS = {'PATH': 'thumbnails.post_processors.optimize', 'png_command': 'optipng %(filename)s'},
