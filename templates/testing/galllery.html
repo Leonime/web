@@ -1,30 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <button type='submit' class='btn btn-lg btn-secondary btn-block'>
-            Submit
-        </button>
-    </form>
-</div>
-<div>
-    {% if gallery %}
-        Gallery
-        <ul>
-            {% for item in gallery %}
-                <li><a href="{{ item.image.url }}">{{ item.image.name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No documents.</p>
-    {% endif %}
-</div>
-</body>
-</html>
+{% extends 'main.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block title %}Welcome to Chipper{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type='submit' class='btn btn-lg btn-secondary'>
+                    Submit
+                </button>
+            </form>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                {% if gallery %}
+                    Gallery
+                    <ul>
+                        {% for item in gallery %}
+                            <li>
+                                <a href="#ModalImageDisplay" data-image="{{ item.image.url }}" class="OpenModal thumbnail" data-toggle="modal">
+                                    <img src="{{ item.image.thumbnails.large.url }}" alt="Image">
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No documents.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="modal fade" id="ModalImageDisplay" tabindex="-1" role="dialog" aria-labelledby="ImageDisplay" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img id="ImageDisplay" class="img-responsive img_fill" src="" alt="Image not found">
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script>
+        $(document).on("click", ".OpenModal", function () {
+            const ImageDisplay = $(this).data('image');
+            $("#ImageDisplay").attr("src", ImageDisplay);
+        });
+    </script>
+{% endblock %}
