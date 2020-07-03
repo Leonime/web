@@ -9,3 +9,4 @@ from .geolocation import *
 from .redis import *
 from .sentry import *
 from .whitenoise import *
+from .cs_django_thumbnails import *
