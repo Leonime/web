@@ -46,7 +46,10 @@ class ChirpSerializer(serializers.ModelSerializer):
         fields = ['user', 'id', 'content', 'likes', 'is_rechirp', "parent", 'timestamp']
 
     def get_likes(self, obj):
-        return obj.likes.count()
+        if hasattr(obj, 'likes__count'):
+            return obj.likes__count
+        else:
+            return obj.likes.count()
 
     def validate_content(self, value):
         if len(value) > MAX_CHIRP_LENGTH:
