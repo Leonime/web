@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type='submit' class='btn btn-lg btn-secondary btn-block'>
+            Submit
+        </button>
+    </form>
+</div>
+<div>
+    {% if gallery %}
+        Gallery
+        <ul>
+            {% for item in gallery %}
+                <li><a href="{{ item.image.url }}">{{ item.image.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No documents.</p>
+    {% endif %}
+</div>
+</body>
+</html>
