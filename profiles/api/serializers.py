@@ -38,13 +38,22 @@ class ProfileSerializer(serializers.ModelSerializer):
         return obj.user.username
 
     def get_following_count(self, obj):
-        return obj.user.following.count()
+        if hasattr(obj, 'user__following__count'):
+            return obj.user__following__count
+        else:
+            return obj.user.following.count()
 
     def get_follower_count(self, obj):
-        return obj.followers.count()
+        if hasattr(obj, 'followers__count'):
+            return obj.followers__count
+        else:
+            return obj.followers.count()
 
     def get_chirp_count(self, obj):
-        return obj.user.chirp_set.count()
+        if hasattr(obj, 'user__chirp__count'):
+            return obj.user__chirp__count
+        else:
+            return obj.user.chirp_set.count()
 
     def get_is_following(self, obj):
         is_following = False
