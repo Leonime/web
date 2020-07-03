@@ -1,7 +1,7 @@
 import re
 
 from codeshepherds.settings.django import SECRET_KEY
-from .redis import REDIS_URL
+from .redis import REDIS
 
 ############
 # channels #
@@ -13,7 +13,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [f'redis://{REDIS_URL}/'],
+            'hosts': [f'redis://{REDIS}/'],
             "symmetric_encryption_keys": [SECRET_KEY],
             'channel_capacity': {
                 'http.request': 200,

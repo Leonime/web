@@ -13,7 +13,7 @@ REDIS = f'{REDIS_URL}:{REDIS_PORT}'
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': f'redis://{REDIS_URL}/',
+        'LOCATION': f'redis://{REDIS}/',
         'OPTIONS': {
             'DB': 1,
             'PARSER_CLASS': 'redis.connection.HiredisParser',
