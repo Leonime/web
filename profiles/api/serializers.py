@@ -11,6 +11,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     following_count = serializers.SerializerMethodField(read_only=True)
     chirp_count = serializers.SerializerMethodField(read_only=True)
     is_following = serializers.SerializerMethodField(read_only=True)
+    image = serializers.SerializerMethodField(read_only=True)
+    thumbnail = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Profile
@@ -26,7 +28,14 @@ class ProfileSerializer(serializers.ModelSerializer):
             'is_following',
             'username',
             'image',
+            'thumbnail',
         ]
+
+    def get_image(self, obj):
+        return obj.image.url
+
+    def get_thumbnail(self, obj):
+        return obj.image.thumbnails.large.url if obj.image else None
 
     def get_first_name(self, obj):
         return obj.user.first_name
