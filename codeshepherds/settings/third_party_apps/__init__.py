@@ -8,5 +8,6 @@ from .dropbox import *
 from .geolocation import *
 from .redis import *
 from .sentry import *
+from .simple_history import *
 from .whitenoise import *
 from .cs_django_thumbnails import *
