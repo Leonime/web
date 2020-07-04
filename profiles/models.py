@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from simple_history.models import HistoricalRecords
 from thumbnails import fields
 
 
@@ -10,3 +11,5 @@ class Profile(models.Model):
     followers = models.ManyToManyField(User, related_name='following', blank=True, help_text='The user followers')
     image = fields.ImageField(upload_to='profiles/profile/', max_length=1024, blank=True, null=True,
                               help_text='The profile picture')
+
+    history = HistoricalRecords()
