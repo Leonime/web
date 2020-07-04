@@ -32,7 +32,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         ]
 
     def get_image(self, obj):
-        return obj.image.url
+        if obj.image:
+            return obj.image.url
 
     def get_thumbnail(self, obj):
         return obj.image.thumbnails.large.url if obj.image else None
