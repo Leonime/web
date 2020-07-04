@@ -2,12 +2,15 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
 from thumbnails import fields
+from simple_history.models import HistoricalRecords
 
 
 class ChirpLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     chirp = models.ForeignKey("Chirp", on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    history = HistoricalRecords()
 
 
 class ChirpQuerySet(models.QuerySet):
@@ -41,6 +44,8 @@ class Chirp(models.Model):
     image = fields.ImageField(upload_to='chirp/chirp/%Y/%m/%d/', max_length=1024, blank=True, null=True,
                               help_text='An image.')
     timestamp = models.DateTimeField(auto_now_add=True, help_text='The time when the chirp was created.')
+
+    history = HistoricalRecords()
 
     objects = ChirpManager()
 
