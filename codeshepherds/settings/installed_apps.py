@@ -44,6 +44,7 @@ LOCAL_APPS = [
     'chirp.apps.ChirpConfig',
     'cookbook.apps.CookbookConfig',
     'frontend.apps.FrontendConfig',
+    'history.apps.HistoryConfig',
     'home.apps.HomeConfig',
     'party.apps.PartyConfig',
     'profiles.apps.ProfilesConfig',
