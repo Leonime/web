@@ -36,8 +36,9 @@ class ChirpManager(models.Manager):
 
 
 class Chirp(models.Model):
-    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL, help_text='The parent chirp.')
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, help_text='Who is the owner of the chirp.')
+    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, help_text='The parent chirp.')
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL,
+                             help_text='Who is the owner of the chirp.')
     likes = models.ManyToManyField(User, related_name='chirp_user', blank=True, through=ChirpLike,
                                    help_text='It keeps a record on who likes the chirp.')
     content = models.TextField(blank=True, null=True, help_text='The content of the chirp.')
