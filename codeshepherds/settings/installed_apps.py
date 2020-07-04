@@ -30,6 +30,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'crispy_forms',
     'thumbnails',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 ##############
