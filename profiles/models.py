@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.safestring import mark_safe
 from simple_history.models import HistoricalRecords
 from thumbnails import fields
 
@@ -13,3 +14,9 @@ class Profile(models.Model):
                               help_text='The profile picture')
 
     history = HistoricalRecords()
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<a href="{self.image.url}" ><img src="{self.image.thumbnails.default.url}" /></a>')
+
+    image_tag.short_description = 'Image'
