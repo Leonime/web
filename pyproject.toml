@@ -35,6 +35,7 @@ uvicorn = "*"
 whitenoise = "*"
 cs-django-thumbnails = "*"
 Twisted = {extras = ["tls", "http2"], version = "*"}
+django-cleanup = "*"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
