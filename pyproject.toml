@@ -36,6 +36,7 @@ whitenoise = "*"
 cs-django-thumbnails = "*"
 Twisted = {extras = ["tls", "http2"], version = "*"}
 django-cleanup = "*"
+django-simple-history = "*"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
