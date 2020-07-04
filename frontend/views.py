@@ -14,6 +14,12 @@ class Index(TemplateView):
 class ChirpList(TemplateView):
     template_name = 'react/chirp/list.html'
 
+    def get(self, request, *args, **kwargs):
+        context = {
+            'user': request.user
+        }
+        return render(request, self.template_name, context)
+
 
 class ChirpFrontPageView(TemplateView):
     template_name = 'react/chirp/front_page.html'
