@@ -38,6 +38,7 @@ THIRD_PARTY_APPS = [
 # Local Apps #
 ##############
 LOCAL_APPS = [
+    'accounts.apps.AccountsConfig',
     'analytics.apps.AnalyticsConfig',
     'base.apps.BaseConfig',
     'chat.apps.ChatConfig',
