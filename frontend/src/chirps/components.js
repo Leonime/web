@@ -6,7 +6,7 @@ import {Chirp} from './detail'
 
 export function ChirpsComponent(props) {
     const [newChirps, setNewChirps] = useState([])
-    const canChirp = (props.canChirp !== undefined && props.canChirp !== null) ? props.canChirp : true
+    const canChirp = (props.canChirp !== undefined && props.canChirp !== null) ? props.canChirp === 'True' : false
     const handleNewChirp = (newChirp) => {
         let tempNewChirps = [...newChirps]
         tempNewChirps.unshift(newChirp)
