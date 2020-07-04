@@ -54,14 +54,9 @@ RUN flake8 --ignore=E501,F401,F403 .
 
 # react
 WORKDIR /usr/src/app/frontend
-RUN npm ci --only=production
-RUN npm install webpack-cli
-RUN npm run build
+RUN npm install
+RUN npm run dev
 WORKDIR /usr/src/app/
-RUN rm -rf /usr/src/app/frontend/node_modules/
-RUN rm -rf /usr/src/app/frontend/src/
-RUN rm -rf /usr/src/app/frontend/.babelrc
-RUN rm -rf /usr/src/app/frontend/*.js*
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
