@@ -31,6 +31,7 @@ THIRD_PARTY_APPS = [
     'crispy_forms',
     'thumbnails',
     'django_cleanup.apps.CleanupConfig',
+    'simple_history',
 ]
 
 ##############
