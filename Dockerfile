@@ -8,9 +8,6 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# check for updates
-RUN apk update && apk upgrade
-
 # install psycopg2 dependencies
 RUN apk add --no-cache postgresql-dev gcc python3-dev musl-dev
 
@@ -36,9 +33,6 @@ RUN apk add --no-cache optipng
 RUN apk add --no-cache npm
 
 # install project dependencies
-RUN pip install --upgrade setuptools
-RUN pip install --upgrade virtualenv
-RUN pip install --upgrade pip
 RUN pip install poetry
 COPY ./poetry.lock ./pyproject.toml /usr/src/app/
 
