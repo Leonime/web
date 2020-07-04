@@ -34,6 +34,7 @@ sentry-sdk = "*"
 uvicorn = "*"
 whitenoise = "*"
 cs-django-thumbnails = "*"
+Twisted = {extras = ["tls", "http2"], version = "*"}
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
