@@ -25,6 +25,16 @@ class ChirpFrontPageView(TemplateView):
     template_name = 'react/chirp/front_page.html'
 
 
+class ChirpProfile(TemplateView):
+    template_name = 'react/chirp/profile.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'user': request.user
+        }
+        return render(request, self.template_name, context)
+
+
 class ChirpDetail(TemplateView):
     template_name = 'react/chirp/detail.html'
 
