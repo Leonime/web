@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import views, login
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 
 from accounts.forms import UserCreateForm
 
@@ -29,7 +30,7 @@ class UserLogoutView(views.LogoutView):
 class RegisterUserView(views.FormView):
     template_name = ACCOUNT_TEMPLATES['auth']
     form_class = UserCreateForm
-    success_url = '/'
+    success_url = reverse_lazy('profiles:edit_profile')
 
     def post(self, request, *args, **kwargs):
         super(RegisterUserView, self).get(request, *args, **kwargs)

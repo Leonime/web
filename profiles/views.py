@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 
 from profiles.forms import UserProfileForm, UserProfileReadOnlyForm
@@ -33,7 +34,7 @@ def set_profile_form(form_class, request):
 class UserProfileView(LoginRequiredMixin, FormView):
     form_class = UserProfileForm
     template_name = 'profiles/form.html'
-    success_url = '/'
+    success_url = reverse_lazy('profiles:view_profile')
 
     def post(self, request, *args, **kwargs):
         form, user = set_profile_form(self.form_class, request)
