@@ -24,6 +24,9 @@ from rest_framework.documentation import include_docs_urls
 from home.views import Index
 
 urlpatterns = [
+    # Honey pot
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+
     # Admin urls
     path('sector7dev/', admin.site.urls),
 
