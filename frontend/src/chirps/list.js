@@ -34,7 +34,7 @@ function ChirpHandlersReturn(chirpsInit, setChirpsInit, chirps, setChirps, nextU
             return <Chirp
                 chirp={item}
                 didRechirp={handleDidRechirp}
-                className='my-3 py-3 border border-dark rounded bg-secondary text-white'
+                className='mb-3 py-3 border border-dark rounded bg-secondary text-white'
                 key={`${index}-{item.id}`}/>
         })
     }
