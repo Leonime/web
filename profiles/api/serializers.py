@@ -36,7 +36,8 @@ class ProfileSerializer(serializers.ModelSerializer):
             return obj.image.url
 
     def get_thumbnail(self, obj):
-        return obj.image.thumbnails.large.url if obj.image else None
+        if obj.image:
+            return obj.image.thumbnails.large.url if obj.image else None
 
     def get_first_name(self, obj):
         return obj.user.first_name
