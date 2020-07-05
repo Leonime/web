@@ -383,6 +383,14 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 category = "main"
+description = "A fake Django admin login screen to notify admins of attempted unauthorized access."
+name = "django-admin-honeypot"
+optional = false
+python-versions = "*"
+version = "1.1.0"
+
+[[package]]
+category = "main"
 description = "Bootstrap support for Django projects"
 name = "django-bootstrap4"
 optional = false
@@ -1287,7 +1295,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "3940fbb2a8b803228ce4c98e91ecfbb3690bafeff78cda762a19620e26be627f"
+content-hash = "570fc1810d167fff21bab3b0b88cf1f0869d8e2d6b716c694baf7ebc6fcc7bb8"
 python-versions = "3.8.*"
 
 [metadata.files]
@@ -1474,6 +1482,10 @@ daphne = [
 django = [
     {file = "Django-3.0.8-py3-none-any.whl", hash = "sha256:5457fc953ec560c5521b41fad9e6734a4668b7ba205832191bbdff40ec61073c"},
     {file = "Django-3.0.8.tar.gz", hash = "sha256:31a5fbbea5fc71c99e288ec0b2f00302a0a92c44b13ede80b73a6a4d6d205582"},
+]
+django-admin-honeypot = [
+    {file = "django-admin-honeypot-1.1.0.tar.gz", hash = "sha256:e18a52832b82740917737873c6f34117d15631565e9e4b7dbb9df48a29250796"},
+    {file = "django_admin_honeypot-1.1.0-py2.py3-none-any.whl", hash = "sha256:88e72753f5cbda88d909292d9f3fe7741fb74a8afad083f96e86114238f9b364"},
 ]
 django-bootstrap4 = [
     {file = "django-bootstrap4-2.2.0.tar.gz", hash = "sha256:1c0a931b4245a0dcd5051ea1b244ac130a328374ce8e85254c75eb072a737201"},
