@@ -5,7 +5,7 @@
 {% block title %}Login{% endblock %}
 
 {% block container %}
-    <div class='col-10 col-md-4 mx-auto'>
+    <div class='col-12 mx-auto'>
         {% csrf_token %}
         {{ form|crispy }}
     </div>
