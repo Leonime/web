@@ -21,8 +21,7 @@ export function ChirpCreate(props) {
     }
     return <div className={props.className}>
         <form onSubmit={handleSubmit}>
-            <textarea ref={textAreaRef} required={true} className='form-control' name='chirp'>
-
+            <textarea ref={textAreaRef} required={true} className='form-control' name='chirp' placeholder={'Write your Chirp.'}>
             </textarea>
             <button type='submit' className='btn btn-primary my-3'>Chirp</button>
         </form>
