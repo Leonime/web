@@ -28,8 +28,8 @@ export function UserPicture(props) {
 
 export function ProfilePicture(props) {
     const {user} = props
-    return user.image ? <a href={user.image}>
-            <img className="cover rounded-circle" src={user.thumbnail} alt={'Profile picture'}/>
+    return user.image ? <a href="#ModalImageDisplay" data-image={user.image} className="OpenModal" data-toggle="modal">
+        <img className="cover rounded-circle" src={user.thumbnail} alt={'Profile picture'}/>
     </a>
     : <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>{user.username[0]}</span>
 }
