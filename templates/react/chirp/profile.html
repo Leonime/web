@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block container %}
+    <div class='container my-3'>
+        <div class="col-12 my-3">
+            <div id='profile' class="profile" data-username="{{ user.username }}"></div>
+        </div>
+        <div class="col-12" id='chirp' data-username="{{ user.username }}" data-can-chirp="{{ user.is_authenticated }}"></div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static "react/chirp/main.js" %}"></script>
+{% endblock %}
