@@ -25,7 +25,7 @@ from home.views import Index
 
 urlpatterns = [
     # Admin urls
-    path('admin/', admin.site.urls),
+    path('sector7dev/', admin.site.urls),
 
     # Accounts app urls
     path('', include('accounts.urls', namespace='accounts')),
