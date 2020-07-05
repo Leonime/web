@@ -32,6 +32,7 @@ THIRD_PARTY_APPS = [
     'thumbnails',
     'django_cleanup.apps.CleanupConfig',
     'simple_history',
+    'admin_honeypot',
 ]
 
 ##############
