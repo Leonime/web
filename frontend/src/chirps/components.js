@@ -26,7 +26,7 @@ export function FrontPageComponent(props) {
         setNewChirps(tempNewChirps)
     }
     return <div className={props.className}>
-        <ChirpCreate didChirp={handleNewChirp} className='col-12 mb-3'/>
+        <ChirpCreate didChirp={handleNewChirp} className=''/>
         <ChirpList newChirps={newChirps} {...props} front_page={true} />
     </div>
 }
