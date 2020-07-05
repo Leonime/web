@@ -34,6 +34,7 @@
                 {% if user.is_authenticated %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{% url 'frontend:chirp_front_page' %}">Front Page</a>
+                    <a class="dropdown-item" href="{% url 'frontend:chirp_profile' %}">My profile</a>
                 {% endif %}
             </div>
         </li>
