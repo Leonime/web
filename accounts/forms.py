@@ -7,7 +7,8 @@ from django.core.exceptions import ValidationError
 class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True, label='eMail')
     error_messages = {
-        'email_exists': 'The email already exists.'
+        'email_exists': 'The email already exists.',
+        'password_mismatch': 'The two password fields didn’t match.',
     }
 
     class Meta:
