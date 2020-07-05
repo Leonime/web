@@ -5,7 +5,7 @@
 
 {% block container %}
     <div class='container my-3'>
-        <div id='chirp' data-username="{{ user.username }}" data-can-chirp="{{ user.is_authenticated }}"></div>
+        <div id='chirp' data-can-chirp="{{ user.is_authenticated }}"></div>
     </div>
 {% endblock %}
 {% block javascript %}
