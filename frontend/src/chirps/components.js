@@ -13,7 +13,7 @@ export function ChirpsComponent(props) {
         setNewChirps(tempNewChirps)
     }
     return <div className={props.className}>
-        {canChirp === true && <ChirpCreate didChirp={handleNewChirp} className='col-12 mb-3'/>}
+        {canChirp === true && <ChirpCreate didChirp={handleNewChirp} className=''/>}
         <ChirpList newChirps={newChirps} {...props} />
     </div>
 }
