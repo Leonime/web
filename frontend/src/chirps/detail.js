@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {ActionBtn} from "./buttons";
-import {UserDisplay, UserPicture} from "../profiles";
+import {UserDisplay} from "../profiles";
 import {ProfilePicture} from "../profiles/components";
 
 export function Chirp(props) {
