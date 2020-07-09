@@ -47,7 +47,9 @@ class UserLogoutView(views.LogoutView):
 class RegisterUserView(views.FormView):
     template_name = ACCOUNT_TEMPLATES['auth']
     form_class = UserCreateForm
-    success_url = reverse_lazy('profiles:edit_profile')
+    success_url = reverse_lazy('profiles:edit_profile')\
+        if not getattr(settings, 'ASK_CONFIRMATION_EMAIL', False)\
+        else reverse_lazy('accounts:login')
 
     def post(self, request, *args, **kwargs):
         super(RegisterUserView, self).get(request, *args, **kwargs)
