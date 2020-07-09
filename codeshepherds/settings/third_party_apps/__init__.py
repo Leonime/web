@@ -8,6 +8,7 @@ from .django_rest_framework import *
 from .dropbox import *
 from .geolocation import *
 from .redis import *
+from .sendgrid import *
 from .sentry import *
 from .simple_history import *
 from .whitenoise import *
