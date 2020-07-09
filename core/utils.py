@@ -1,4 +1,5 @@
 import binascii
+import logging
 import time
 
 import base64
@@ -14,6 +15,15 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
+
+from django.contrib import messages
+from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import redirect, render
+from django.template.loader import get_template
+from django.urls import reverse
+from rest_framework import status
+
+from core.send_mail import SendEmail
 
 
 def create_encryptor():
@@ -121,3 +131,30 @@ def get_boolean(value):
         return bool(value) if 1 >= value >= 0 else False
     else:
         return False
+
+
+def send_confirmation_email(request, user, user_id, token, context, success_url, resend=False):
+    logger = logging.getLogger(__name__)
+    current_site = str(get_current_site(request))
+    url = current_site + reverse('accounts:confirm_email', kwargs={'user_id': user_id, 'token': token})
+    message = get_template('account/register_email.html').render({
+        'confirm_url': url
+    })
+    kwargs = {
+        'from_email': 'no-reply@codeshepherds.com',
+        'to_emails': user.email,
+        'subject': 'Codeshepherds email confirmation',
+        'html_content': message
+    }
+    email = SendEmail(**kwargs)
+    code = email.send()
+    if code == status.HTTP_202_ACCEPTED:
+        if resend:
+            messages.success(request, "Confirmation email send, check your spambox.")
+        else:
+            messages.success(request, "Please confirm your email.")
+        return redirect(success_url)
+    else:
+        logger.error('Email failed', code)
+        messages.error(request, 'Something went wrong please try again.')
+        return render(request, 'account/auth.html', context)
