@@ -113,3 +113,22 @@ class ConfirmRegistrationView(View):
                                     'Please click the reset password to generate a new confirmation email.')
 
         return render(request, ACCOUNT_TEMPLATES['auth'], context)
+
+
+class ResendConfirmRegistrationView(View):
+
+    def get(self, request, user_id, token):
+        user_id = force_text(urlsafe_base64_decode(user_id))
+        user = User.objects.get(pk=user_id)
+
+        context = {
+            'form': AuthenticationForm(),
+        }
+        if user and UserTokenGenerator().check_token(user, token):
+            user_id = urlsafe_base64_encode(force_bytes(user.id))
+            return send_confirmation_email(request, user, user_id, token, context, reverse('index'), True)
+        else:
+            messages.error(request, 'Registration confirmation error. '
+                                    'Please click the reset password to generate a new confirmation email.')
+
+        return render(request, ACCOUNT_TEMPLATES['auth'], context)
