@@ -30,6 +30,14 @@ class UserLoginView(views.LoginView):
         password = request.POST['password']
         user: User = authenticate(request, username=username, password=password)
         if user is not None:
+            if not user.profile.email_confirmed:
+                token = UserTokenGenerator().make_token(user)
+                user_id = urlsafe_base64_encode(force_bytes(user.id))
+                url = reverse('accounts:resend-confirm_email', kwargs={'user_id': user_id, 'token': token})
+                message = format_html(f'You need to confirm your email to login. '
+                                      f'<a href="{url}">Resend confirmation email.</a>')
+                messages.error(request, message)
+                return redirect(reverse('index'))
             login(request, user)
             messages.success(request, 'You have successfully logged in.')
             return redirect(reverse('index'))
@@ -65,7 +73,6 @@ class RegisterUserView(views.FormView):
     def post(self, request, *args, **kwargs):
         super(RegisterUserView, self).get(request, *args, **kwargs)
         ace: bool = getattr(settings, 'ASK_CONFIRMATION_EMAIL', False)
-        current_site = str(get_current_site(request))
         form = self.form_class(request.POST or None)
         if form.is_valid():
             user: User = form.save(commit=False) if ace else form.save()
