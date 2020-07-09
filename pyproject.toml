@@ -38,6 +38,7 @@ Twisted = {extras = ["tls", "http2"], version = "*"}
 django-cleanup = "*"
 django-simple-history = "*"
 django-admin-honeypot = "*"
+sendgrid = "*"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
