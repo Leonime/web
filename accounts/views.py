@@ -74,39 +74,22 @@ class RegisterUserView(views.FormView):
         super(RegisterUserView, self).get(request, *args, **kwargs)
         ace: bool = getattr(settings, 'ASK_CONFIRMATION_EMAIL', False)
         form = self.form_class(request.POST or None)
-        if form.is_valid():
-            user: User = form.save(commit=False) if ace else form.save()
-            if ace:
-                user.is_active = False
-                user.save()
-                token = UserTokenGenerator().make_token(user)
-                user_id = urlsafe_base64_encode(force_bytes(user.id))
-                url = current_site + reverse('accounts:confirm_email', kwargs={'user_id': user_id, 'token': token})
-                message = get_template('account/register_email.html').render({
-                    'confirm_url': url
-                })
-                kwargs = {
-                    'from_email': 'no-reply@codeshepherds.com',
-                    'to_emails': user.email,
-                    'subject': 'Codeshepherds email confirmation',
-                    'html_content': message
-                }
-                email = SendEmail(**kwargs)
-                code = email.send()
-                if code == status.HTTP_202_ACCEPTED:
-                    messages.success(request, "Please confirm your email.")
-                    return redirect(self.success_url)
-                else:
-                    logger.error('Email failed', code)
-            else:
-                login(request, user)
-                messages.success(request, "User created successfully, you're now logged in.")
-                return redirect(self.success_url)
-
         context = {
             "form": form,
             "btn_label": "Register",
         }
+
+        if form.is_valid():
+            user: User = form.save(commit=False) if ace else form.save()
+            user.save()
+            if ace:
+                token = UserTokenGenerator().make_token(user)
+                user_id = urlsafe_base64_encode(force_bytes(user.id))
+                return send_confirmation_email(request, user, user_id, token, context, self.success_url)
+            else:
+                login(request, user)
+                messages.success(request, "User created successfully, you're now logged in.")
+                return redirect(self.success_url)
         return render(request, self.template_name, context)
 
 
