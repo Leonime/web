@@ -103,9 +103,9 @@ class ConfirmRegistrationView(View):
             'form': AuthenticationForm(),
         }
         if user and UserTokenGenerator().check_token(user, token):
-            user.is_active = True
-            user.profile.email_confirmed = True
-            user.save()
+            profile = user.profile
+            profile.email_confirmed = True
+            profile.save()
             messages.success(request, "Registration complete. Please login")
             return redirect(reverse('accounts:login'))
         else:
