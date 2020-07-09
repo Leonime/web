@@ -1,5 +1,8 @@
 import os
 
+from core.utils import get_boolean
+
+
 ####################################################################
 # SECURITY WARNING: keep the secret key used in production secret! #
 ####################################################################
@@ -19,7 +22,7 @@ SITE_ROOT = PROJECT_ROOT
 ###################################################################
 # SECURITY WARNING: don't run with debug turned on in production! #
 ###################################################################
-DEBUG = int(os.environ.get('DEBUG', default=False))
+DEBUG = get_boolean(os.environ.get('DEBUG', default=False))
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(',')
 
