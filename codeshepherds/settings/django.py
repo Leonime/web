@@ -24,6 +24,8 @@ SITE_ROOT = PROJECT_ROOT
 ###################################################################
 DEBUG = get_boolean(os.environ.get('DEBUG', default=False))
 
+ASK_CONFIRMATION_EMAIL = get_boolean(os.environ.get('ASK_CONFIRMATION_EMAIL', default=False))
+
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(',')
 
 SITE_ID = 1
