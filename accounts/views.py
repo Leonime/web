@@ -26,7 +26,6 @@ class UserLoginView(views.LoginView):
     template_name = ACCOUNT_TEMPLATES['auth']
 
     def post(self, request, *args, **kwargs):
-        super(UserLoginView, self).post(request, *args, **kwargs)
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
