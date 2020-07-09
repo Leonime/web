@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import views, login
+from django.contrib.auth import views, login, authenticate
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
@@ -12,6 +12,23 @@ ACCOUNT_TEMPLATES = {
 
 class UserLoginView(views.LoginView):
     template_name = ACCOUNT_TEMPLATES['auth']
+
+    def post(self, request, *args, **kwargs):
+        super(UserLoginView, self).post(request, *args, **kwargs)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'You have successfully logged in.')
+            return redirect(reverse('index'))
+        
+        context = {
+            'form': self.form_class,
+            'btn_label': 'Login',
+        }
+        messages.error(request, 'Wrong username or password, please try again.')
+        return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
         super(UserLoginView, self).get(request, *args, **kwargs)
