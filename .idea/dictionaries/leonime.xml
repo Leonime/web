@@ -9,6 +9,7 @@
       <w>csrftoken</w>
       <w>dropbox</w>
       <w>encryptor</w>
+      <w>gmail</w>
       <w>hiredis</w>
       <w>jpegoptim</w>
       <w>lconf</w>
@@ -23,7 +24,9 @@
       <w>rechirper</w>
       <w>reloader</w>
       <w>runserverplus</w>
+      <w>sendgrid</w>
       <w>shortener</w>
+      <w>smtp</w>
       <w>surl</w>
       <w>thumbnailer</w>
       <w>unchirp</w>
