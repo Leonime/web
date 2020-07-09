@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -48,6 +49,7 @@ class UserProfileView(LoginRequiredMixin, FormView):
             user.email = email
             user.save()
             profile_obj.save()
+            messages.success(request, 'Profile updated successfully.')
             return redirect(self.success_url)
         context = {
             "form": form,
