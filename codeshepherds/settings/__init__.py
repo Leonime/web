@@ -6,6 +6,7 @@ from .auth import *
 from .database import *
 from .debug import *
 from .django import *
+from .email import *
 from .installed_apps import *
 from .logging import *
 from .media import *
