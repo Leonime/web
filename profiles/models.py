@@ -12,6 +12,7 @@ class Profile(models.Model):
     followers = models.ManyToManyField(User, related_name='following', blank=True, help_text='The user followers')
     image = fields.ImageField(upload_to='profiles/profile/', max_length=1024, blank=True, null=True,
                               help_text='The profile picture')
+    email_confirmed = models.BooleanField(default=False, help_text='Tells if email has been confirmed.')
 
     history = HistoricalRecords()
 
