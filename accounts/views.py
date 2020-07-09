@@ -1,13 +1,27 @@
+import logging
+
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import views, login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.template.loader import get_template
+from django.urls import reverse_lazy, reverse
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.views import View
+from rest_framework import status
 
 from accounts.forms import UserCreateForm
+from core.send_mail import SendEmail
+from core.tokens import UserTokenGenerator
 
 ACCOUNT_TEMPLATES = {
     'auth': 'account/auth.html'
 }
+logger = logging.getLogger(__name__)
 
 
 class UserLoginView(views.LoginView):
@@ -22,7 +36,7 @@ class UserLoginView(views.LoginView):
             login(request, user)
             messages.success(request, 'You have successfully logged in.')
             return redirect(reverse('index'))
-        
+
         context = {
             'form': self.form_class,
             'btn_label': 'Login',
@@ -53,15 +67,62 @@ class RegisterUserView(views.FormView):
 
     def post(self, request, *args, **kwargs):
         super(RegisterUserView, self).get(request, *args, **kwargs)
+        ace: bool = getattr(settings, 'ASK_CONFIRMATION_EMAIL', False)
+        current_site = str(get_current_site(request))
         form = self.form_class(request.POST or None)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, "User created successfully, you're now logged in.")
-            return redirect(self.success_url)
+            user: User = form.save(commit=False) if ace else form.save()
+            if ace:
+                user.is_active = False
+                user.save()
+                token = UserTokenGenerator().make_token(user)
+                user_id = urlsafe_base64_encode(force_bytes(user.id))
+                url = current_site + reverse('accounts:confirm_email', kwargs={'user_id': user_id, 'token': token})
+                message = get_template('account/register_email.html').render({
+                    'confirm_url': url
+                })
+                kwargs = {
+                    'from_email': 'no-reply@codeshepherds.com',
+                    'to_emails': user.email,
+                    'subject': 'Codeshepherds email confirmation',
+                    'html_content': message
+                }
+                email = SendEmail(**kwargs)
+                code = email.send()
+                if code == status.HTTP_202_ACCEPTED:
+                    messages.success(request, "Please confirm your email.")
+                    return redirect(self.success_url)
+                else:
+                    logger.error('Email failed', code)
+            else:
+                login(request, user)
+                messages.success(request, "User created successfully, you're now logged in.")
+                return redirect(self.success_url)
 
         context = {
             "form": form,
             "btn_label": "Register",
         }
         return render(request, self.template_name, context)
+
+
+class ConfirmRegistrationView(View):
+
+    def get(self, request, user_id, token):
+        user_id = force_text(urlsafe_base64_decode(user_id))
+        user = User.objects.get(pk=user_id)
+
+        context = {
+            'form': AuthenticationForm(),
+        }
+        if user and UserTokenGenerator().check_token(user, token):
+            user.is_active = True
+            user.profile.email_confirmed = True
+            user.save()
+            messages.success(request, "Registration complete. Please login")
+            return redirect(reverse('accounts:login'))
+        else:
+            messages.error(request, 'Registration confirmation error. '
+                                    'Please click the reset password to generate a new confirmation email.')
+
+        return render(request, ACCOUNT_TEMPLATES['auth'], context)
