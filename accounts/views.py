@@ -5,18 +5,16 @@ from django.contrib import messages
 from django.contrib.auth import views, login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
-from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_bytes, force_text
+from django.utils.html import format_html
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
-from rest_framework import status
 
 from accounts.forms import UserCreateForm
-from core.send_mail import SendEmail
 from core.tokens import UserTokenGenerator
+from core.utils import send_confirmation_email
 
 ACCOUNT_TEMPLATES = {
     'auth': 'account/auth.html'
