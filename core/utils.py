@@ -104,3 +104,20 @@ def load_db_config(base_dir=None):
         raise InvalidToken
 
     return config
+
+
+def get_boolean(value):
+    is_boolean = True if isinstance(value, bool) else False
+    is_int = False
+    try:
+        value = int(value)
+    except ValueError:
+        is_int = False
+    if is_boolean:
+        return value
+    elif isinstance(value, str) and is_int is False:
+        return True if value.lower() == 'true' else False
+    elif isinstance(value, int):
+        return bool(value) if 1 >= value >= 0 else False
+    else:
+        return False
