@@ -116,7 +116,7 @@ class ConfirmRegistrationView(View):
         return render(request, ACCOUNT_TEMPLATES['auth'], context)
 
 
-class ResendConfirmRegistrationView(View):
+class ResendConfirmationEmailView(View):
 
     def get(self, request, user_id, token):
         user_id = force_text(urlsafe_base64_decode(user_id))
