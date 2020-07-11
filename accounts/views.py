@@ -33,7 +33,7 @@ class UserLoginView(views.LoginView):
             if not user.profile.email_confirmed:
                 token = UserTokenGenerator().make_token(user)
                 user_id = urlsafe_base64_encode(force_bytes(user.id))
-                url = reverse('accounts:resend-confirm_email', kwargs={'user_id': user_id, 'token': token})
+                url = reverse('accounts:resend_confirm_email', kwargs={'user_id': user_id, 'token': token})
                 message = format_html(f'You need to confirm your email to login. '
                                       f'<a href="{url}">Resend confirmation email.</a>')
                 messages.error(request, message)
