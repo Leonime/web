@@ -1,15 +1,20 @@
-{% extends 'main.html' %}
+{% extends "main.html" %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
 {% block title %}Login{% endblock %}
 
 {% block container %}
-    <div class='col-10 col-md-4 mx-auto'>
-        <form method='POST'>
+    <div class="col-10 col-md-4 mx-auto mt-3">
+        <form method="POST"{% if action_url %} action="{{ action_url }}"{% endif %}>
             {% csrf_token %}
             {{ form|crispy }}
-            <button type='submit' class='btn btn-lg btn-secondary btn-block'>
+            {% if recover_password %}
+                <div class="float-right align-top form-group">
+                    <a href="{% url 'accounts:password_reset' %}">Forgot your password?</a>
+                </div>
+            {% endif %}
+            <button type="submit" class="btn btn-lg btn-secondary btn-block">
                 {% if btn_label %}
                     {{ btn_label }}
                 {% else %}
