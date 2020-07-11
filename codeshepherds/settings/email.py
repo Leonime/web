@@ -8,3 +8,5 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_SEND_EMAIL = os.environ.get('EMAIL_SEND_EMAIL')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
+
+EMAIL_DEFAULT_FROM = 'webmaster@codeshepherds.com'
