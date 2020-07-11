@@ -135,8 +135,7 @@ def get_boolean(value):
 
 def send_confirmation_email(request, user, user_id, token, context, success_url, resend=False):
     logger = logging.getLogger(__name__)
-    current_site = str(get_current_site(request))
-    url = current_site + reverse('accounts:confirm_email', kwargs={'user_id': user_id, 'token': token})
+    url = request.build_absolute_uri(reverse('accounts:confirm_email', kwargs={'user_id': user_id, 'token': token}))
     message = get_template('account/register_email.html').render({
         'confirm_url': url
     })
