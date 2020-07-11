@@ -155,3 +155,7 @@ class UserPasswordResetView(views.PasswordResetView):
         }
 
         return render(request, self.template_name, context)
+
+
+class UserPasswordResetDoneView(views.PasswordResetDoneView):
+    template_name = 'account/password_reset_done.html'
