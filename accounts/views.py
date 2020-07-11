@@ -55,6 +55,7 @@ class UserLoginView(views.LoginView):
         context = {
             'form': form,
             'btn_label': 'Login',
+            'recover_password': True
         }
         return render(request, self.template_name, context)
 
