@@ -133,3 +133,25 @@ class ResendConfirmRegistrationView(View):
                                     'Please click the reset password to generate a new confirmation email.')
 
         return render(request, ACCOUNT_TEMPLATES['auth'], context)
+
+
+class UserPasswordResetView(views.PasswordResetView):
+    email_template_name = 'account/reset_password_email.html'
+    from_email = getattr(settings, 'EMAIL_DEFAULT_FROM', 'webmaster@codeshepherds.com')
+    template_name = ACCOUNT_TEMPLATES['auth']
+    success_url = reverse_lazy('accounts:password_reset_done')
+
+    def post(self, request, *args, **kwargs):
+        return super(UserPasswordResetView, self).post(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        super(UserPasswordResetView, self).get(request, *args, **kwargs)
+        form = self.form_class
+        action_url = reverse('accounts:password_reset')
+        context = {
+            'form': form,
+            'action_url': action_url,
+            'btn_label': 'Reset Password',
+        }
+
+        return render(request, self.template_name, context)
