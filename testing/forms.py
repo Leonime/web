@@ -1,5 +1,5 @@
 from django.contrib.admin import ModelAdmin
-from django.forms import ModelForm, MultipleChoiceField, CheckboxSelectMultiple
+from django.forms import ModelForm, CheckboxSelectMultiple
 
 from base.models import Weekday
 from testing.models import Testing, Gallery

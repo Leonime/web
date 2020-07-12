@@ -1,7 +1,6 @@
 ######################
 # Auth urls defaults #
 ######################
-import os
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'

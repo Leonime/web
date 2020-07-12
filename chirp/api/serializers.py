@@ -1,5 +1,3 @@
-from abc import ABC
-
 from rest_framework import serializers
 
 from chirp.models import Chirp

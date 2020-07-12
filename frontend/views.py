@@ -1,9 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from rest_framework.response import Response
 
-from profiles.api.serializers import ProfileSerializer
 from profiles.models import Profile
 
 

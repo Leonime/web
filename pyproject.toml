@@ -46,6 +46,7 @@ flake8 = "*"
 django-debug-toolbar = "*"
 django-extensions = "*"
 werkzeug = "*"
+selenium = "*"
 
 [build-system]
 requires = ["poetry>=0.12"]
