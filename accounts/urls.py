@@ -2,12 +2,15 @@ from django.urls import path
 
 from accounts.views import (UserLoginView, UserLogoutView, RegisterUserView, ConfirmRegistrationView,
                             ResendConfirmationEmailView, UserPasswordResetView, UserPasswordResetConfirmView,
-                            UserPasswordResetDoneView)
+                            UserPasswordResetDoneView, UserPasswordChangeView, UserPasswordChangeDoneView)
 
 app_name = 'accounts'
 urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
+
+    path('password_change/', UserPasswordChangeView.as_view(), name='password_change'),
+    path('password_change/done/', UserPasswordChangeDoneView.as_view(), name='password_change_done'),
 
     path('register/', RegisterUserView.as_view(), name='register'),
     path('confirm-email/<user_id>/<token>/', ConfirmRegistrationView.as_view(), name='confirm_email'),
