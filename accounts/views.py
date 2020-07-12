@@ -46,6 +46,8 @@ class UserLoginView(views.LoginView):
         context = {
             'form': self.form_class,
             'btn_label': 'Login',
+            'recover_password': True,
+            'page_tittle': 'Login',
         }
         messages.error(request, 'Wrong username or password, please try again.')
         return render(request, self.template_name, context)
@@ -56,7 +58,8 @@ class UserLoginView(views.LoginView):
         context = {
             'form': form,
             'btn_label': 'Login',
-            'recover_password': True
+            'recover_password': True,
+            'page_tittle': 'Login',
         }
         return render(request, self.template_name, context)
 
@@ -77,8 +80,9 @@ class RegisterUserView(views.FormView):
         ace: bool = getattr(settings, 'ASK_CONFIRMATION_EMAIL', False)
         form = self.form_class(request.POST or None)
         context = {
-            "form": form,
-            "btn_label": "Register",
+            'form': form,
+            'btn_label': 'Register',
+            'page_tittle': 'Register'
         }
 
         if form.is_valid():
@@ -101,9 +105,6 @@ class ConfirmRegistrationView(View):
         user_id = force_text(urlsafe_base64_decode(user_id))
         user = User.objects.get(pk=user_id)
 
-        context = {
-            'form': AuthenticationForm(),
-        }
         if user and UserTokenGenerator().check_token(user, token):
             profile = user.profile
             profile.email_confirmed = True
@@ -114,7 +115,7 @@ class ConfirmRegistrationView(View):
             messages.error(request, 'Registration confirmation error. '
                                     'Please click the reset password to generate a new confirmation email.')
 
-        return render(request, ACCOUNT_TEMPLATES['auth'], context)
+        return redirect(reverse(LOGIN_URL))
 
 
 class ResendConfirmationEmailView(View):
@@ -125,6 +126,7 @@ class ResendConfirmationEmailView(View):
 
         context = {
             'form': AuthenticationForm(),
+            'page_tittle': 'Resend confirmation email'
         }
         if user and UserTokenGenerator().check_token(user, token):
             user_id = urlsafe_base64_encode(force_bytes(user.id))
@@ -133,7 +135,7 @@ class ResendConfirmationEmailView(View):
             messages.error(request, 'Registration confirmation error. '
                                     'Please click the reset password to generate a new confirmation email.')
 
-        return render(request, ACCOUNT_TEMPLATES['auth'], context)
+        return redirect(reverse(LOGIN_URL))
 
 
 class UserPasswordResetView(views.PasswordResetView):
@@ -153,6 +155,7 @@ class UserPasswordResetView(views.PasswordResetView):
             'form': form,
             'action_url': action_url,
             'btn_label': 'Reset Password',
+            'page_tittle': 'Reset password',
         }
 
         return render(request, self.template_name, context)
