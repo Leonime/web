@@ -19,6 +19,7 @@ from core.utils import send_confirmation_email
 ACCOUNT_TEMPLATES = {
     'auth': 'account/auth.html'
 }
+LOGIN_URL = 'accounts:login'
 logger = logging.getLogger(__name__)
 
 
@@ -69,7 +70,7 @@ class RegisterUserView(views.FormView):
     form_class = UserCreateForm
     success_url = reverse_lazy('profiles:edit_profile')\
         if not getattr(settings, 'ASK_CONFIRMATION_EMAIL', False)\
-        else reverse_lazy('accounts:login')
+        else reverse_lazy(LOGIN_URL)
 
     def post(self, request, *args, **kwargs):
         super(RegisterUserView, self).get(request, *args, **kwargs)
@@ -108,7 +109,7 @@ class ConfirmRegistrationView(View):
             profile.email_confirmed = True
             profile.save()
             messages.success(request, "Registration complete. Please login")
-            return redirect(reverse('accounts:login'))
+            return redirect(reverse(LOGIN_URL))
         else:
             messages.error(request, 'Registration confirmation error. '
                                     'Please click the reset password to generate a new confirmation email.')
@@ -164,4 +165,4 @@ class UserPasswordResetDoneView(views.PasswordResetDoneView):
 class UserPasswordResetConfirmView(views.PasswordResetConfirmView):
     post_reset_login = True
     template_name = ACCOUNT_TEMPLATES['auth']
-    success_url = reverse_lazy('accounts:login')
+    success_url = reverse_lazy(LOGIN_URL)
