@@ -10,7 +10,7 @@
         </div>
     </div>
     <div id='chirp-container'></div>
-    <div id="chirp" data-username="{% user.username %}" data-can-chirp="{% user.is_authenticated %}"></div>
+    <div id="chirp" data-username="{{user.username}}" data-can-chirp="{{user.is_authenticated}}"></div>
 {% endblock %}
 {% block javascript %}
     <script>
