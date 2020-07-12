@@ -1,23 +1,14 @@
-import binascii
-import logging
-import time
-
 import base64
 import json
+import logging
 import os
-import six
-import struct
-from cryptography.exceptions import InvalidSignature
-from cryptography.fernet import InvalidToken, Fernet
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes, padding
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives.hmac import HMAC
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
 
+from cryptography.fernet import InvalidToken, Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from django.contrib import messages
-from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect, render
 from django.template.loader import get_template
 from django.urls import reverse
