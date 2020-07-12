@@ -55,6 +55,7 @@ RUN flake8 --ignore=E501,F401,F403 .
 # react
 WORKDIR /usr/src/app/frontend
 RUN npm install
+RUN npm audit fix
 RUN npm run dev
 WORKDIR /usr/src/app/
 
