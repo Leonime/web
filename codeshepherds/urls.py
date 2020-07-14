@@ -21,6 +21,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from rest_framework.documentation import include_docs_urls
 
+from base.views import Error404
 from home.views import Index
 
 urlpatterns = [
@@ -32,6 +33,9 @@ urlpatterns = [
 
     # Accounts app urls
     path('', include('accounts.urls', namespace='accounts')),
+
+    # Base app urls
+    path('', include('base.urls', namespace='base')),
 
     # Chat app urls
     path('chat/', include('chat.urls', namespace='chat')),
@@ -68,6 +72,8 @@ urlpatterns += static(getattr(settings, "STATIC_URL", '/static/'),
 urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'),
                       document_root=getattr(settings, "MEDIA_ROOT", 'media'))
 urlpatterns += staticfiles_urlpatterns()
+
+handler404 = Error404.as_view()
 
 if settings.DEBUG:
     import debug_toolbar
