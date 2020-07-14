@@ -34,4 +34,4 @@ class Error500(ErrorBase):
             description='There’s been an error. It’s been reported to the site administrators via email and should be'
                         ' fixed shortly. Thanks for your patience.',
         )
-        return render(request, self.template_name, context, status=status.HTTP_404_NOT_FOUND)
+        return render(request, self.template_name, context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
