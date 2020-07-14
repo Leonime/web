@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block fonts %}
+    {% include 'components/fonts/error_page.html' %}
+{% endblock %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/base/error_page.css' %}"/>
+{% endblock %}
+
+{% block title %}
+    {% if tittle %}
+        {{ tittle }}
+    {% else %}
+        Error
+    {% endif %}
+{% endblock %}
+
+{% block container %}
+    <div class="col-sm-12 mx-auto mt-3">
+        <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h3>Oops! {{ error }}</h3>
+                    <h1>{{ status }}</h1>
+                </div>
+                <h2>{{ description }}</h2>
+            </div>
+        </div>
+        <div class="col-sm-12 my-0 py-0">
+            <div class="d-flex justify-content-center">
+                <a href="{% url 'index' %}" class="btn btn-light">Go Home</a>
+            </div>
+        </div>
+    </div>
+    <!-- This templates was made by Colorlib (https://colorlib.com) -->
+{% endblock %}
