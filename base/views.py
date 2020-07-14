@@ -22,16 +22,18 @@ class Error404(ErrorBase):
         return render(request, self.template_name, context, status=status.HTTP_404_NOT_FOUND)
 
 
-class Error500(ErrorBase):
+class Error403(ErrorBase):
+    def dispatch(self, request, *args, **kwargs):
+        return super(Error403, self).dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         status_code = str()
-        for char in str(status.HTTP_500_INTERNAL_SERVER_ERROR):
+        for char in str(status.HTTP_403_FORBIDDEN):
             status_code += f'<span>{char}</span>'
         context = dict(
-            tittle='Server error (500)',
-            error='Server error (500)',
+            tittle='Permission denied',
+            error='Access denied',
             status=mark_safe(status_code),
-            description='There’s been an error. It’s been reported to the site administrators via email and should be'
-                        ' fixed shortly. Thanks for your patience.',
+            description='You don’t have permission to access this area.',
         )
-        return render(request, self.template_name, context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return render(request, self.template_name, context, status=status.HTTP_403_FORBIDDEN)
