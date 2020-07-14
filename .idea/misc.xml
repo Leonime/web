@@ -3,6 +3,9 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="JSX" />
   </component>
+  <component name="ProjectResources">
+    <resource url="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,700;1,400&amp;display=swap" location="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.8.2 Docker Compose (django at [/solid/Projects/codeshepherds/docker-compose.yml])" project-jdk-type="Python SDK" />
   <component name="PythonCompatibilityInspectionAdvertiser">
     <option name="version" value="3" />
