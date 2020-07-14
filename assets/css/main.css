@@ -1,0 +1,28 @@
+.smart-scroll {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.v-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cover {
+    object-fit: fill;
+    width: 50px;
+    height: 50px;
+}
+
+.img_fill {
+    object-fit: fill;
+    width: 100%;
+}

@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {# meta Block #}
     {% block meta %}
     {% endblock meta %}
@@ -12,30 +13,33 @@
         {% endblock %}
     </title>
 
-    {# Display django.contrib.messages as Bootstrap alerts #}
-    {% bootstrap_messages %}
+    {% block fonts %}
+    {% endblock fonts %}
 
     {# CSS Block #}
     {% block css %}
     {% endblock css %}
 
+    <link rel="stylesheet" href="{% static "css/main.css" %}" />
+
     {# Block to add template specific cdn #}
     {% block extra_libraries %}
     {% endblock extra_libraries %}
 
-    {% include 'libraries.html' %}
-
     {# Moved the favicon clutter to another page. #}
-    {% include 'favicon.html' %}
+    {% include 'components/favicon.html' %}
 </head>
 <body>
-
-{#{% include 'navbar.html' %}#}
-
+<noscript>You need to enable JavaScript to run this app.</noscript>
+{% include 'components/navbar.html' %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
 {% block container %}
 {% endblock container %}
+{% include 'components/modal_image_display.html' %}
 </body>
 <footer>
+    {% include 'components/libraries.html' %}
     {% block javascript %}
     {% endblock javascript %}
 </footer>

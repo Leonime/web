@@ -1,67 +1,20 @@
-import binascii
-import time
-
 import base64
 import json
+import logging
 import os
-import six
-import struct
-from cryptography.exceptions import InvalidSignature
-from cryptography.fernet import InvalidToken, Fernet
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes, padding
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives.hmac import HMAC
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pathlib import Path
 
+from cryptography.fernet import InvalidToken, Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.template.loader import get_template
+from django.urls import reverse
+from rest_framework import status
 
-def decrypt(self, token, ttl=None, max_clock_skew=60):
-    current_time = int(time.time())
-    if not isinstance(token, bytes):
-        raise TypeError('token must be bytes.')
-
-    try:
-        data = base64.urlsafe_b64decode(token)
-    except (TypeError, binascii.Error):
-        raise InvalidToken
-
-    if not data or six.indexbytes(data, 0) != 0x80:
-        raise InvalidToken
-
-    timestamp, = struct.unpack('>Q', data[1:9])
-
-    if ttl and not isinstance(ttl, int):
-        raise TypeError('ttl must be int')
-
-    if ttl is not None:
-        if timestamp + ttl < current_time:
-            raise InvalidToken
-    if current_time + max_clock_skew < timestamp:
-        raise InvalidToken
-
-    h = HMAC(self._signing_key, hashes.SHA256(), backend=self._backend)
-    h.update(data[:-32])
-
-    try:
-        h.verify(data[-32:])
-    except InvalidSignature:
-        raise InvalidToken
-
-    iv = data[9:25]
-
-    cipher_text = data[25:-32]
-    decrypter = Cipher(
-        algorithms.AES(self._encryption_key), modes.CBC(iv), self._backend
-    ).decryptor()
-    plaintext_padded = decrypter.update(cipher_text)
-    plaintext_padded += decrypter.finalize()
-
-    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
-    unpadded = unpadder.update(plaintext_padded)
-    unpadded += unpadder.finalize()
-
-    return unpadded.decode('utf-8')
+from core.send_mail import SendEmail
 
 
 def create_encryptor():
@@ -100,8 +53,6 @@ def save_config_file(config_file='development.json',
 
     with path.open('w') as file:
         json.dump(json_data, file, sort_keys=True, indent=4)
-        pass
-    pass
 
 
 def load_config_file():
@@ -112,12 +63,9 @@ def load_config_file():
     if path.exists():
         with path.open() as cfg:
             config = json.load(cfg)
-            pass
-        pass
     else:
         save_config_file(config_file, 'codeshepherds', 'leonime', 'nomas123', 'localhost', '')
         config = load_config_file()
-        pass
     return config
 
 
@@ -157,3 +105,46 @@ def load_db_config(base_dir=None):
         raise InvalidToken
 
     return config
+
+
+def get_boolean(value):
+    is_boolean = True if isinstance(value, bool) else False
+    is_int = False
+    try:
+        value = int(value)
+    except ValueError:
+        is_int = False
+    if is_boolean:
+        return value
+    elif isinstance(value, str) and is_int is False:
+        return True if value.lower() == 'true' else False
+    elif isinstance(value, int):
+        return bool(value) if 1 >= value >= 0 else False
+    else:
+        return False
+
+
+def send_confirmation_email(request, user, user_id, token, context, success_url, resend=False):
+    logger = logging.getLogger(__name__)
+    url = request.build_absolute_uri(reverse('accounts:confirm_email', kwargs={'user_id': user_id, 'token': token}))
+    message = get_template('account/register_email.html').render({
+        'confirm_url': url
+    })
+    kwargs = {
+        'from_email': 'no-reply@codeshepherds.com',
+        'to_emails': user.email,
+        'subject': 'Codeshepherds email confirmation',
+        'html_content': message
+    }
+    email = SendEmail(**kwargs)
+    code = email.send()
+    if code == status.HTTP_202_ACCEPTED:
+        if resend:
+            messages.success(request, "Confirmation email send, check your spambox.")
+        else:
+            messages.success(request, "Please confirm your email.")
+        return redirect(success_url)
+    else:
+        logger.error('Email failed', code)
+        messages.error(request, 'Something went wrong please try again.')
+        return render(request, 'account/auth.html', context)

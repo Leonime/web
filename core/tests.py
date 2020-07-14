@@ -1,20 +1,24 @@
 import base64
 import os
+import uuid
+from pathlib import Path
+
 from cryptography.fernet import InvalidToken, Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from django.test import TestCase
-from pathlib import Path
 
-from core.utils import decrypt, save_config_file, load_config_file, load_db_config
+from core.utils import save_config_file, load_config_file, load_db_config
+
+CONFIG_FILE = 'test_development.json'
 
 
 class TestDecrypt(TestCase):
     @staticmethod
     def get_fernet(crypt_key):
         password = crypt_key
-        salt = b'Jc2K2QCCh7T2QFNfCsES7TTkv8f8cmRebTyRCrmjV7CmZBmHxW'
+        salt = uuid.uuid4().hex.encode()
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
@@ -26,26 +30,10 @@ class TestDecrypt(TestCase):
 
         return Fernet(key)
 
-    def test_decrypt(self):
-        self.assertRaises(TypeError, lambda: decrypt(None, 'token'))
-        self.assertRaises(InvalidToken, lambda: decrypt(None, b'token'))
-        self.assertRaises(InvalidToken, lambda: decrypt(None, base64.urlsafe_b64encode(b'token')))
-
-        f = self.get_fernet(b'crypt_key')
-        token = f.encrypt(b'token')
-        self.assertEqual(decrypt(f, token), 'token')
-        self.assertRaises(TypeError, lambda: decrypt(f, token, '1'))
-        self.assertRaises(InvalidToken, lambda: decrypt(f, token, -1))
-        self.assertRaises(InvalidToken, lambda: decrypt(f, token, 1, -60))
-        self.assertRaises(InvalidToken, lambda: decrypt(f, token, None, -60))
-
-        f = self.get_fernet(b'bad_crypt_key')
-        self.assertRaises(InvalidToken, lambda: decrypt(f, token))
-
 
 class TestSaveConfigFile(TestCase):
     def setUp(self):
-        config_file = 'test_development.json'
+        config_file = CONFIG_FILE
         base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
         self.path = Path(base_dir).joinpath(config_file)
 
@@ -61,7 +49,7 @@ class TestLoadConfigFile(TestCase):
     def setUp(self):
         self.config_file = os.environ.get('CONFIG_FILE')
 
-        config_file = 'test_development.json'
+        config_file = CONFIG_FILE
         base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
         os.environ['CONFIG_FILE'] = config_file
         self.path = Path(base_dir).joinpath(config_file)
@@ -80,7 +68,7 @@ class TestLoadDBConfig(TestCase):
     def setUp(self):
         self.config_file = os.environ.get('CONFIG_FILE')
 
-        config_file = 'test_development.json'
+        config_file = CONFIG_FILE
         base_dir = os.environ.get('CODESHEPHERDS_BASE_DIR')
         os.environ['CONFIG_FILE'] = config_file
         self.crypt_key = os.environ.get('CRYPT_KEY')

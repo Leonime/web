@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+{% block title %}Chirp{% endblock %}
+
+{% block container %}
+    <form method='POST'> {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit' class='btn btn-secondary'>Save</button>
+    </form>
+{% endblock %}
+{% block javascript %}
+{% endblock %}

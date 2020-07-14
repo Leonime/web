@@ -8,9 +8,6 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# check for updates
-RUN apk update && apk upgrade
-
 # install psycopg2 dependencies
 RUN apk add --no-cache postgresql-dev gcc python3-dev musl-dev
 
@@ -29,9 +26,13 @@ RUN apk add --no-cache g++
 # install uvicorn dependencies
 RUN apk add --no-cache make
 
+# install cd-django-thumbnails dependencies
+RUN apk add --no-cache optipng
+
+# install npm
+RUN apk add --no-cache npm
+
 # install project dependencies
-RUN pip install --upgrade setuptools
-RUN pip install --upgrade virtualenv
 RUN pip install poetry
 COPY ./poetry.lock ./pyproject.toml /usr/src/app/
 
@@ -49,9 +50,14 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY . /usr/src/app/
 
 # lint
-RUN pip install flake8
-COPY . /usr/src/app/
-RUN flake8 --ignore=E501,F401 .
+RUN flake8 --ignore=E501,F401,F403 .
+
+# react
+WORKDIR /usr/src/app/frontend
+RUN npm install
+RUN npm audit fix
+RUN npm run dev
+WORKDIR /usr/src/app/
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

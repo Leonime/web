@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block container %}
+    <div class='col-12 mx-auto'>
+        {% csrf_token %}
+        {% crispy form %}
+    </div>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'main.html' %}
+
+{% block title %}Welcome to Chipper{% endblock %}
+
+{% block container %}
+    <div class='row text-center'>
+        <div class='col'>
+            <h1>Welcome to Chipper</h1>
+        </div>
+    </div>
+
+    <div class='row mb-3'>
+        <div class='col-md-4 mx-auto col-10'>
+            <form class='form' id='chirp_create_form' method='POST' action='/api/v1/chipper/chirps/'>
+                {% csrf_token %}
+                <div class='d-none alert alert-danger' id="error_display_div"></div>
+                <input type='hidden' value='/chipper/' name='next'/>
+                <label>
+                    <textarea required='required' class='form-control' name='content' placeholder='Your chirp...'></textarea>
+                </label>
+                <button type='submit' class='btn btn-primary'>Chirp</button>
+            </form>
+        </div>
+    </div>
+
+    <div class='row' id='chirps'>
+        Loading...
+    </div>
+
+    <script>
+        const chirp_create_form_el = document.getElementById("chirp_create_form")
+        const chirps_container_element = document.getElementById("chirps")
+
+        chirp_create_form_el.addEventListener("submit", handle_chirp_submit)
+        load_chirps(chirps_container_element)
+
+        function handle_chirp_error(msg, display) {
+            const error_div = document.getElementById("error_display_div");
+            if (display === true) {
+                error_div.setAttribute("class", "d-block alert alert-danger")
+                error_div.innerText = msg
+            } else {
+                error_div.setAttribute("class", "d-none alert alert-danger")
+            }
+        }
+
+        function handle_chirp_submit(event) {
+            event.preventDefault()
+            const my_form = event.target
+            const my_form_data = new FormData(my_form)
+            const url = my_form.getAttribute("action")
+            const method = my_form.getAttribute("method")
+            const xhr = new XMLHttpRequest()
+            xhr.responseType = "json"
+            xhr.open(method, url)
+            xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+            xhr.onload = function () {
+                if (xhr.status === 201) {
+                    handle_chirp_error("", false)
+                    const newChirpJson = xhr.response
+                    const newChirpElement = format_chirp_element(newChirpJson)
+                    const ogHtml = chirps_container_element.innerHTML
+                    chirps_container_element.innerHTML = newChirpElement + ogHtml
+                    my_form.reset()
+                }
+                else if (xhr.status === 400) {
+                    const errorJson = xhr.response
+                    const contentError = errorJson.content
+                    let contentErrorMsg;
+                    if (contentError) {
+                        contentErrorMsg = contentError[0]
+                        if (contentErrorMsg) {
+                            handle_chirp_error(contentErrorMsg, true)
+                        } else {
+                            alert("An error occurred. Please try again.")
+                        }
+                    } else {
+                        alert("An error occurred. Please try again.")
+                    }
+                }
+                else if (xhr.status === 401) {
+                    alert("You must login!")
+                    window.location.href = "/login"
+                }
+                else if (xhr.status === 500) {
+                    alert("There was a server error, please try again.")
+                }
+            }
+            xhr.onerror = function () {
+                alert("An error occurred. Please try again later.")
+            }
+            xhr.send(my_form_data)
+        }
+
+        function load_chirps(chirp_element) {
+            const xhr = new XMLHttpRequest()
+            const method = 'GET' // "POST"
+            const url = "/api/v1/chipper/chirps/"
+            xhr.responseType = "json"
+            xhr.open(method, url)
+            xhr.onload = function () {
+                const listedItems = xhr.response.results
+                console.log(listedItems)
+                let final_chirp = "";
+                for (let i = 0; i < listedItems.length; i++) {
+                    const chirp_obj = listedItems[i];
+                    const currentItem = format_chirp_element(chirp_obj);
+                    final_chirp += currentItem
+                }
+                chirp_element.innerHTML = final_chirp
+            }
+            xhr.send()
+        }
+
+        function handle_did_like(chirp_id, currentCount, action) {
+            const url = "/api/v1/chipper/chirps/" + chirp_id + "/like_action/"
+            const method = "POST"
+            const data = JSON.stringify({
+                id: chirp_id,
+                action: action
+            })
+            const xhr = new XMLHttpRequest()
+            const csrftoken = Cookies.get('csrftoken');
+            xhr.open(method, url)
+            xhr.setRequestHeader("Content-Type", "application/json")
+            xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            xhr.onload = function () {
+                // react.js this handle the state much better
+                load_chirps(chirps_container_element)
+            }
+            xhr.send(data)
+        }
+
+        function chirp_btn(chirp) {
+            return "<button class='btn btn-primary btn-sm' onclick=handle_did_like(" +
+                chirp.id + "," + chirp.likes + ",'chirp')>" + chirp.likes + " Chirps</button>"
+        }
+
+        function unchirp_btn(chirp) {
+            return "<button class='btn btn-outline-primary btn-sm' onclick=handle_did_like(" +
+                chirp.id + "," + chirp.likes + ",'unchirp')>Unchirp</button>"
+        }
+
+        function rechirp_btn(chirp) {
+            return "<button class='btn btn-outline-success btn-sm' onclick=handle_did_like(" +
+                chirp.id + "," + chirp.likes + ",'rechirp')>Rechirp</button>"
+        }
+
+        function format_chirp_element(chirp) {
+            return "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 chirp' id='chirp-" + chirp.id
+                + "'><p>" + chirp.content +
+                "</p><div class='btn-group'>" +
+                chirp_btn(chirp) +
+                unchirp_btn(chirp) +
+                rechirp_btn(chirp) +
+                "</div></div>"
+        }
+    </script>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

@@ -1,14 +1,21 @@
+from django.conf import settings
 from django.contrib.gis.geoip2 import GeoIP2
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
 from ipware import get_client_ip
 
 from analytics.models import SURLAnalytics
 from shortener.forms import SubmitUrlForm
 from shortener.models import ShortURL
 
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
+
+@method_decorator(cache_page(CACHE_TTL), name='dispatch')
 class ShortenerHome(View):
     form_class = SubmitUrlForm
     template_name = 'shortener/shortener_home.html'
@@ -57,7 +64,6 @@ class ShortURLView(View):  # class based view
             geolocation['country_code'] = ''
             geolocation['country'] = ''
             geolocation['found'] = False
-            pass
         else:
             # We got the client's IP address
             if is_routable:
@@ -68,7 +74,6 @@ class ShortURLView(View):  # class based view
                 geolocation['country_code'] = city['country_code']
                 geolocation['country'] = city['country_name']
                 geolocation['found'] = True
-                pass
             else:
                 # The client's IP address is private
                 geolocation['ipv4'] = client_ip
@@ -76,7 +81,6 @@ class ShortURLView(View):  # class based view
                 geolocation['country_code'] = ''
                 geolocation['country'] = ''
                 geolocation['found'] = None
-                pass
 
         SURLAnalytics.objects.create_event(obj, geolocation)
         return HttpResponseRedirect(obj.url)

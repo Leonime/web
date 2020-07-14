@@ -4,7 +4,7 @@ from pprint import pprint
 
 def upload_to(instance, filename):
     pprint(instance)
-    return 'photos/{}/{}'.format(instance.wish_id, filename)
+    return f'photos/{instance.wish_id}/{filename}'
 
 
 class Party(models.Model):

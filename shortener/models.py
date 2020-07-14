@@ -35,7 +35,6 @@ class ShortURL(models.Model):
         if not self.short_code:
             self.short_code = create_short_code(self)
         super(ShortURL, self).save(*args, **kwargs)
-        pass
 
     def get_absolute_url(self):
         domain = Site.objects.get_current().domain

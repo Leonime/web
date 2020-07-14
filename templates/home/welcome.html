@@ -3,12 +3,14 @@
 {% block title %}Welcome{% endblock title %}
 
 {% block container %}
-    {% include 'navbar.html' %}
-
-    <main role="main" class="container">
-        <div class="jumbotron">
-            <h1>Welcome!!</h1>
-            <p>Sorry for the moment this site is under construction, come back later for more updates.</p>
+    <div role="main" class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 col-sm-12 my-3 mx-auto">
+                <div class="jumbotron">
+                    <h1>Welcome!!</h1>
+                    <p>Sorry for the moment this site is under construction, come back later for more updates.</p>
+                </div>
+            </div>
         </div>
-    </main>
+    </div>
 {% endblock container %}

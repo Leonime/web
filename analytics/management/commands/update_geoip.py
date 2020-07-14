@@ -13,7 +13,6 @@ class Command(BaseCommand):
         super().__init__(*args, **kwargs)
         self.geoip_path = getattr(settings, "GEOIP_PATH", None)
         self.dropbox_access_token = getattr(settings, "DROPBOX_ACCESS_TOKEN", '')
-        pass
 
     def handle(self, *args, **options):
         dbx = dropbox.Dropbox(self.dropbox_access_token)
@@ -34,10 +33,7 @@ class Command(BaseCommand):
                         f'{Fore.BLACK + ("█" * (30 - done)) + Style.RESET_ALL}]'
                         f' {filesizeformat(downloaded)}/{filesizeformat(total)}')
                     sys.stdout.flush()
-                    pass
                 sys.stdout.write('\n')
-                pass
-            pass
         return True
 
     help = 'Updates geolocation DB'

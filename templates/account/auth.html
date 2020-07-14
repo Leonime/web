@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if page_tittle %}
+        {{ page_tittle }}
+    {% else %}
+        Codeshepherds
+    {% endif %}
+{% endblock %}
+
+{% block container %}
+    <div class="col-10 col-md-4 mx-auto mt-3">
+        <form method="POST"{% if action_url %} action="{{ action_url }}"{% endif %}>
+            <div class="container-fluid">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form|crispy }}
+                    </div>
+                </div>
+                {% if recover_password %}
+                    <div class="row">
+                        <div class="col-sm-12 my-0 py-0">
+                            <div class="float-right align-top form-group my-0 py-0">
+                                <a href="{% url 'accounts:password_reset' %}">Forgot your password?</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-12 mt-0 pt-0">
+                        <button type="submit" class="btn btn-lg btn-secondary float-right">
+                            {% if btn_label %}
+                                {{ btn_label }}
+                            {% else %}
+                                Submit
+                            {% endif %}
+                        </button>
+                    </div>
+                </div>
+        </form>
+    </div>
+{% endblock %}

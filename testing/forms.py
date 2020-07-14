@@ -1,8 +1,8 @@
 from django.contrib.admin import ModelAdmin
-from django.forms import ModelForm, MultipleChoiceField, CheckboxSelectMultiple
+from django.forms import ModelForm, CheckboxSelectMultiple
 
 from base.models import Weekday
-from testing.models import Testing
+from testing.models import Testing, Gallery
 
 
 class TestingForm(ModelForm):
@@ -23,3 +23,9 @@ class TestingForm(ModelForm):
 
 class TestingAdmin(ModelAdmin):
     form = TestingForm
+
+
+class GalleryForm(ModelForm):
+    class Meta:
+        model = Gallery
+        fields = ['image']

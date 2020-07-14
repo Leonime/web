@@ -19,34 +19,46 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
-from rest_framework import routers
+from rest_framework.documentation import include_docs_urls
 
+from base.views import Error404, Error403
 from home.views import Index
-from party import views
-
-router = routers.DefaultRouter()
-router.register(r'parties', views.PartyViewSet)
-router.register(r'wishes', views.WishViewSet)
-router.register(r'photos', views.PhotoViewSet)
-
 
 urlpatterns = [
+    # Honey pot
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+
     # Admin urls
-    path('admin/', admin.site.urls),
+    path('sector7dev/', admin.site.urls),
+
+    # Accounts app urls
+    path('', include('accounts.urls', namespace='accounts')),
+
+    # Base app urls
+    path('', include('base.urls', namespace='base')),
 
     # Chat app urls
     path('chat/', include('chat.urls', namespace='chat')),
+
+    # Chipper app urls
+    path('', include('chirp.urls', namespace='chipper')),
+
+    # Frontend app urls
+    path('', include('frontend.urls', namespace='frontend')),
 
     # Home urls
     path('', Index.as_view(), name='index'),
     path('s/', include('shortener.urls', namespace='shortener')),
 
     # party App Urls
-    path('party/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('', include('party.urls', namespace='party')),
 
-    # Testing urls
-    path('test/', include('testing.urls', namespace='testing')),
+    # Profile app urls
+    path('', include('profiles.urls', namespace='profiles')),
+
+    # REST API urls
+    path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/docs/', include_docs_urls(title='API Docs', public=False)),
 
     # Thumbnailer
     path('thumbnailer/', include('thumbnailer.urls', namespace='thumbnailer')),
@@ -61,8 +73,13 @@ urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'),
                       document_root=getattr(settings, "MEDIA_ROOT", 'media'))
 urlpatterns += staticfiles_urlpatterns()
 
+handler403 = Error403.as_view()
+handler404 = Error404.as_view()
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
+        # Testing urls
+        path('', include('testing.urls', namespace='testing')),
     ]

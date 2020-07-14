@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}Welcome to Chipper{% endblock %}
+
+{% block container %}
+    <div class='container my-3'>
+        <div id='chirp' data-can-chirp="{{ user.is_authenticated }}"></div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static "react/chirp/main.js" %}"></script>
+{% endblock %}
