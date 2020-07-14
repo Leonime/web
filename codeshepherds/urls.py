@@ -21,7 +21,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from rest_framework.documentation import include_docs_urls
 
-from base.views import Error404
+from base.views import Error404, Error500
 from home.views import Index
 
 urlpatterns = [
@@ -74,6 +74,7 @@ urlpatterns += static(getattr(settings, "MEDIA_URL", '/media/'),
 urlpatterns += staticfiles_urlpatterns()
 
 handler404 = Error404.as_view()
+handler500 = Error500.as_view()
 
 if settings.DEBUG:
     import debug_toolbar
