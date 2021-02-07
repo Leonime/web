@@ -15,7 +15,7 @@ class ChirpLike(models.Model):
 
 class ChirpQuerySet(models.QuerySet):
     def by_username(self, username):
-        return self.filter(user__username__iexact=username)
+        return self.filter(user__username__iexact=username).order_by("username")
 
     def feed(self, user):
         profiles_exist = user.following.exists()
