@@ -8,29 +8,28 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# needed to start installing dependencies
+RUN apt-get update && apt-get -y upgrade
+
+# install general required libraries
+RUN apt-get -y install build-essential curl netcat
+
 # install psycopg2 dependencies
-RUN apk add --no-cache postgresql-dev gcc python3-dev musl-dev
+RUN apt-get -y install libpq-dev
 
 # install cffi dependencies
-RUN apk add --no-cache openssl-dev libffi-dev
+RUN apt-get -y install libffi-dev
 
 # install pillow dependencies
-RUN apk add --no-cache jpeg-dev zlib-dev
+RUN apt-get -y install libjpeg-dev zlib1g-dev
 
 # install pygraphviz dependencies
-RUN apk add --no-cache graphviz graphviz-dev
-
-# install brotli dependencies
-RUN apk add --no-cache g++
-
-# install uvicorn dependencies
-RUN apk add --no-cache make
-
-# install cd-django-thumbnails dependencies
-RUN apk add --no-cache optipng
+RUN apt-get -y install graphviz graphviz-dev
 
 # install npm
-RUN apk add --no-cache npm
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+RUN apt-get install -y nodejs
+RUN npm install -g npm@next
 
 # install project dependencies
 RUN pip install poetry
@@ -55,8 +54,9 @@ RUN flake8 --ignore=E501,F401,F403 .
 # react
 WORKDIR /usr/src/app/frontend
 RUN npm install
-RUN npm audit fix
+RUN npm audit fix --force
 RUN npm run dev
+RUN npx browserslist@latest --update-db
 WORKDIR /usr/src/app/
 
 # run entrypoint.prod.sh
