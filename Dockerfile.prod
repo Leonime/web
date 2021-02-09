@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:3.8-alpine as builder
+FROM python:3.9-slim-buster as builder
 
 # set work directory
 WORKDIR /usr/src/
@@ -12,31 +12,24 @@ WORKDIR /usr/src/
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# Required to install node
+# needed to start installing dependencies
+RUN apt-get update && apt-get -y upgrade \
+# install general required libraries
+&& apt-get -y install build-essential curl netcat \
 # install psycopg2 dependencies
-RUN apk add --no-cache postgresql-dev gcc python3-dev musl-dev
-
+libpq-dev \
 # install cffi dependencies
-RUN apk add --no-cache openssl-dev libffi-dev
-
+libffi-dev \
 # install pillow dependencies
-RUN apk add --no-cache jpeg-dev zlib-dev
-
+libjpeg-dev zlib1g-dev \
 # install pygraphviz dependencies
-RUN apk add --no-cache graphviz graphviz-dev
-
-# install brotli dependencies
-RUN apk add --no-cache g++
-
-# install uvicorn dependencies
-RUN apk add --no-cache make
-
-# install npm
-RUN apk add --no-cache npm
-
-# install cd-django-thumbnails dependencies
-RUN apk add --no-cache optipng
+graphviz graphviz-dev \
+&& apt-get -y clean autoclean \
+&& apt-get -y autoremove
 
 # install project dependencies
+RUN pip install --upgrade pip
 RUN pip install poetry
 COPY ./poetry.lock ./pyproject.toml /usr/src/
 # To reduce the size of the image is recomended to build the dependencies,
@@ -50,27 +43,30 @@ WORKDIR /usr/src/app/
 COPY . /usr/src/app/
 
 # react
-
 # changing working dir once more, this makes running the commands a lot more easier.
 WORKDIR /usr/src/app/frontend
-RUN npm install
-RUN npm audit fix
-RUN npm run build
-
-# lets return to out original working dir so we can do a cleanup.
-WORKDIR /usr/src/app/
-
+# install npm
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+RUN apt-get -y install nodejs \
+&& apt-get -y clean autoclean \
+&& apt-get -y autoremove \
+# update npm
+RUN npm install -g npm@7.5.3 \
+&& npm install \
+&& npm audit fix --force \
+&& npm run dev \
+&& npx browserslist@latest --update-db \
 # to reduce the image size lets delete all the unneeded files.
-RUN rm -rf /usr/src/app/frontend/node_modules/
-RUN rm -rf /usr/src/app/frontend/src/
-RUN rm -rf /usr/src/app/frontend/.babelrc
-RUN rm -rf /usr/src/app/frontend/*.js*
-RUN rm -rf /usr/src/app/.coverage*
-RUN rm -rf /usr/src/app/.gitignore
-RUN rm -rf /usr/src/app/.travis.yml
-RUN rm -rf /usr/src/app/Dockerfile*
-RUN rm -rf /usr/src/app/*.sh
-RUN rm -rf /usr/src/app/Procfile
+&& rm -rf /usr/src/app/frontend/node_modules/ \
+&& rm -rf /usr/src/app/frontend/src/ \
+&& rm -rf /usr/src/app/frontend/.babelrc \
+&& rm -rf /usr/src/app/frontend/*.js* \
+&& rm -rf /usr/src/app/.coverage* \
+&& rm -rf /usr/src/app/.gitignore \
+&& rm -rf /usr/src/app/.travis.yml \
+&& rm -rf /usr/src/app/Dockerfile* \
+&& rm -rf /usr/src/app/*.sh \
+&& rm -rf /usr/src/app/Procfile
 
 
 #########
@@ -78,47 +74,41 @@ RUN rm -rf /usr/src/app/Procfile
 #########
 
 # pull official base image
-FROM python:3.8-alpine
+FROM python:3.9-slim-buster
 
-# Update
-RUN apk update && apk upgrade
-
+# needed to start installing dependencies
+RUN apt-get update && apt-get -y upgrade \
 # install pillow dependencies
-RUN apk add --no-cache libjpeg-turbo libxcb
-
+&& apt-get -y install libjpeg-dev zlib1g-dev \
 # install psycopg2 dependencies
-RUN apk add --no-cache libpq
+libpq-dev \
+&& apt-get -y clean autoclean \
+&& apt-get -y autoremove
 
-# install cd-django-thumbnails dependencies
-RUN apk add --no-cache optipng
+# install project dependencies
+COPY --from=builder /usr/src/wheels /wheels
+RUN pip install --no-deps --no-cache /wheels/*
 
 # create directory for the app user
-RUN mkdir -p /home/app
-RUN mkdir -p /var/lib/codeshepherds/data
-
+RUN mkdir -p /home/app \
+&& mkdir -p /var/lib/codeshepherds/data \
 # create the app user
-RUN addgroup -S app && adduser -S app -G app
-
+&& groupadd app && useradd app -g app \
 # chown all the files to the app user
-RUN chown app:app -R /home/app
-RUN chown app:app -R /var/lib/codeshepherds/data
+&& chown app:app -R /home/app \
+&& chown app:app -R /var/lib/codeshepherds/data
 
 # create the appropriate directories
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
-RUN mkdir -p $APP_HOME
-RUN mkdir -p $APP_HOME/static
-RUN mkdir -p $APP_HOME/media
+RUN mkdir -p $APP_HOME \
+&& mkdir -p $APP_HOME/static \
+&& mkdir -p $APP_HOME/media
 WORKDIR $APP_HOME
-
-# install project dependencies
-COPY --from=builder /usr/src/wheels /wheels
-RUN pip install --no-cache /wheels/*
 
 # copy shell scripts
 COPY ./env_secrets_expand.sh $APP_HOME
 COPY ./entrypoint.sh $APP_HOME
-
 # copy project
 COPY --from=builder /usr/src/app $APP_HOME
 
